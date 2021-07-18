@@ -192,19 +192,17 @@ class Leavesapps extends CI_Controller
 
     public function add()
     {
-
         $employee           = $this->session->userdata('Employee');
         // $employees          = $this->leavesModel->getAllEmployees();
+        if (!$employee) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
+            redirect(site_url($this->controller));
+        }
         $Arr_Akses          = getAcccesmenu($this->controller);
         $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
-        $divisionHead       = $this->db->get_where('division_head', ['id' => $employee['division_head']])->row();
-
-        // echo '<pre>';
-        // print_r($divisionHead);
-        // echo '<pre>';
-        // exit;
+        $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
@@ -216,7 +214,6 @@ class Leavesapps extends CI_Controller
             'division'      => $division[0],
             'access'        => $Arr_Akses,
         );
-
         $this->load->view('Leaveapplications/add', $data);
     }
 

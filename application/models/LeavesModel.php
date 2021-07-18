@@ -29,7 +29,7 @@ class LeavesModel extends CI_Model
         return $this->db->get('employees')->result();
     }
 
-    public function getSumWhere($field, $table, $data)
+    public function getSumWhere($field, $table, $data = [])
     {
         $this->db->select_sum($field);
         $this->db->from($table);

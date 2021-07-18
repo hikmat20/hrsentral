@@ -1,2 +1,2 @@
 @echo OFF
-php -S localhost:3000
+php -S 0.0.0.0:98
