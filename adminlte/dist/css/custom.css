@@ -1,0 +1,102 @@
+.table-responsive {
+   width: 100%;
+   margin-bottom: 15px;
+   overflow-y: hidden;
+   -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+.table-responsive > .table {
+   margin-bottom: 0;
+}
+.table-responsive > .table > thead > tr > th,
+.table-responsive > .table > tbody > tr > th,
+.table-responsive > .table > tfoot > tr > th,
+.table-responsive > .table > thead > tr > td,
+.table-responsive > .table > tbody > tr > td,
+.table-responsive > .table > tfoot > tr > td {
+   white-space: nowrap;
+}
+
+/* .table td, .table th {
+	min-width: 100px;
+} */
+
+@font-face {
+   font-family: Nunito;
+   src: url("../font/Nunito-Regular.ttf");
+   font-size: normal;
+}
+
+body {
+   font-family: Nunito;
+}
+.font-nunito {
+   font-family: Nunito;
+}
+.box-shadow {
+   box-shadow: 2px 7px 15px rgb(187, 187, 187, 56%);
+}
+
+.rounded-1 {
+   border-radius: 1em;
+}
+
+.text-white-100 {
+   color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.text-white-200 {
+   color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.text-white-300 {
+   color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.text-white-400 {
+   color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.text-white-500 {
+   color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.text-white-600 {
+   color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-white-700 {
+   color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.text-white-800 {
+   color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.text-white-900 {
+   color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.text-white {
+   color: rgba(255, 255, 255, 1) !important;
+}
+
+@media screen (120px,200px) {
+   .text-sm-center;
+}
+.text-md-center,
+.text-lg-center,
+.text-xs-center {
+   text-align: center !important;
+}
+.text-sm-right,
+.text-md-right,
+.text-lg-right,
+.text-xs-right {
+   text-align: right !important;
+}
+.text-sm-left,
+.text-md-left,
+.text-lg-left,
+.text-xs-left {
+   text-align: left !important;
+}
