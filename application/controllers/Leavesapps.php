@@ -95,7 +95,7 @@ class Leavesapps extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE `status` = 'CNL' or `status` = 'REJ'")->result();
+        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE (`status` = 'CNL' or `status` = 'REJ') and employee_id = '" . $this->session->User['employee_id'] . "'")->result();
         $employees         = $this->employees_model->getEmployees();
         $data = array(
             'title'            => 'Index Leave Applications',
