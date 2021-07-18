@@ -20,7 +20,7 @@ $this->load->view('include/side_menu');
                     <!-- small box -->
                     <div class="small-box bg-aqua rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(243deg 70% 50%),hsl(243deg 70% 50%));" onclick="location.href = '<?= base_url('leavesapps/add'); ?>'">
                         <div class=" inner">
-                            <h3 class="font-nunito">150</h3>
+                            <h3 class="font-nunito"><?= $leaveApp; ?></h3>
                             <p>Leaves Applications</p>
                         </div>
                         <div class="icon text-white-600">
@@ -34,7 +34,7 @@ $this->load->view('include/side_menu');
                     <!-- small box -->
                     <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
                         <div class="inner">
-                            <h3 class="font-nunito">53<sup style="font-size: 20px"></sup></h3>
+                            <h3 class="font-nunito"><?= $leaveOPN; ?><sup style="font-size: 20px"></sup></h3>
                             <p>Waiting Approval</p>
                         </div>
                         <div class="icon text-white-600">
@@ -49,7 +49,7 @@ $this->load->view('include/side_menu');
                     <!-- small box -->
                     <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
                         <div class="inner">
-                            <h3 class="font-nunito">44</h3>
+                            <h3 class="font-nunito"><?= $leaveAPV; ?></h3>
                             <p>History</p>
                         </div>
                         <div class="icon text-white-600">
@@ -63,7 +63,7 @@ $this->load->view('include/side_menu');
                     <!-- small box -->
                     <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(5deg 100% 64%),hsl(5deg 100% 64%));" onclick="location.href = '<?= base_url('leavesapps/cancel_reject'); ?>'">
                         <div class="inner">
-                            <h3 class="font-nunito">65</h3>
+                            <h3 class="font-nunito"><?= $leaveCNLREJ; ?></h3>
                             <p>Reject & Cancel</p>
                         </div>
                         <div class="icon text-white-600">

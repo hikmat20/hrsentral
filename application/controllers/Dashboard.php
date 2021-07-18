@@ -52,6 +52,15 @@ class Dashboard extends CI_Controller
 		$danestlatest3		= $this->employees_model->getnumDataLatestContract3('COM004');
 
 		$all			     = $this->employees_model->empNumrows();
+		$userLogin			 = $this->session->User['employee_id'];
+
+
+		if ($userLogin) {
+			$this->load->model('leavesModel');
+			$leaveCount = $this->leavesModel->getCountLeave(['employee_id' => $userLogin], ['status']);
+		} else {
+			$leaveCount = '';
+		}
 
 		$data = array(
 			'title'			=> 'Dashboard',
@@ -74,6 +83,10 @@ class Dashboard extends CI_Controller
 			'danestlatest2' => $danestlatest2,
 			'danestlatest3' => $danestlatest3,
 			'semua'			=> $all,
+			'leaveApp'			=> ($leaveCount) ? array_sum($leaveCount) : 0,
+			'leaveOPN'			=> ($leaveCount) ? $leaveCount['OPN'] : 0,
+			'leaveAPV'			=> ($leaveCount) ? $leaveCount['APV'] : 0,
+			'leaveCNLREJ'	    => ($leaveCount) ? $leaveCount['CNL'] + $leaveCount['REJ'] : 0,
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses
 		);

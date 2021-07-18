@@ -26,7 +26,7 @@ class LeavesModel extends CI_Model
 
     public function getAllEmployees()
     {
-        return $this->db->get('employees')->result();
+        return $this->db->get('employees')->ro();
     }
 
     public function getSumWhere($field, $table, $data = [])
@@ -35,6 +35,37 @@ class LeavesModel extends CI_Model
         $this->db->from($table);
         $this->db->where($data);
         return  $this->db->get()->row();
+    }
+
+    public function getCount($data = [])
+    {
+
+        if (!empty($data)) {
+            $this->db->count_all_results($this->_table);
+            $this->db->where($data);
+            $this->db->from($this->_table);
+            $result =  $this->db->count_all_results();
+        } else {
+            $result = $this->db->count_all_results($this->_table);
+        }
+        return  $result;
+    }
+
+    public function getCountLeave($where = [], $field = [])
+    {
+
+        $this->db->select('COUNT(*) as value, status');
+        $this->db->from($this->_table);
+        $this->db->where($where);
+        $this->db->group_by($field);
+        $result = $this->db->get()->result_array();
+        $dt = [];
+        if ($result) {
+            foreach ($result as $res) {
+                $dt[$res['status']] = $res['value'];
+            }
+        }
+        return  $dt;
     }
 
     public function getWhereOr($where = [], $orWhere = [])

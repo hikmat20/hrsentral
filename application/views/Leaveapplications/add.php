@@ -213,7 +213,7 @@ $this->load->view('include/side_menu'); ?>
         <div class="row">
             <div class="col-md-6 text-center">
                 <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> Save</button>
-                <a href="<?= base_url('leavesapps/'); ?>" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
+                <a href="javascript:void(0)" onclick="window.history.go(-1)" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
             </div>
             <div class="col-md-6">
             </div>

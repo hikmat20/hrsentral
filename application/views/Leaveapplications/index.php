@@ -106,10 +106,7 @@ $ses_userId = $this->session->User['employee_id'];
     </div>
 </div>
 <?php
-// echo '<pre>';
-// print_r($access);
-// echo '<pre>';
-// exit;
+
 ?>
 <?php $this->load->view('include/footer'); ?>
 <script>
