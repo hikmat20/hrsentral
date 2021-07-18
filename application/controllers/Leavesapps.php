@@ -169,10 +169,7 @@ class Leavesapps extends CI_Controller
             'days'      => $days,
             'holiDay'   => $holiDay,
         ];
-        // echo '<pre>';
-        // print_r($holiDay);
-        // echo '<pre>';
-        // exit;
+
         echo json_encode($ArrCollback);
     }
 

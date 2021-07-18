@@ -21,7 +21,18 @@ $this->load->view('include/side_menu');
 
 				</div>
 			</div>
+			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Holiday Date <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+						<?php
+						echo form_input(array('id' => 'date', 'name' => 'date', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Mass Leave Date'), $row[0]->date);
+						?>
+					</div>
 
+				</div>
+			</div>
 			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b>Holiday Name<span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
