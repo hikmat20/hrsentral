@@ -1,19 +1,19 @@
 <?php
-$this->load->view('include/side_menu'); 
-?>    
+$this->load->view('include/side_menu');
+?>
 <div class="box box-primary">
 	<div class="box-header">
-		<h3 class="box-title"><?=$title;?></h3>
+		<h3 class="box-title"><?= $title; ?></h3>
 		<div class="box-tool pull-right">
-		<?php
-			if($akses_menu['create']=='1'){
-		?>
-		  <a href="<?php echo site_url('holidays/add') ?>" class="btn btn-sm btn-success" id='btn-add'>
-			<i class="fa fa-plus"></i> Add
-		  </a>
-		  <?php
+			<?php
+			if ($akses_menu['create'] == '1') {
+			?>
+				<a href="<?php echo site_url('holidays/add') ?>" class="btn btn-sm btn-success" id='btn-add'>
+					<i class="fa fa-plus"></i> Add
+				</a>
+			<?php
 			}
-		  ?>
+			?>
 		</div>
 	</div>
 	<!-- /.box-header -->
@@ -29,77 +29,73 @@ $this->load->view('include/side_menu');
 				</tr>
 			</thead>
 			<tbody>
-			  <?php 
-			  if($row){
-					$int	=0;
-					foreach($row as $datas){ 
+				<?php
+				if ($row) {
+					$int	= 0;
+					foreach ($row as $datas) {
 						$int++;
-						
-						
-							echo"<tr>";							
-							echo"<td align='left'>".$datas->id."</td>";
-							echo"<td align='left'>".$datas->date."</td>";
-							echo"<td align='left'>".$datas->name."</td>";
-							echo"<td align='left'>".$datas->descr."</td>";
-							echo"<td align='center'>";
-								if($akses_menu['update']=='1'){
-									echo"<a href='".site_url('leaves/edit/'.$datas->id)."' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
-								}									
-								if($akses_menu['delete']=='1'){
-									echo"&nbsp;<a href='#' onClick='return deleteData(\"{$datas->id}\");' class='btn btn-sm btn-danger' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
-								}
-							echo"</td>";
-						echo"</tr>";
+
+
+						echo "<tr>";
+						echo "<td align='left'>" . $datas->id . "</td>";
+						echo "<td align='left'>" . $datas->date . "</td>";
+						echo "<td align='left'>" . $datas->name . "</td>";
+						echo "<td align='left'>" . $datas->descr . "</td>";
+						echo "<td align='center'>";
+						if ($akses_menu['update'] == '1') {
+							echo "<a href='" . site_url('holidays/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
+						}
+						if ($akses_menu['delete'] == '1') {
+							echo "&nbsp;<a href='#' onClick='return deleteData(\"{$datas->id}\");' class='btn btn-sm btn-danger' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
+						}
+						echo "</td>";
+						echo "</tr>";
 					}
-			  }
-			  ?>
+				}
+				?>
 			</tbody>
 		</table>
 	</div>
 	<!-- /.box-body -->
- </div>
-  <!-- /.box -->
+</div>
+<!-- /.box -->
 
 <?php $this->load->view('include/footer'); ?>
 <script>
-    
-	$.extend( true, $.fn.dataTable.defaults, {
-    "searching": true,
-    "ordering": false
-	} );
- 	$(document).ready(function(){
-		$('#btn-add').click(function(){
-			loading_spinner();
-		});	
-			
-	$('#example').DataTable();
+	$.extend(true, $.fn.dataTable.defaults, {
+		"searching": true,
+		"ordering": false
 	});
-	function deleteData(id){
+	$(document).ready(function() {
+		$('#btn-add').click(function() {
+			loading_spinner();
+		});
+
+		$('#example').DataTable();
+	});
+
+	function deleteData(id) {
 		swal({
-			  title: "Are you sure?",
-			  text: "You will not be able to process again this data!",
-			  type: "warning",
-			  showCancelButton: true,
-			  confirmButtonClass: "btn-danger",
-			  confirmButtonText: "Yes, Process it!",
-			  cancelButtonText: "No, cancel process!",
-			  closeOnConfirm: true,
-			  closeOnCancel: false
+				title: "Are you sure?",
+				text: "You will not be able to process again this data!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Yes, Process it!",
+				cancelButtonText: "No, cancel process!",
+				closeOnConfirm: true,
+				closeOnCancel: false
 			},
 			function(isConfirm) {
-			  if (isConfirm) {
+				if (isConfirm) {
 					loading_spinner();
-					window.location.href = base_url +'index.php/'+ active_controller+'/delete/'+id;
-					
-			  } else {
-				swal("Cancelled", "Data can be process again :)", "error");
-				return false;
-			  }
-		});
-       
-	} 
-	
-	
-	
-	
+					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
+
+				} else {
+					swal("Cancelled", "Data can be process again :)", "error");
+					return false;
+				}
+			});
+
+	}
 </script>

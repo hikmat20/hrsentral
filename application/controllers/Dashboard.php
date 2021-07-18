@@ -54,7 +54,6 @@ class Dashboard extends CI_Controller
 		$all			     = $this->employees_model->empNumrows();
 		$userLogin			 = $this->session->User['employee_id'];
 
-
 		if ($userLogin) {
 			$this->load->model('leavesModel');
 			$leaveCount = $this->leavesModel->getCountLeave(['employee_id' => $userLogin], ['status']);
