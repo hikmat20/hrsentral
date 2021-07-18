@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -103,7 +103,7 @@ $autoload['helper'] = array('url', 'grid');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array('development/config');
+$autoload['config'] = array();
 
 /*
 | -------------------------------------------------------------------
