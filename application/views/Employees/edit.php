@@ -106,14 +106,26 @@ $this->load->view('include/side_menu');
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+						<select name="division_head" id="divisions_head_id" class="form-control input-sm">
+							<option value=""></option>
+							<?php foreach ($data_divisions_head as $div => $val) : ?>
+								<option value="<?= $div; ?>"><?= $val; ?></option>
+							<?php endforeach; ?>
+						</select>
 						<?php
-						$data_divisions_head[0]	= 'Select An Option';
-						echo form_dropdown('division_head', $data_divisions_head, $row[0]->division_head, array('id' => 'divisions_head_id', 'class' => 'form-control input-sm'));
+						// $data_divisions_head['']	= '';
+						// echo form_dropdown('division_head', $data_divisions_head, $row[0]->division_head, array('id' => 'divisions_head_id', 'class' => 'form-control input-sm'));
 						?>
 					</div>
 				</div>
 			</div>
 
+			<?php
+			// echo '<pre>';
+			// print_r($data_divisions_head);
+			// echo '<pre>';
+			// exit;
+			?>
 			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b>Place Of Birth <span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>

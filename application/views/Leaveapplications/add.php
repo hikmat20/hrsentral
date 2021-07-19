@@ -6,9 +6,8 @@ $this->load->view('include/side_menu'); ?>
         <h2 class="box-title font-nunito" style="padding: 10px;"><?= $title; ?></h2>
     </div>
     <div class="box-body">
-        <div class="row box-body">
-            <form class="form-horizontal" id="form-leave" enctype="multipart/form-data">
-
+        <form class="form-horizontal" id="form-leave" enctype="multipart/form-data">
+            <div class="row">
                 <div class="col-md-6">
                     <div class="hidden">
                         <div class="form-group">
@@ -44,7 +43,7 @@ $this->load->view('include/side_menu'); ?>
                             <div class="input-group">
                                 <input type="text" name="unused_leave" class="form-control" required id="have_leave" readonly value="<?= $totalLeave->leave; ?>" placeholder="0">
                                 <span class="input-group-addon">Diambil</span>
-                                <input type="text" name="get_year_leave" class="form-control" required id="get_year_leave" placeholder="0">
+                                <input type="number" min="0" name="get_year_leave" class="form-control text-right" required id="get_year_leave" placeholder="0">
                                 <span class="input-group-addon">hari</span>
                             </div>
                         </div>
@@ -62,7 +61,7 @@ $this->load->view('include/side_menu'); ?>
 
                     <div class="form-group">
                         <label for="special_leave_category" class="col-md-3 control-label">Cuti Khusus <span class="text-red"></span></label>
-                        <div class="col-sm-12 col-md-9 col-lg-6" style="margin-bottom: 8px;">
+                        <div class="col-sm-12 col-md-9" style="margin-bottom: 8px;">
                             <select name="special_leave_category" id="special_leave_category" required class="form-control" required="required">
                                 <option value=""></option>
                                 <?php foreach ($leaveCategory as $lc) : ?>
@@ -70,72 +69,48 @@ $this->load->view('include/side_menu'); ?>
                                 <?php endforeach ?>
                             </select>
                         </div>
-
-                        <div class="col-md-6 col-sm-6 col-lg-3">
-                            <div class="input-group">
-                                <input type="text" name="special_leave" class="form-control" readonly required id="special_leave" placeholder="0">
-                                <span class="input-group-addon">hari</span>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="special_leave_category" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label>
-                        <div class="col-sm-12 col-md-9 col-lg-6" style="margin-bottom: 8px;">
-                            <button type="button" onclick="$('#doc_special_leave').click()" class="btn btn-info"><i class="fa fa-upload"></i> Upload Dokumen</button>
-                            <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
-                            <a href="<?= base_url('assets/documents/surat.jpg'); ?>" target="_blank">
-                                <div class="img-responsive hidden" style="padding-top:10px ;">
-                                    <img src="<?= base_url('assets/documents/noimage'); ?>" alt="dokumen-pendukung" class="rounded-1" height="100px">
-                                </div>
-                            </a>
-                            <?php
-                            // . ($employee->doc_special_leave) ? $employee->doc_special_leave : "noimage.jpg"; 
-                            ?>
+                        <label for="" class="col-md-3"></label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input type="number" min="0" name="special_leave" class="form-control text-right" readonly required id="special_leave" placeholder="0">
+                                <span class="input-group-addon">hari</span>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="notpay_leave_desc" class="col-md-3 control-label">Cuti Urgent <span class="text-red"></span></label>
-                        <div class="col-md-6" style="margin-bottom: 8px;">
+                        <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     <input type="checkbox" value="" id="check_notpay_leave">
                                 </span>
-                                <input type="text" name="notpay_leave_desc" id="notpay_leave_desc" class="form-control" placeholder="Keperluan Cuti">
+                                <input type="text" readonly name="notpay_leave_desc" id="notpay_leave_desc" class="form-control" placeholder="Keperluan Cuti">
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-3">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
                             <div class="input-group">
-                                <input type="text" name="notpay_leave" class="form-control" required id="notpay_leave" placeholder="0">
+                                <input type="number" readonly name="notpay_leave" min="0" class="text-right form-control" required id="notpay_leave" placeholder="0">
                                 <span class="input-group-addon">hari</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label>
-                        <div class="col-sm-12 col-md-9 col-lg-6" style="margin-bottom: 8px;">
-                            <button type="button" onclick="$('#doc_notpay_leave').click()" class="btn btn-info"><i class="fa fa-upload"></i> Upload Dokumen</button>
-                            <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
-                            <a href="<?= base_url('assets/documents/surat.jpg'); ?>" target="_blank">
-                                <div class="img-responsive hidden" style="padding-top:10px ;">
-                                    <img src="<?= base_url('assets/documents/noimage.jpg'); ?>" alt="dokumen-pendukung" class="rounded-1" height="100px">
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label for="" class="col-md-3 control-label"></label>
-                        <div class="col-md-6 text-right">
+                        <div class="col-md-3 text-right">
                             <label for="" class="control-label">Total Hari Cuti</label>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="input-group">
-                                <input type="text" readonly name="applied_leave" class="form-control" required id="applied_leave" placeholder="0">
+                                <input type="number" min="0" readonly name="applied_leave" class="form-control text-right" required id="applied_leave" placeholder="0">
                                 <span class="input-group-addon">hari</span>
                             </div>
                         </div>
@@ -173,30 +148,21 @@ $this->load->view('include/side_menu'); ?>
                         </div>
                     </div>
 
-
-
-                </div>
-
-                <div class="col-md-6">
                     <div class="form-group">
                         <label for="" class="col-md-3 control-label">Keterangan <span class="text-red">*</span></label>
                         <div class="col-md-9">
                             <textarea name="descriptions" id="descriptions" class="form-control" rows="3" required="required" placeholder="Descriptions"></textarea>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="form-group hidden">
+                    <div class="form-group">
                         <label for="approval_by" class="col-md-3 control-label">Approval By <span class="text-red">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" name="approval_by" id="division_head" value="<?= ($divisionHead) ? $divisionHead->id : ''; ?>">
+                            <input type="text" name="approval_by" id="approval_by" value="<?= ($divisionHead) ? $divisionHead->id : ''; ?>">
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-6 hidden">
-                    <div class="form-group">
+                    <div class="form-group hidden">
                         <label for="" class="col-md-3 control-label">Info Hari Libur </label>
                         <div class="col-md-9">
                             <textarea name="holiday_info" id="info_holday2" readonly class="form-control text-red"></textarea>
@@ -204,9 +170,43 @@ $this->load->view('include/side_menu'); ?>
                         </div>
                     </div>
                 </div>
+            </div>
+            <hr>
+            <div class="row">
 
-            </form>
-        </div>
+                <div class="col-md-6">
+                    <div class="form-group text-center doc-special" style="display: none;">
+                        <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
+                        <div class="col-sm-12">
+                            <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Khusus</button>
+                            <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
+                            <input type="text" class="hidden" name="doc_special_old">
+                            <div class="">
+                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group text-center doc-notpay" style="display: none;">
+                        <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
+                        <div class="col-sm-12" style="margin-bottom: 8px;">
+                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Urgent</button>
+                            <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
+                            <input type="text" class="hidden" name="doc_notpay_old">
+                            <div class="">
+                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
     <div class="box-footer">
@@ -222,9 +222,9 @@ $this->load->view('include/side_menu'); ?>
 
     <?php
 
-    // echo '<pre>';
-    // print_r($divisionHead);
-    // echo '<pre>';
+    echo '<pre>';
+    print_r($divisionHead);
+    echo '<pre>';
     // exit;
 
     ?>
@@ -239,6 +239,22 @@ $this->load->view('include/side_menu'); ?>
         });
 
     });
+
+    $(document).on('change', '#check_notpay_leave', function() {
+        let check = $(this).prop('checked')
+        console.log(check)
+        if (check == true) {
+            $('#notpay_leave_desc').removeAttr('readonly')
+            $('#notpay_leave').removeAttr('readonly')
+            $('#btn-doc-notpay').removeAttr('disabled');
+            $('.doc-notpay').show('ease')
+            return false;
+        }
+        $('#notpay_leave_desc').attr('readonly', 'readonly')
+        $('#notpay_leave').attr('readonly', 'readonly')
+        $('#btn-doc-notpay').attr('disabled');
+        $('.doc-notpay').hide('ease')
+    })
 
     $(document).on('change', '#periode_year', function() {
         let year = $(this).val();
@@ -326,9 +342,9 @@ $this->load->view('include/side_menu'); ?>
 
         } else {
             swal({
-                title: 'Warning!',
+                title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Total Cuti belum di isi. Mohon mengisi data pengambilan cuti.'
+                text: 'Total Cuti belum tersedia. Mohon mengisi data pengambilan cuti terlebih dahulu.'
             });
             $(this).val('')
             return false
@@ -350,6 +366,13 @@ $this->load->view('include/side_menu'); ?>
                 dataType: 'JSON',
                 success: function(result) {
                     console.log(result);
+                    if (result.document == 'Y') {
+                        $('#btn-doc-special').removeAttr('disabled');
+                        $('.doc-special').show('ease')
+                    } else {
+                        $('#btn-doc-special').attr('disabled', 'disabled');
+                        $('.doc-special').hide('ease')
+                    }
                     if (result.values > 0) {
                         $('#special_leave').attr('readonly', 'readonly').val(result.values);
                         getLeave()
@@ -358,6 +381,7 @@ $this->load->view('include/side_menu'); ?>
                     $('#special_leave').removeAttr('readonly').val('');
                     getLeave()
                 },
+
                 error: function(result) {
                     alert('error')
                     console.log(result);
@@ -400,46 +424,14 @@ $this->load->view('include/side_menu'); ?>
 
     })
 
-    function cek() {
-        let applied = parseInt($('#applied_leave').val()) || 0;
-        let total_days = parseInt($('#total_days').val()) || 0;
-        // alert(applied + "," + total_days)
-        if (applied) {
-            if (total_days < applied) {
-                swal({
-                    title: 'Terjadi Kesalahan!',
-                    text: 'Jumlah hari yang diajukan tidak sesuai/kurang dari total cuti!',
-                    type: 'warning'
-                })
-                // $('#until_date').val('').change();
-                // $('#applied_leave').val('0');
-                return false
-            } else if (total_days > applied) {
-                swal({
-                    title: 'Warning!',
-                    text: 'Jumlah hari yang diajukan melebihi total cuti!',
-                    type: 'warning'
-                })
-                $('#until_date').val('').change();
-                $('#applied_leave').val('0');
-                return false
-            }
-            // else {
-            //     return false
-            //     // remainingDay = parseInt(haveLeave) - parseInt(applied);
-            //     // day = (remainingDay >= 0) ? remainingDay : '0';
-            //     // $('#remaining_leave').val(day);
-            // }
-        }
-    }
-
     $(document).on('click', '#save', function() {
         let desc = $('#descriptions').val();
         let from_date = $('#from_date').val();
         let until_date = $('#until_date').val();
         let applied = $('#applied_leave').val() || 0;
         let total_days = $('#total_days').val() || 0;
-        console.log(desc + ", " + from_date + ", " + until_date + ", " + applied + ", " + total_days);
+        let approval = $('#approval_by').val();
+        // console.log(desc + ", " + from_date + ", " + until_date + ", " + applied + ", " + total_days);
         if (applied <= 0) {
             swal({
                 title: 'Terjadi Kesalahan!',
@@ -475,6 +467,12 @@ $this->load->view('include/side_menu'); ?>
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Keterangan cuti belum di isi.'
+            })
+        } else if (approval == '') {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Data persetujuan atasan belum diatur. Mohon menhubungi HRD terlebih dahulu.'
             })
 
         } else {
@@ -532,7 +530,12 @@ $this->load->view('include/side_menu'); ?>
         let otherLeave = $('#notpay_leave').val() || 0;
 
         if (getYearLeave > yearLeave) {
-            alert('Jumlah pengambilan cuti melebihin sisa cuti!');
+            swal({
+                title: 'Terjadi kesalah',
+                text: 'Jumlah pengambilan cuti melebihin sisa cuti!',
+                type: 'warning'
+            })
+            // alert('Jumlah pengambilan cuti melebihin sisa cuti!');
             $('#get_year_leave').val('')
             $('#remaining_leave').val('0');
             $('.remaining_leave').text('0');
@@ -546,4 +549,26 @@ $this->load->view('include/side_menu'); ?>
         $('#applied_leave').val(totalLeave);
         return false
     }
+
+    $(document).on('change', '#doc_notpay_leave', function(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('prev_img_notpay');
+            output.src = reader.result;
+            // dataUpload = new FormData($('#dataUpload')[0]);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+
+    })
+
+    $(document).on('change', '#doc_special_leave', function(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('prev_img_special');
+            output.src = reader.result;
+            // dataUpload = new FormData($('#dataUpload')[0]);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+
+    })
 </script>

@@ -210,6 +210,10 @@ class Leavesapps extends CI_Controller
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
+        // echo '<pre>';
+        // print_r($employee);
+        // echo '<pre>';
+        // exit;
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
@@ -254,9 +258,9 @@ class Leavesapps extends CI_Controller
 
     public function save()
     {
-        $leaveApp_id                           = $this->input->post('leaveApp_id');
+        $leaveApp_id                    = $this->input->post('leaveApp_id');
         $data                           = $this->input->post();
-        $data['id']                   = $leaveApp_id;
+        // $data['id']                     = $leaveApp_id;
         $data['id']                     = $this->autoNumber();
         $data_session                   = $this->session->userdata;
         $data['name']                   = $data_session['Employee']['name'];
@@ -275,6 +279,12 @@ class Leavesapps extends CI_Controller
         $config['max_width']            = 1024;
         $config['max_height']           = 1224;
         $config['encrypt_name']         = TRUE;
+
+        // echo '<pre>';
+        // print_r($_FILES);
+        // echo '<pre>';
+        // exit;
+
         $this->upload->initialize($config);
         if ($_FILES['doc_special_leave']['name']) {
             if (!$this->upload->do_upload('doc_special_leave')) {
@@ -292,13 +302,13 @@ class Leavesapps extends CI_Controller
                     'status' => '1'
                 ];
                 $this->load->helper('file');
-                // if ($oldFile) {
-                //     unlink($upload['file_path'] . $oldFile);
-                // }
-                $data['doc_special_leave'] = $upload['file_name'];
+                if ($data['doc_special_old']) {
+                    unlink($upload['file_path'] . $data['doc_special_old']);
+                }
+                $data['doc_special_leave'] = $data['employee_id'] . "-" .  $upload['file_name'];
             }
         }
-
+        unset($data['doc_special_old']);
         if ($_FILES['doc_notpay_leave']['name']) {
             if (!$this->upload->do_upload('doc_notpay_leave')) {
                 $error = $this->upload->display_errors('', '');
@@ -315,13 +325,18 @@ class Leavesapps extends CI_Controller
                     'status' => '1'
                 ];
                 $this->load->helper('file');
-                // if ($oldFile) {
-                //     unlink($upload['file_path'] . $oldFile);
-                // }
-                $data['doc_notpay_leave'] = $upload['file_name'];
+                if ($data['doc_notpay_old']) {
+                    unlink($upload['file_path'] . $data['doc_notpay_old']);
+                }
+                $data['doc_notpay_leave'] = $data['employee_id'] . "-" . $upload['file_name'];
             }
         }
 
+        unset($data['doc_notpay_old']);
+        // echo '<pre>';
+        // print_r($data);
+        // echo '<pre>';
+        // exit;
         $this->db->trans_begin();
         $this->db->insert('leave_applications', $data);
 

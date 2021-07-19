@@ -104,6 +104,7 @@ $this->load->view('include/side_menu');
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+
 						<?php
 						$data_divisions_head[0]	= 'Select An Option';
 						echo form_dropdown('division_head', $data_divisions_head, '0', array('id' => 'divisions_head_id', 'class' => 'form-control input-sm'));
