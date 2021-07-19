@@ -8,7 +8,7 @@ $this->load->view('include/side_menu');
 			<?php
 			if ($akses_menu['create'] == '1') {
 			?>
-				<a href="<?php echo site_url('divisions/add') ?>" class="btn btn-sm btn-success" id='btn-add'>
+				<a href="<?php echo site_url('divisionheads/add') ?>" class="btn btn-sm btn-success" id='btn-add'>
 					<i class="fa fa-plus"></i> Add
 				</a>
 			<?php
@@ -23,7 +23,7 @@ $this->load->view('include/side_menu');
 				<tr class='bg-blue'>
 					<th class="text-center">Id</th>
 					<th class="text-center">Name</th>
-					<th class="text-center">Company</th>
+					<!-- <th class="text-center">Company</th> -->
 					<th class="text-center">Option</th>
 				</tr>
 			</thead>
@@ -36,10 +36,10 @@ $this->load->view('include/side_menu');
 						echo "<tr>";
 						echo "<td align='left'>" . $datas->id . "</td>";
 						echo "<td align='left'>" . $datas->name . "</td>";
-						echo "<td align='left'>" . $datas->employee_id . "</td>";
+						// echo "<td align='left'>" . $datas->employee_id . "</td>";
 						echo "<td align='center'>";
 						if ($akses_menu['update'] == '1') {
-							echo "<a href='" . site_url('divisions/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
+							echo "<a href='" . site_url('divisionheads/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
 						}
 						if ($akses_menu['delete'] == '1') {
 							echo "&nbsp;<a href='#' onClick='return deleteData(\"{$datas->id}\");' class='btn btn-sm btn-danger' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
@@ -79,7 +79,7 @@ $this->load->view('include/side_menu');
 			function(isConfirm) {
 				if (isConfirm) {
 					loading_spinner();
-					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
+					window.location.href = base_url + active_controller + '/delete/' + id;
 
 				} else {
 					swal("Cancelled", "Data can be process again :)", "error");

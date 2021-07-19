@@ -60,6 +60,10 @@ class Dashboard extends CI_Controller
 		} else {
 			$leaveCount = '';
 		}
+		// echo '<pre>';
+		// print_r($leaveCount);
+		// echo '<pre>';
+		// exit;
 
 		$data = array(
 			'title'			=> 'Dashboard',
@@ -82,10 +86,10 @@ class Dashboard extends CI_Controller
 			'danestlatest2' => $danestlatest2,
 			'danestlatest3' => $danestlatest3,
 			'semua'			=> $all,
-			'leaveApp'			=> ($leaveCount) ? array_sum($leaveCount) : 0,
-			'leaveOPN'			=> ($leaveCount) ? $leaveCount['OPN'] : 0,
-			'leaveAPV'			=> ($leaveCount) ? $leaveCount['APV'] : 0,
-			'leaveCNLREJ'	    => ($leaveCount) ? $leaveCount['CNL'] + $leaveCount['REJ'] : 0,
+			'leaveApp'			=> (isset($leaveCount)) ? array_sum($leaveCount) : 0,
+			'leaveOPN'			=> (isset($leaveCount['OPN'])) ? $leaveCount['OPN'] : 0,
+			'leaveAPV'			=> (isset($leaveCount['APV'])) ? $leaveCount['APV'] : 0,
+			'leaveCNLREJ'	    => (isset($leaveCount['CNL']) || isset($leaveCount['REJ'])) ? $leaveCount['CNL'] + $leaveCount['REJ'] : 0,
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses
 		);

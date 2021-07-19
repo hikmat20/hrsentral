@@ -9,7 +9,7 @@ $ses_userId = $this->session->User['employee_id'];
     <div class="box-body">
         <div class="text-lg-right" style="margin-bottom: 10px; display:block">
             <?php if ($access['create'] == '1') : ?>
-                <a href="<?= base_url(); ?>leavesapps/add" class=' btn btn-md btn-primary' title='Create Application' data-role='qtip'><i class='fa fa-plus'></i> New Leave Applications</a>
+                <a href="<?= base_url(); ?>leavesapps/add" class=' btn btn-md btn-primary' title='Create Application' data-role='qtip'><i class='fa fa-plus'></i> New Applications</a>
             <?php endif; ?>
         </div>
         <div class="table-responsive">

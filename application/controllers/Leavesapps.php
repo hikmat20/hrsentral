@@ -142,18 +142,24 @@ class Leavesapps extends CI_Controller
             new DateTime(date('Y-m-d', strtotime("+1 day", strtotime($end))))
         );
 
+        $getHoliday = $this->db->get('at_holidays')->result_array();
+        $holiday = [];
+        foreach ($getHoliday as $hday) {
+            $dates = date('Ymd', strtotime($hday['date']));
+            $holiday[$dates] = $hday['name'];
+        }
+        // $holidays = $holiday;
 
-        $holiday = json_decode(file_get_contents('https://raw.githubusercontent.com/guangrei/Json-Indonesia-holidays/master/calendar.json', true));
+        // $holiday = json_decode(file_get_contents('https://raw.githubusercontent.com/guangrei/Json-Indonesia-holidays/master/calendar.json', true));
 
         $days = 0;
         $holiDay = [];
         foreach ($datePeriod as $dperiod) {
             $date = $dperiod->format('Ymd');
-
-            if (isset($holiday->$date)) {
+            if (isset($holiday[$date])) {
                 $holiDay = [
                     'holiday'   => date("Y-m-d", strtotime($date)),
-                    'deskripsi' => $holiday->$date->deskripsi
+                    'deskripsi' => $holiday[$date]
                 ];
                 // jika ada hari libur
             } elseif (date('D', strtotime($date)) === 'Sat') {
@@ -164,6 +170,10 @@ class Leavesapps extends CI_Controller
                 $days++;
             }
         }
+        // echo '<pre>';
+        // print_r($days);
+        // echo '<pre>';
+        // exit;
 
         $ArrCollback = [
             'days'      => $days,
