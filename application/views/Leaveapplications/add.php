@@ -208,7 +208,7 @@ $this->load->view('include/side_menu'); ?>
         </form>
     </div>
 
-    <div class="box-footer">
+    <div class="box-footer rounded-1">
         <div class="row">
             <div class="col-md-6 text-center">
                 <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> Save</button>
@@ -218,16 +218,6 @@ $this->load->view('include/side_menu'); ?>
             </div>
         </div>
     </div>
-
-    <?php
-
-    // echo '<pre>';
-    // print_r($divisionHead);
-    // echo '<pre>';
-    // exit;
-
-    ?>
-
 </div>
 
 <?php $this->load->view('include/footer'); ?>

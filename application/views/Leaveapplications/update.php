@@ -209,7 +209,7 @@ $this->load->view('include/side_menu'); ?>
             </div>
         </form>
     </div>
-    <div class="box-footer">
+    <div class="box-footer rounded-1">
         <div class="row">
             <div class="col-md-6 text-center">
                 <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> Save</button>
