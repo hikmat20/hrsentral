@@ -26,7 +26,7 @@ class LeavesModel extends CI_Model
 
     public function getAllEmployees()
     {
-        return $this->db->get('employees')->ro();
+        return $this->db->get('employees')->row();
     }
 
     public function getSumWhere($field, $table, $data = [])

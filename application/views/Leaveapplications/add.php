@@ -155,7 +155,7 @@ $this->load->view('include/side_menu'); ?>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group hidden">
                         <label for="approval_by" class="col-md-3 control-label">Approval By <span class="text-red">*</span></label>
                         <div class="col-md-9">
                             <input type="text" name="approval_by" id="approval_by" value="<?= ($divisionHead) ? $divisionHead->id : ''; ?>">
@@ -173,7 +173,6 @@ $this->load->view('include/side_menu'); ?>
             </div>
             <hr>
             <div class="row">
-
                 <div class="col-md-6">
                     <div class="form-group text-center doc-special" style="display: none;">
                         <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
@@ -222,9 +221,9 @@ $this->load->view('include/side_menu'); ?>
 
     <?php
 
-    echo '<pre>';
-    print_r($divisionHead);
-    echo '<pre>';
+    // echo '<pre>';
+    // print_r($divisionHead);
+    // echo '<pre>';
     // exit;
 
     ?>
@@ -244,15 +243,17 @@ $this->load->view('include/side_menu'); ?>
         let check = $(this).prop('checked')
         console.log(check)
         if (check == true) {
-            $('#notpay_leave_desc').removeAttr('readonly')
-            $('#notpay_leave').removeAttr('readonly')
+            $('#notpay_leave_desc').removeAttr('readonly').addClass('notpay_leave_desc_req').val('')
+            $('#notpay_leave').removeAttr('readonly').addClass('notpay_leave_req').val('')
             $('#btn-doc-notpay').removeAttr('disabled');
+            $('#doc_notpay_leave').addClass('doc_notpay_leave_req');
             $('.doc-notpay').show('ease')
             return false;
         }
-        $('#notpay_leave_desc').attr('readonly', 'readonly')
-        $('#notpay_leave').attr('readonly', 'readonly')
+        $('#notpay_leave_desc').attr('readonly', 'readonly').removeClass('notpay_leave_desc_req').val('')
+        $('#notpay_leave').attr('readonly', 'readonly').removeClass('notpay_leave_req').val('')
         $('#btn-doc-notpay').attr('disabled');
+        $('#doc_notpay_leave').removeClass('doc_notpay_leave_req');
         $('.doc-notpay').hide('ease')
     })
 
@@ -353,7 +354,9 @@ $this->load->view('include/side_menu'); ?>
 
     $(document).on('change', '#special_leave_category', function() {
         if ($(this).val() == '') {
-            $('#special_leave').attr('readonly', 'readonly').val('');
+            $('#special_leave').attr('readonly', 'readonly').val('').removeClass('special_leave_req');
+            $('#doc_special_leave').removeClass('doc_special_leave_req');
+            $('.doc-special').hide('ease')
             getLeave()
         } else {
             let id_category = $(this).val();
@@ -378,7 +381,8 @@ $this->load->view('include/side_menu'); ?>
                         getLeave()
                         return false
                     }
-                    $('#special_leave').removeAttr('readonly').val('');
+                    $('#doc_special_leave').addClass('doc_special_leave_req');
+                    $('#special_leave').removeAttr('readonly').val('').addClass('special_leave_req');
                     getLeave()
                 },
 
@@ -393,6 +397,7 @@ $this->load->view('include/side_menu'); ?>
     $(document).on('change', '#notpay_leave_category', function() {
         if ($(this).val() == '') {
             $('#notpay_leave').attr('readonly', 'readonly').val('');
+            $('#doc_notpay_leave').removeClass('doc_notpay_leave_req');
             getLeave()
         } else {
             // $('#notpay_leave').removeAttr('readonly');
@@ -411,7 +416,7 @@ $this->load->view('include/side_menu'); ?>
                         getLeave()
                         return false
                     }
-                    $('#notpay_leave').removeAttr('readonly').val('');
+
                     getLeave()
                 },
                 error: function(result) {
@@ -425,54 +430,105 @@ $this->load->view('include/side_menu'); ?>
     })
 
     $(document).on('click', '#save', function() {
+        // console.log(formdata);
         let desc = $('#descriptions').val();
+        let special_leave = $('.special_leave_req').val();
+        let notpay_leave = $('.notpay_leave_req').val();
+        let nl_desc_req = $('.notpay_leave_desc_req').val();
+        let nl_req = $('.notpay_leave_req').val();
         let from_date = $('#from_date').val();
         let until_date = $('#until_date').val();
         let applied = $('#applied_leave').val() || 0;
         let total_days = $('#total_days').val() || 0;
         let approval = $('#approval_by').val();
-        // console.log(desc + ", " + from_date + ", " + until_date + ", " + applied + ", " + total_days);
+        let doc_special_leave = $('.doc_special_leave_req')[0] || '';
+        let doc_notpay_leave = $('.doc_notpay_leave_req')[0] || '';
+        let doc_special = (doc_special_leave) ? doc_special_leave.files.length : '';
+        let doc_notpay = (doc_notpay_leave) ? doc_notpay_leave.files.length : '';
+
+        console.log((doc_special) + ", " + doc_notpay);
         if (applied <= 0) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Mohon mengisi pengambilan cuti terlebih dahulu!'
             })
+            return false;
+        } else if (special_leave <= 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Mohon mengisi pengambilan jumlah hari cuti khusus terlebih dahulu!'
+            })
+            return false;
+        } else if (nl_desc_req == '') {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Mohon mengisi keterangan keperluan cuti urgent terlebih dahulu!'
+            })
+            return false;
+        } else if (nl_req <= 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Mohon mengisi pengambilan jumlah hari cuti urgent terlebih dahulu!'
+            })
+            return false;
         } else if (from_date == '') {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Tanggal awal cuti belum di isi.'
             })
+            return false;
         } else if (until_date == '') {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Tanggal akhir cuti belum di isi.'
             })
+            return false;
         } else if (parseInt(total_days) > parseInt(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Jumlah hari yang diajukan tidak sama atau melebihi dari total cuti!.'
             })
+            return false;
         } else if (parseInt(total_days) < parseInt(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Jumlah hari yang diajukan tidak sama atau kurang dari total cuti!.'
             })
+            return false;
         } else if (desc == '') {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Keterangan cuti belum di isi.'
             })
+            return false;
         } else if (approval == '') {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Data persetujuan atasan belum diatur. Mohon menhubungi HRD terlebih dahulu.'
+            })
+            return false;
+        } else if (doc_special === 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Dokumen Pendukung cuti khusus belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
+            })
+            return false;
+        } else if (doc_notpay === 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Dokumen Pendukung cuti urgent belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
             })
 
         } else {
@@ -499,9 +555,9 @@ $this->load->view('include/side_menu'); ?>
                         }, 1500)
                     } else if (result.status == 0) {
                         swal({
-                            title: 'Error',
+                            title: 'Kesalahan Upload',
                             text: result.msg,
-                            type: 'error',
+                            type: 'warning',
                         });
                     }
                     console.log(result + ", " + response);

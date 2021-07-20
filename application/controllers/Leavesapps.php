@@ -210,10 +210,7 @@ class Leavesapps extends CI_Controller
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
-        // echo '<pre>';
-        // print_r($employee);
-        // echo '<pre>';
-        // exit;
+
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
@@ -236,6 +233,7 @@ class Leavesapps extends CI_Controller
         $Arr_Akses          = getAcccesmenu($this->controller);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
+        $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
 
         // echo '<pre>';
         // print_r($division[0]);
@@ -249,6 +247,7 @@ class Leavesapps extends CI_Controller
             'employee'      => $employee,
             'employees'     => $employees,
             'leaveCategory' => $leaveCategory,
+            'divisionHead' => $divisionHead,
             'division'      => $division[0],
             'access'        => $Arr_Akses,
         );
@@ -258,10 +257,11 @@ class Leavesapps extends CI_Controller
 
     public function save()
     {
-        $leaveApp_id                    = $this->input->post('leaveApp_id');
+
+        $leaveApp_id                    = $this->input->post('id');
         $data                           = $this->input->post();
         // $data['id']                     = $leaveApp_id;
-        $data['id']                     = $this->autoNumber();
+        $data['id']                     = ($leaveApp_id) ? $leaveApp_id : $this->autoNumber();
         $data_session                   = $this->session->userdata;
         $data['name']                   = $data_session['Employee']['name'];
         $data['employee_id']            = $data_session['Employee']['id'];
@@ -270,8 +270,6 @@ class Leavesapps extends CI_Controller
         $data['created_at']             = date('Y-m-d H:i:s');
         $data['modified_by']            = $data_session['User']['id'];
         $data['modified_at']            = date('Y-m-d H:i:s');
-        // $oldFile = $this->input->post('old_file');
-        // $files = $_FILES;
 
         $config['upload_path']          = './assets/documents';
         $config['allowed_types']        = 'gif|jpg|png|pdf';
@@ -279,11 +277,6 @@ class Leavesapps extends CI_Controller
         $config['max_width']            = 1024;
         $config['max_height']           = 1224;
         $config['encrypt_name']         = TRUE;
-
-        // echo '<pre>';
-        // print_r($_FILES);
-        // echo '<pre>';
-        // exit;
 
         $this->upload->initialize($config);
         if ($_FILES['doc_special_leave']['name']) {
@@ -331,14 +324,17 @@ class Leavesapps extends CI_Controller
                 $data['doc_notpay_leave'] = $data['employee_id'] . "-" . $upload['file_name'];
             }
         }
-
         unset($data['doc_notpay_old']);
         // echo '<pre>';
         // print_r($data);
         // echo '<pre>';
         // exit;
         $this->db->trans_begin();
-        $this->db->insert('leave_applications', $data);
+        if (!$leaveApp_id) {
+            $this->db->insert('leave_applications', $data);
+        } else {
+            $this->db->update('leave_applications', $data, array('id' => $leaveApp_id));
+        }
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
@@ -352,53 +348,14 @@ class Leavesapps extends CI_Controller
                 'status'        => 1,
                 'msg'           => 'Data Pengajuan Cuti berhasil disimpan.'
             );
-            history('Add Leave Applications' . $data['employee_id']);
+            history('Save Leave Applications' . $data['employee_id']);
         }
 
-        echo json_encode($ArrCollback);
-    }
-
-    public function save_update()
-    {
-        $leaveApp_id                    = $this->input->post('id');
-        $data                           = $this->input->post();
-        $data_session                   = $this->session->userdata;
-        $data['name']                   = $data_session['Employee']['name'];
-        $data['employee_id']            = $data_session['Employee']['id'];
-        $data['division_id']            = $data_session['Employee']['division_id'];
-        $data['created_by']             = $data_session['User']['id'];
-        $data['created_at']             = date('Y-m-d H:i:s');
-        $data['modified_by']            = $data_session['User']['id'];
-        $data['modified_at']            = date('Y-m-d H:i:s');
-
-
-        $this->db->trans_begin();
-        $this->db->update('leave_applications', $data, array('id' => $leaveApp_id));
-        // if (!$leaveApp_id) {
-        //     $this->db->insert('leave_applications', $data);
-        // } else {
-        // }
-        if ($this->db->trans_status() === FALSE) {
-            $this->db->trans_rollback();
-            $ArrCollback        = array(
-                'status'        => 0,
-                'msg'           => 'Add Leave Application failed. Please try again later.'
-            );
-        } else {
-            $this->db->trans_commit();
-            $ArrCollback        = array(
-                'status'        => 1,
-                'msg'           => 'Add Application leave Success.'
-            );
-            history('Add Leave Applications' . $data['employee_id']);
-        }
         echo json_encode($ArrCollback);
     }
 
     public function cancel()
     {
-
-
         $id = $this->input->post('id');
         $this->db->trans_begin();
         $this->db->update('leave_applications', ['status' => 'CNL'], array('id' => $id));
@@ -420,19 +377,31 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-    public function approve($id)
+    public function approve()
     {
+        $id = $this->input->post('id');
+        $this->db->trans_begin();
+        $this->db->update('leave_applications', ['status' => 'APV', 'approved_at' => date('Y-m-d H:i:s')], array('id' => $id));
 
-        echo '<pre>';
-        print_r($id);
-        echo '<pre>';
-        exit;
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $ArrCollback        = array(
+                'status'        => 0,
+                'msg'           => 'Approval Leave Application failed. Please try again later.'
+            );
+        } else {
+            $this->db->trans_commit();
+            $ArrCollback        = array(
+                'status'        => 1,
+                'msg'           => 'Approval Application leave Success.'
+            );
+            history('Approval Leave Applications');
+        }
+        echo json_encode($ArrCollback);
     }
 
     public function view($id)
     {
-
-
         // $employee           = $this->session->userdata('Employee');
         $employee          = $this->leavesModel->getFind(['id' => $id]);
         $Arr_Akses          = getAcccesmenu($this->controller);
@@ -440,7 +409,7 @@ class Leavesapps extends CI_Controller
         $leaveCategory      = $this->db->get('at_leaves')->result();
 
         $data = array(
-            'title'         => 'Add Leave Applications',
+            'title'         => 'View Leave Applications',
             'action'        => 'add',
             'religi'        => '0',
             'employee'      => $employee[0],
