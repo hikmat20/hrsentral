@@ -45,7 +45,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <label for="have_leave" class="col-sm-3 control-label">Cuti Tahunan <span class="text-red">*</span></label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <input type="text" name="unused_leave" class="form-control" required id="have_leave" readonly value="<?= $leaveApp->unused_leave; ?>" placeholder="0">
+                                <input type="text" name="unused_leave" class="form-control" required id="have_leave" readonly value="<?= $totalLeave; ?>" placeholder="0">
                                 <span class="input-group-addon">Diambil</span>
                                 <input type="number" min="0" name="get_year_leave" class="form-control text-right" required id="get_year_leave" placeholder="0" value="<?= $leaveApp->get_year_leave; ?>">
                                 <span class="input-group-addon">hari</span>
@@ -619,16 +619,23 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let specialLeave = $('#special_leave').val() || 0;
         let otherLeave = $('#notpay_leave').val() || 0;
 
-        if (getYearLeave > yearLeave) {
+        if (yearLeave === '0' && getYearLeave > yearLeave) {
             swal({
                 title: 'Terjadi kesalah',
-                text: 'Jumlah pengambilan cuti melebihin sisa cuti!',
+                text: 'Hak Cuti Tahunan tidak tersedia!',
                 type: 'warning'
             })
-            // alert('Jumlah pengambilan cuti melebihin sisa cuti!');
-            $('#get_year_leave').val('')
+            $('#get_year_leave').val('0')
             $('#remaining_leave').val('0');
             $('.remaining_leave').text('0');
+            $('#applied_leave').val('0');
+        } else if (getYearLeave > yearLeave) {
+            // alert('Jumlah pengambilan cuti melebihin sisa cuti!');
+            $('#get_year_leave').val('0')
+            $('#remaining_leave').val('0');
+            $('.remaining_leave').text('0');
+            $('#applied_leave').val('0');
+            return false
         } else {
             remLeave = (parseInt(yearLeave)) - parseInt(getYearLeave);
             $('#remaining_leave').val(remLeave);
@@ -637,6 +644,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 
         totalLeave = parseInt(getYearLeave) + parseInt(specialLeave) + parseInt(otherLeave);
         $('#applied_leave').val(totalLeave);
+        console.log(totalLeave);
         return false
     }
 
@@ -648,7 +656,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             // dataUpload = new FormData($('#dataUpload')[0]);
         }
         reader.readAsDataURL(event.target.files[0]);
-
     })
 
     $(document).on('change', '#doc_special_leave', function(event) {
@@ -659,6 +666,5 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             // dataUpload = new FormData($('#dataUpload')[0]);
         }
         reader.readAsDataURL(event.target.files[0]);
-
     })
 </script>

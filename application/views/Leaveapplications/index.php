@@ -57,7 +57,7 @@ $ses_userId = $this->session->User['employee_id'];
                                 <td>
                                     <?php if ($ses_userId == $data->approval_employee_id) : ?>
                                         <?php if ($access['approve'] == '1') : ?>
-                                            <a href="javascript:void(0)" data-id="<?= $data->id; ?>" class=' btn btn-sm btn-success' title='Approve Application' data-role='qtip'><i class='fa fa-check'></i></a>
+                                            <a href="javascript:void(0)" data-id="<?= $data->id; ?>" id="approve" class='btn btn-sm btn-success' title='Approve Application' data-role='qtip'><i class='fa fa-check'></i></a>
                                         <?php endif ?>
                                     <?php else : ?>
                                         <?php if ($data->status == 'OPN') : ?>
@@ -135,6 +135,75 @@ $ses_userId = $this->session->User['employee_id'];
                     if (isConfirm) {
                         // loading_spinner();
                         var baseurl = '<?= base_url(); ?>' + 'leavesapps/cancel';
+                        $.ajax({
+                            url: baseurl,
+                            type: "POST",
+                            data: {
+                                id
+                            },
+                            dataType: 'json',
+                            success: function(result) {
+                                if (result.status == 1) {
+                                    swal({
+                                        title: "Cancel Success!",
+                                        text: result.msg,
+                                        type: "success",
+                                        timer: 1500,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false
+                                    });
+                                    setTimeout(function() {
+                                        // swal.close()
+                                        location.reload();
+
+                                    }, 1500);
+                                    // window.location.href = '<?= base_url(); ?>' + 'leavesapps/';
+                                } else {
+                                    swal({
+                                        title: "Error Message !",
+                                        text: 'An Error Occured During Process. Please try again..',
+                                        type: "danger",
+                                        timer: 7000,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            },
+                            error: function() {
+                                swal({
+                                    title: "Error Message !",
+                                    text: 'An Error Occured During Process. Please try again..',
+                                    type: "warning",
+                                    timer: 7000,
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false
+                                });
+                            }
+                        });
+                    }
+                });
+        })
+
+        $(document).on('click', '#approve', function() {
+            let id = $(this).data('id');
+            swal({
+                    title: "Are you sure?",
+                    text: "You will not be able to process again this data!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Yes, Process it!",
+                    cancelButtonText: "No, cancel process!",
+                    closeOnConfirm: true,
+                    // closeOnCancel: true
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        // loading_spinner();
+                        var baseurl = '<?= base_url(); ?>' + 'leavesapps/approve';
                         $.ajax({
                             url: baseurl,
                             type: "POST",
