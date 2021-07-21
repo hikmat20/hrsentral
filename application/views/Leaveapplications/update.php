@@ -619,23 +619,26 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let specialLeave = $('#special_leave').val() || 0;
         let otherLeave = $('#notpay_leave').val() || 0;
 
-        if (yearLeave === '0' && getYearLeave > yearLeave) {
+        if (yearLeave == 0) {
+            getYearLeave = 0;
+            $('#get_year_leave').val('0');
+            $('#remaining_leave').val(yearLeave);
+            $('.remaining_leave').text(yearLeave);
             swal({
                 title: 'Terjadi kesalah',
                 text: 'Hak Cuti Tahunan tidak tersedia!',
                 type: 'warning'
             })
-            $('#get_year_leave').val('0')
-            $('#remaining_leave').val('0');
-            $('.remaining_leave').text('0');
-            $('#applied_leave').val('0');
-        } else if (getYearLeave > yearLeave) {
-            // alert('Jumlah pengambilan cuti melebihin sisa cuti!');
-            $('#get_year_leave').val('0')
-            $('#remaining_leave').val('0');
-            $('.remaining_leave').text('0');
-            $('#applied_leave').val('0');
-            return false
+        } else if (parseInt(getYearLeave) > parseInt(yearLeave)) {
+            getYearLeave = 0;
+            $('#get_year_leave').val('0');
+            $('#remaining_leave').val(yearLeave);
+            $('.remaining_leave').text(yearLeave);
+            swal({
+                title: 'Terjadi kesalah',
+                text: 'Jumlah pengambilan cuti melebihi sisa cuti!',
+                type: 'warning'
+            })
         } else {
             remLeave = (parseInt(yearLeave)) - parseInt(getYearLeave);
             $('#remaining_leave').val(remLeave);
