@@ -76,4 +76,21 @@ class LeavesModel extends CI_Model
         $this->db->or_where($orWhere);
         return $this->db->get()->result();
     }
+
+    public function getFreqLeave($emp_id = '', $leaveCat = '', $status = '')
+    {
+        $this->db->select(
+            'periode_year, MONTH(from_date) AS bulan,count(*) AS total_pengajuan, sum(special_leave) AS total_hari'
+        );
+        $this->db->from($this->_table);
+        $this->db->where([
+            'employee_id' => $emp_id,
+            'special_leave_category' => $leaveCat,
+            'status' => $status
+        ]);
+        $this->db->group_by('periode_year, MONTH(from_date), MONTH(until_date)');
+        $this->db->order_by('periode_year');
+        $result = $this->db->get()->result();
+        return $result;
+    }
 }

@@ -1,5 +1,8 @@
 <?php
-$this->load->view('include/side_menu'); ?>
+$this->load->view('include/side_menu');
+$namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+?>
 
 <div class="box box-solid rounded-1">
     <div class="box-header">
@@ -215,6 +218,48 @@ $this->load->view('include/side_menu'); ?>
                 <button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> Save</button>
                 <a href="javascript:void(0)" onclick="window.history.go(-1)" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
             </div>
+        </div>
+    </div>
+</div>
+<div class="box box-solid rounded-1 box-shadow">
+    <div class="box-body">
+        <div class="box-header">
+            <h2 class="box-title font-nunito">Frekuensi Cuti Sakit</h2>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered table-responsive table-condensed">
+                <thead class="text-center bg-info">
+                    <tr>
+                        <th class="text-center">No.</th>
+                        <th class="text-center">Tahun</th>
+                        <th class="text-center">Bulan</th>
+                        <th class="text-center">Total Pengajuan</th>
+                        <th class="text-center">Total Hari</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $n = $total_p = $total_h = 0;
+                    foreach ($freq as $fq) : $n++;
+                        $total_p += $fq->total_pengajuan;
+                        $total_h += $fq->total_hari;
+                    ?>
+                        <tr>
+                            <td class="text-center"><?= $n; ?></td>
+                            <td class="text-center"><?= $fq->periode_year; ?></td>
+                            <td class="text-center"><?= $namaBulan[$fq->bulan]; ?></td>
+                            <td class="text-center"><?= $fq->total_pengajuan; ?></td>
+                            <td class="text-center"><?= $fq->total_hari; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-center" colspan="3">Total</th>
+                        <th class="text-center"><?= $total_p; ?></th>
+                        <th class="text-center"><?= $total_h; ?></th>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </div>
 </div>

@@ -205,6 +205,7 @@ class Leavesapps extends CI_Controller
             $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
             redirect(site_url($this->controller));
         }
+        $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
         $Arr_Akses          = getAcccesmenu($this->controller);
         $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
@@ -221,6 +222,7 @@ class Leavesapps extends CI_Controller
             'leaveCategory' => $leaveCategory,
             'division'      => $division[0],
             'access'        => $Arr_Akses,
+            'freq'          => $freq,
         );
         $this->load->view('Leaveapplications/add', $data);
     }
@@ -234,11 +236,7 @@ class Leavesapps extends CI_Controller
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
-
-        // echo '<pre>';
-        // print_r($division[0]);
-        // echo '<pre>';
-        // exit;
+        $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
@@ -247,9 +245,10 @@ class Leavesapps extends CI_Controller
             'employee'      => $employee,
             'employees'     => $employees,
             'leaveCategory' => $leaveCategory,
-            'divisionHead' => $divisionHead,
+            'divisionHead'  => $divisionHead,
             'division'      => $division[0],
             'access'        => $Arr_Akses,
+            'freq'          => $freq,
         );
 
         $this->load->view('Leaveapplications/update', $data);
