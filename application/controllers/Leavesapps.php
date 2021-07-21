@@ -209,16 +209,18 @@ class Leavesapps extends CI_Controller
         $Arr_Akses          = getAcccesmenu($this->controller);
         $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
         $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
         $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
         $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
+        $msl                = ($massLeave->count) ? $massLeave->count : 0;
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
             'religi'        => '0',
-            'totalLeave'    => ($ly) - ($gly),
+            'totalLeave'    => ($ly) - ($gly) - ($msl),
             'employee'      => $employee,
             'divisionHead'  => $divisionHead,
             'leaveCategory' => $leaveCategory,
@@ -237,19 +239,20 @@ class Leavesapps extends CI_Controller
         $Arr_Akses          = getAcccesmenu($this->controller);
         $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
         $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
         $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
         $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
         $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
-
+        $msl                = ($massLeave->count) ? $massLeave->count : 0;
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
             'religi'        => '0',
             'leaveApp'      => $leaveApp[0],
-            'totalLeave'    => ($ly) - ($gly),
+            'totalLeave'    => ($ly) - ($gly) - ($msl),
             'employee'      => $employee,
             'employees'     => $employees,
             'leaveCategory' => $leaveCategory,

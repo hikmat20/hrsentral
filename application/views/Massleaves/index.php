@@ -25,6 +25,7 @@ $this->load->view('include/side_menu');
 					<th class="text-center">Date</th>
 					<th class="text-center">Name</th>
 					<th class="text-center">Description</th>
+					<th class="text-center">Status</th>
 					<th class="text-center">Option</th>
 				</tr>
 			</thead>
@@ -34,14 +35,22 @@ $this->load->view('include/side_menu');
 					$int	= 0;
 					foreach ($row as $datas) {
 						$int++;
-
+						if ($datas->status == 'Y') {
+							$status = '<span class="label bg-green">Terpakai</span>';
+						} else {
+							$status = '<span class="label bg-orange">Belum Terpakai</span>';
+						}
 
 						echo "<tr>";
 						echo "<td align='left'>" . $datas->id . "</td>";
 						echo "<td align='left'>" . $datas->date . "</td>";
 						echo "<td align='left'>" . $datas->name . "</td>";
 						echo "<td align='left'>" . $datas->descr . "</td>";
+						echo "<td align='center'>" . $status . "</td>";
 						echo "<td align='center'>";
+						if ($datas->status == 'N') {
+							echo "<a href='" . site_url('massleaves/approve/' . $datas->id) . "' class='btn btn-sm btn-success' title='Terpakai' data-role='qtip'><i class='fa fa-check'></i></a>&nbsp;";
+						}
 						if ($akses_menu['update'] == '1') {
 							echo "<a href='" . site_url('massleaves/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
 						}

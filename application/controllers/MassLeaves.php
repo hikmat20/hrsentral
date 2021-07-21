@@ -44,6 +44,7 @@ class MassLeaves extends CI_Controller
             $data_session            = $this->session->userdata;
             $data['created_by']        = $data_session['User']['username'];
             $data['created']        = date('Y-m-d H:i:s');
+
             if ($this->master_model->simpan('at_mass_leaves', $data)) {
                 $Arr_Kembali        = array(
                     'status'        => 1,
@@ -77,12 +78,14 @@ class MassLeaves extends CI_Controller
     public function edit($id = '')
     {
         if ($this->input->post()) {
+            $data['status']          = 'N';
             $data                    = $this->input->post();
-            $Arr_Kembali            = array();
+            $Arr_Kembali             = array();
             unset($data['id']);
             $data_session            = $this->session->userdata;
             $data['modified_by']    = $data_session['User']['username'];
             $data['modified']        = date('Y-m-d H:i:s');
+
             if ($this->master_model->getUpdate('at_mass_leaves', $data, 'id', $this->input->post('id'))) {
                 $Arr_Kembali        = array(
                     'status'        => 1,
@@ -105,8 +108,8 @@ class MassLeaves extends CI_Controller
             }
             $arr_Where            = '';
             $get_Data            = $this->master_model->getCompanies($arr_Where);
-
             $detail                = $this->master_model->getData('at_mass_leaves', 'id', $id);
+
             $data = array(
                 'title'            => 'Edit Mass Leaves',
                 'action'        => 'edit',

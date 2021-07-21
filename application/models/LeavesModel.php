@@ -93,4 +93,13 @@ class LeavesModel extends CI_Model
         $result = $this->db->get()->result();
         return $result;
     }
+
+    public function getMassLeave($table, $hiredate)
+    {
+        $this->db->select('COUNT(*) as count');
+        $this->db->from($table);
+        $this->db->where(['status' => 'Y', 'date >=' => $hiredate, 'date <=' => date('Y-m-d')]);
+        $result = $this->db->get()->row();
+        return $result;
+    }
 }

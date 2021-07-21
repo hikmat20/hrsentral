@@ -10,7 +10,7 @@ $this->load->view('include/side_menu');
 		<!-- /.box-header -->
 		<div class="box-body">
 			<div class='form-group row'>
-				<label class='label-control col-sm-2' readonly><b>Mass Leave ID <span class='text-red'>*</span></b> </label>
+				<label class='label-control col-sm-2' readonly><b>ID <span class='text-red'>*</span></b> </label>
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
@@ -21,8 +21,24 @@ $this->load->view('include/side_menu');
 
 				</div>
 			</div>
+			<!-- <div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Year <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+						<select name="year" id="year" class="form-control">
+							<option value=""></option>
+							<?php
+							$years = array_combine(range(date("Y"), 2020), range(date("Y"), 2020));
+							foreach ($years as $yr) : ?>
+								<option value="<?= $yr; ?>" <?= ($yr == $row[0]->year) ? 'selected' : ''; ?>><?= $yr; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+			</div> -->
 			<div class='form-group row'>
-				<label class='label-control col-sm-2'><b>Mass Leave Date <span class='text-red'>*</span></b></label>
+				<label class='label-control col-sm-2'><b>Date <span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
@@ -34,7 +50,7 @@ $this->load->view('include/side_menu');
 				</div>
 			</div>
 			<div class='form-group row'>
-				<label class='label-control col-sm-2'><b>Mass Leave Name<span class='text-red'>*</span></b></label>
+				<label class='label-control col-sm-2'><b> Leave Name<span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
@@ -54,6 +70,22 @@ $this->load->view('include/side_menu');
 						<?php
 						echo form_input(array('id' => 'descr', 'name' => 'descr', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Description'), $row[0]->descr);
 						?>
+					</div>
+
+				</div>
+			</div>
+
+			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Status<span class='text-red'></span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<div class="checkbox">
+							<label>
+								<input name="status" type="checkbox" <?= ($row[0]->status == 'Y') ? 'checked' : ''; ?> value="<?= $row[0]->status; ?>">
+								Terpakai
+							</label>
+						</div>
+
 					</div>
 
 				</div>
