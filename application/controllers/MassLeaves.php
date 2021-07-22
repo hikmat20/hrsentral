@@ -33,7 +33,7 @@ class Massleaves extends CI_Controller
             'akses_menu'    => $Arr_Akses
         );
         history('View Data Mass Leaves');
-        $this->load->view('massleaves/index', $data);
+        $this->load->view('Massleaves/index', $data);
     }
     public function add()
     {
