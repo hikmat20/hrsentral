@@ -72,7 +72,7 @@ class Massleaves extends CI_Controller
                 'action'        => 'add',
                 'data_companies' => $get_Data
             );
-            $this->load->view('massleaves/add', $data);
+            $this->load->view('Massleaves/add', $data);
         }
     }
     public function edit($id = '')
@@ -117,7 +117,7 @@ class Massleaves extends CI_Controller
                 'row'            => $detail
             );
 
-            $this->load->view('massleaves/edit', $data);
+            $this->load->view('Massleaves/edit', $data);
         }
     }
 

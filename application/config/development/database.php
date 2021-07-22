@@ -75,13 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '103.228.117.98',
 	'username' => 'root',
-	'password' => 'adminroot',
-	'database' => 'hrsentral_db',
+	'password' => 'Annabell2018',
+	'database' => 'hr_sentral',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
-	'port'	   => '3307',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
