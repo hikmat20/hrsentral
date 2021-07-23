@@ -49,7 +49,7 @@ $this->load->view('include/side_menu');
 						echo "<td align='center'>" . $status . "</td>";
 						echo "<td align='center'>";
 						if ($datas->status == 'N') {
-							echo "<a href='" . site_url('massleaves/approve/' . $datas->id) . "' class='btn btn-sm btn-success' title='Terpakai' data-role='qtip'><i class='fa fa-check'></i></a>&nbsp;";
+							echo "<a href='#'  onClick='return approveData(\"{$datas->id}\")' class='btn btn-sm btn-success' title='Terpakai' data-role='qtip'><i class='fa fa-check'></i></a>&nbsp;";
 						}
 						if ($akses_menu['update'] == '1') {
 							echo "<a href='" . site_url('massleaves/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
@@ -99,6 +99,31 @@ $this->load->view('include/side_menu');
 				if (isConfirm) {
 					loading_spinner();
 					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
+
+				} else {
+					swal("Cancelled", "Data can be process again :)", "error");
+					return false;
+				}
+			});
+
+	}
+
+	function approveData(id) {
+		swal({
+				title: "Are you sure?",
+				text: "You will not be able to process again this data!",
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonClass: "btn-danger",
+				confirmButtonText: "Yes, Process it!",
+				cancelButtonText: "No, cancel process!",
+				closeOnConfirm: true,
+				closeOnCancel: false
+			},
+			function(isConfirm) {
+				if (isConfirm) {
+					loading_spinner();
+					window.location.href = base_url + active_controller + '/approve/' + id;
 
 				} else {
 					swal("Cancelled", "Data can be process again :)", "error");

@@ -78,8 +78,8 @@ class Massleaves extends CI_Controller
     public function edit($id = '')
     {
         if ($this->input->post()) {
-            $data['status']          = 'N';
             $data                    = $this->input->post();
+            $data['status']          =  ($this->input->post('status')) ? $this->input->post('status') : 'N';
             $Arr_Kembali             = array();
             unset($data['id']);
             $data_session            = $this->session->userdata;
@@ -135,6 +135,24 @@ class Massleaves extends CI_Controller
         if ($this->db->affected_rows() > 0) {
             $this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
             history('Delete Data Mass Leaves id' . $id);
+            redirect(site_url('massleaves'));
+        }
+    }
+
+    function approve($id = '')
+    {
+        $controller            = ucfirst(strtolower($this->uri->segment(1)));
+        $Arr_Akses            = getAcccesmenu($controller);
+        if ($Arr_Akses['approve'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('massleaves'));
+        }
+        // $id = $this->input->post('id');
+        $this->db->where('id', $id);
+        $this->db->update("at_mass_leaves", ['status' => 'Y']);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully Approved..!!</div>");
+            history('Approve Data Mass Leaves id' . $id);
             redirect(site_url('massleaves'));
         }
     }
