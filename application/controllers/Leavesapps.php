@@ -387,27 +387,71 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-    public function approve()
+    public function process()
     {
         $id = $this->input->post('id');
+        $act = $this->input->post('act');
+        $note = $this->input->post('note');
+        $data = [];
+        if ($act == 'approve') {
+            $msg_stat = 'Approval';
+            $status = 'APV';
+            $data['approved_at'] = date('Y-m-d H:i:s');
+        } elseif ($act == 'reject') {
+            $msg_stat = 'Reject';
+            $status = 'REJ';
+        } elseif ($act == 'revisi') {
+            $msg_stat = 'Revision';
+            $status = 'REV';
+        } else {
+            $msg_stat = 'Process';
+            $status = 'OPN';
+        }
+
+        $data += [
+            'status' => $status,
+            'note' => $note
+        ];
         $this->db->trans_begin();
-        $this->db->update('leave_applications', ['status' => 'APV', 'approved_at' => date('Y-m-d H:i:s')], array('id' => $id));
+        $this->db->update('leave_applications', $data, array('id' => $id));
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
             $ArrCollback        = array(
                 'status'        => 0,
-                'msg'           => 'Approval Leave Application failed. Please try again later.'
+                'msg'           => $msg_stat . ' Leave Application failed. Please try again later.'
             );
         } else {
             $this->db->trans_commit();
             $ArrCollback        = array(
                 'status'        => 1,
-                'msg'           => 'Approval Application leave Success.'
+                'msg'           => $msg_stat . ' Application leave Success.'
             );
-            history('Approval Leave Applications');
+            history($msg_stat . ' Leave Applications');
         }
         echo json_encode($ArrCollback);
+    }
+
+
+    public function view_approval($id)
+    {
+        // $employee           = $this->session->userdata('Employee');
+        $employee          = $this->leavesModel->getFind(['id' => $id]);
+        $Arr_Akses          = getAcccesmenu($this->controller);
+        // $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
+        $leaveCategory      = $this->db->get('at_leaves')->result();
+
+        $data = array(
+            'title'         => 'View Leave Applications',
+            'action'        => 'add',
+            'religi'        => '0',
+            'employee'      => $employee[0],
+            // 'employees'     => $employees,
+            'leaveCategory' => $leaveCategory,
+            // 'division'      => $division[0],
+            'access'        => $Arr_Akses,
+        );
+        $this->load->view('Leaveapplications/approve', $data);
     }
 
     public function view($id)

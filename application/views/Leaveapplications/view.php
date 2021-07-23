@@ -15,6 +15,11 @@ $this->load->view('include/side_menu'); ?>
                     <table class="table table-bordered table-condenseds table-resposive">
                         <tbody>
                             <tr>
+                                <td width="">Tanggal Pengajuan</td>
+                                <td class="text-center">:</td>
+                                <td colspan="3"><?= date('D, d M Y', strtotime($employee->created_at)); ?></td>
+                            </tr>
+                            <tr>
                                 <td width="">Nama</td>
                                 <td class="text-center">:</td>
                                 <td colspan="3"><?= $employee->name; ?></td>
@@ -27,35 +32,41 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td>Periode Tahun</td>
                                 <td class="text-center">:</td>
+                                <td colspan=""><?= $employee->periode_year; ?></td>
                                 <td colspan="3"><?= $employee->periode_year; ?></td>
                             </tr>
                             <tr>
-                                <td>Jumlah Hak Cuti</td>
+                                <td>Hak Cuti Tahunan</td>
                                 <td class="text-center">:</td>
-                                <td colspan="3"><?= $employee->unused_leave; ?> hari</td>
+                                <td colspan=""><?= $employee->unused_leave; ?> hari</td>
+                                <td colspan="">Diambil : <?= $employee->get_year_leave; ?></td>
+                                <td colspan="">Sisa : <?= $employee->remaining_leave; ?></td>
+
                             </tr>
                             <tr>
-                                <td>Cuti Diajukan</td>
+                                <td>Cuti Khusus</td>
+                                <td class="text-center">:</td>
+                                <td colspan=""><?= $employee->special_leave; ?> hari</td>
+                                <td colspan="2"><?= $employee->category_name; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Cuti Urgent</td>
+                                <td class="text-center">:</td>
+                                <td colspan=""><?= $employee->notpay_leave; ?> hari</td>
+                                <td colspan="2">Keperluan : <?= ($employee->notpay_leave_desc) ? $employee->notpay_leave_desc : '-'; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Total Cuti</td>
                                 <td class="text-center">:</td>
                                 <td colspan="3"><?= $employee->applied_leave; ?> hari</td>
                             </tr>
                             <tr>
-                                <td>Sisa Cuti</td>
-                                <td class="text-center">:</td>
-                                <td colspan="3"><?= $employee->remaining_leave; ?> hari</td>
-                            </tr>
                             <tr>
                                 <td>Tanggal Cuti</td>
                                 <td class="text-center">:</td>
                                 <td><?= $employee->from_date; ?></td>
                                 <td class="text-center">s/d</td>
                                 <td><?= $employee->until_date; ?></td>
-                            </tr>
-
-                            <tr>
-                                <td>Keterangan</td>
-                                <td height="20px" class="text-center">:</td>
-                                <td colspan="3"><?= $employee->descriptions; ?> hari</td>
                             </tr>
                             <tr>
                                 <td>Status</td>
@@ -72,6 +83,11 @@ $this->load->view('include/side_menu'); ?>
                                     <?php endif; ?>
                                 </td>
                             </tr>
+                            <tr>
+                                <td>Keterangan</td>
+                                <td height="100px" class="text-center">:</td>
+                                <td colspan="3"><?= $employee->descriptions; ?></td>
+                            </tr>
                         </tbody>
 
                     </table>
@@ -80,12 +96,10 @@ $this->load->view('include/side_menu'); ?>
                     <table class="table table-bordered table-responsive">
                         <tbody>
                             <tr>
-                                <td width="50%" class="text-center">Jakarta, <?= date('d m- Y'); ?></td>
-                                <td class="text-center">Disetujui, <?= $employee->approved_at; ?></td>
+                                <td width="50%" class="text-center">Jakarta, <?= date('d M Y'); ?></td>
+                                <td class="text-center">Disetujui, <?= date('d M Y', strtotime($employee->approved_at)); ?></td>
                             </tr>
                             <tr>
-                                <td class="text-center"><br><br><br><br><br><br><br></td>
-                                <td class="text-center"></td>
                             </tr>
                             <tr>
                                 <td class="text-center text-bold"> ( <?= $employee->name; ?> )</td>
