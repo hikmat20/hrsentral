@@ -70,6 +70,9 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php if ($access['delete'] == '1') : ?>
                                                 <a href="javascript:void(0)" class=' btn btn-sm btn-danger' id="cancel" data-id="<?= $data->id; ?>" title='Cancel Application' data-role='qtip'><i class='fa fa-stop'></i></a>
                                             <?php endif ?>
+                                            <?php if ($access['create'] == '1') : ?>
+                                                <a href="javascript:void(0)" class=' btn btn-sm btn-info' id="sendEmail" data-id="<?= $data->id; ?>" title='Send Email' data-role='qtip'><i class='fa fa-send'></i></a>
+                                            <?php endif ?>
                                         <?php else : ?>
                                             <?php if ($access['read'] == '1') : ?>
                                                 <a href="<?= base_url(); ?>leavesapps/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>
@@ -177,6 +180,75 @@ $ses_userId = $this->session->User['employee_id'];
                                     text: 'An Error Occured During Process. Please try again..',
                                     type: "warning",
                                     timer: 7000,
+                                    showCancelButton: false,
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false
+                                });
+                            }
+                        });
+                    }
+                });
+        })
+
+        $(document).on('click', '#sendEmail', function() {
+            let id = $(this).data('id');
+
+            swal({
+                    title: "Kirim ke Email?",
+                    text: "Pastikan data pengajuan cuti sudah benar. Periksa kembali sebelum form ini dikirim ke email tujuan.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Ya, Kirim!",
+                    cancelButtonText: "Batal!",
+                    closeOnConfirm: true,
+                    // closeOnCancel: true
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        // loading_spinner();
+                        var baseurl = '<?= base_url(); ?>' + 'leavesapps/senEmail';
+                        $.ajax({
+                            url: baseurl,
+                            type: "POST",
+                            data: {
+                                id
+                            },
+                            dataType: 'json',
+                            success: function(result) {
+                                if (result.status == 1) {
+                                    swal({
+                                        title: "Email Terkirim!",
+                                        text: result.msg,
+                                        type: "success",
+                                        timer: 1500,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false
+                                    });
+                                    setTimeout(function() {
+                                        // swal.close()
+                                        location.reload();
+                                    }, 1500);
+                                    // window.location.href = '<?= base_url(); ?>' + 'leavesapps/';
+                                } else {
+                                    swal({
+                                        title: "Gagal Terkirim",
+                                        text: 'Terkendala jaringan atau data tidak valid',
+                                        type: "danger",
+                                        timer: 3000,
+                                        showCancelButton: false,
+                                        showConfirmButton: false,
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            },
+                            error: function() {
+                                swal({
+                                    title: "Email Tidak terkirim",
+                                    text: 'Mohon periksa jaringan Anda atau data yang Anda masukan tidak valid',
+                                    type: "warning",
+                                    timer: 3000,
                                     showCancelButton: false,
                                     showConfirmButton: false,
                                     allowOutsideClick: false

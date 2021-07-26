@@ -432,7 +432,6 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-
     public function view_approval($id)
     {
         // $employee           = $this->session->userdata('Employee');
@@ -473,5 +472,54 @@ class Leavesapps extends CI_Controller
             'access'        => $Arr_Akses,
         );
         $this->load->view('Leaveapplications/view', $data);
+    }
+
+    public function senEmail()
+    {
+        $mail = $this->db->get('config_email')->row();
+        // $this->load->view('Leaveapplications/email', TRUE);
+
+        if ($mail) {
+            $config = array(
+                'protocol' => $mail->protocol,
+                'smtp_host' => $mail->smtp_host,
+                'smtp_port' => $mail->smtp_port,
+                'smtp_user' => $mail->email_user,
+                'smtp_pass' => $mail->password,
+                'mailtype'  => $mail->mail_type,
+                'charset'   => 'iso-8859-1'
+            );
+
+            $this->load->library('email', $config);
+            $this->email->set_newline("\r\n");
+
+            $this->email->set_mailtype('html');
+            $this->email->from('hikmat.aoliar@gmail.com', 'TEST-EMAIL');
+            $this->email->to('hikmataulia20@gmail.com');
+            $this->email->subject('Subject Email Test');
+            $this->email->message('
+            <html>
+            <body>
+                <h1>Email Konfirmasi</h1>
+                <h1>Form pengajuan Cuti Karyawan Sentral Sistem</h1>
+            </body>
+            </html>
+            ');
+
+            if ($this->email->send()) {
+                $collback = [
+                    'status' => 1,
+                    'msg' => 'Data berhasil terkitim'
+                ];
+            } else {
+                // show_error($this->email->print_debugger());
+                $collback = [
+                    'status' => 0,
+                    'msg' => $this->email->print_debugger()
+                ];
+            }
+
+            echo json_encode($collback);
+        }
     }
 }
