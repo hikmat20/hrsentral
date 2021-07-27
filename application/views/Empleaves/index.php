@@ -67,9 +67,7 @@ $this->load->view('include/side_menu');
 			</tfoot>
 		</table>
 	</div>
-	<!-- /.box-body -->
 </div>
-<!-- /.box -->
 
 <?php $this->load->view('include/footer'); ?>
 <script>

@@ -98,9 +98,7 @@ $this->load->view('include/side_menu');
 			echo form_button(array('type' => 'button', 'class' => 'btn btn-md btn-danger', 'value' => 'back', 'content' => 'Back', 'onClick' => 'javascript:back()'));
 			?>
 		</div>
-		<!-- /.box-body -->
 	</div>
-	<!-- /.box -->
 </form>
 
 <?php $this->load->view('include/footer'); ?>

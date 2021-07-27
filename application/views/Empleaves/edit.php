@@ -71,9 +71,7 @@ $this->load->view('include/side_menu');
 				</div>
 			</div>
 		</div>
-		<!-- /.box-body -->
 	</div>
-	<!-- /.box -->
 </form>
 
 <?php $this->load->view('include/footer'); ?>

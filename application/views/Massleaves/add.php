@@ -18,9 +18,7 @@ $this->load->view('include/side_menu');
 						echo form_input(array('readonly' => 'readonly', 'id' => 'id', 'name' => 'id', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Automatic'));
 						?>
 					</div>
-
 				</div>
-
 			</div>
 			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b>Mass Leave Date <span class='text-red'>*</span></b></label>

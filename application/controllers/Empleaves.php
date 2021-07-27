@@ -128,12 +128,6 @@ class Empleaves extends CI_Controller
 		}
 	}
 
-
-
-
-
-
-
 	function delete($id)
 	{
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));

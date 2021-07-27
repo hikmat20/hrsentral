@@ -7,9 +7,7 @@ $this->load->view('include/side_menu');
 		<div class="box-header">
 			<h3 class="box-title"><?= $title; ?></h3>
 		</div>
-		<!-- /.box-header -->
 		<div class="box-body">
-
 			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b>Employee<span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
@@ -22,7 +20,6 @@ $this->load->view('include/side_menu');
 							<?php endforeach; ?>
 						</select>
 					</div>
-
 				</div>
 			</div>
 			<div class='form-group row'>
