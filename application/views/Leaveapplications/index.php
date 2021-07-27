@@ -233,8 +233,7 @@ $ses_userId = $this->session->User['employee_id'];
                                     swal({
                                         title: "Gagal Terkirim",
                                         text: 'Terkendala jaringan atau data tidak valid',
-                                        type: "danger",
-                                        timer: 3000,
+                                        type: "error",
                                         showCancelButton: false,
                                         showConfirmButton: true,
                                         allowOutsideClick: false
