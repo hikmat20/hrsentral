@@ -537,9 +537,9 @@ class Leavesapps extends CI_Controller
                 'smtp_user' => $mail->email_user,
                 'smtp_pass' => $mail->password,
                 'mailtype'  => $mail->mail_type,
-                'SMTPCrypto'  => 'tls',
+                'SMTPCrypto'  => 'ssl',
                 'charset'   => 'iso-8859-1',
-                'SMTPTimeout'  => 15
+                'SMTPTimeout'  => 30
             );
 
             $this->load->library('email', $config);
