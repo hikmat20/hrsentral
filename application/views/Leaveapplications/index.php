@@ -201,13 +201,13 @@ $ses_userId = $this->session->User['employee_id'];
                     confirmButtonClass: "btn-danger",
                     confirmButtonText: "Ya, Kirim!",
                     cancelButtonText: "Batal!",
-                    closeOnConfirm: true,
+                    closeOnConfirm: false,
                     // closeOnCancel: true
                 },
                 function(isConfirm) {
                     if (isConfirm) {
-                        // loading_spinner();
-                        var baseurl = '<?= base_url(); ?>' + 'leavesapps/senEmail';
+                        loading_spinner();
+                        var baseurl = '<?= base_url(); ?>' + 'leavesapps/sendEmail';
                         $.ajax({
                             url: baseurl,
                             type: "POST",
@@ -227,10 +227,8 @@ $ses_userId = $this->session->User['employee_id'];
                                         allowOutsideClick: false
                                     });
                                     setTimeout(function() {
-                                        // swal.close()
                                         location.reload();
                                     }, 1500);
-                                    // window.location.href = '<?= base_url(); ?>' + 'leavesapps/';
                                 } else {
                                     swal({
                                         title: "Gagal Terkirim",
