@@ -123,15 +123,6 @@ $this->load->view('include/side_menu'); ?>
         </div>
     </div>
 
-    <?php
-
-    // echo '<pre>';
-    // print_r($employee);
-    // echo '<pre>';
-    // exit;
-
-    ?>
-
 </div>
 <style>
     @page {

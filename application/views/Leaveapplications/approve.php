@@ -179,12 +179,12 @@ $this->load->view('include/side_menu'); ?>
                 confirmButtonClass: "btn-danger",
                 confirmButtonText: "Yes, Process it!",
                 cancelButtonText: "No, cancel process!",
-                closeOnConfirm: true,
+                closeOnConfirm: false,
             },
             function(isConfirm) {
                 if (isConfirm) {
-                    // loading_spinner();
-                    var baseurl = '<?= base_url(); ?>' + 'leavesapps/process';
+                    loading_spinner();
+                    var baseurl = '<?= base_url(); ?>' + 'leavesapps/process_approval';
                     $.ajax({
                         url: baseurl,
                         type: "POST",
@@ -196,31 +196,28 @@ $this->load->view('include/side_menu'); ?>
                         dataType: 'json',
                         success: function(result) {
                             if (result.status == 1) {
+                                (result.email_error) ? console.log(result.email_error): '';
                                 swal({
                                     title: "Success!",
                                     text: result.msg,
                                     type: "success",
-                                    timer: 1500,
                                     showCancelButton: false,
-                                    showConfirmButton: false,
-                                    allowOutsideClick: false
-                                });
-                                setTimeout(function() {
-                                    // swal.close()
+                                    showConfirmButton: true,
+                                    allowOutsideClick: false,
+                                }, function(isConfirm) {
                                     location.href = "<?= base_url('leavesapps/approval'); ?>";
-
-                                }, 1500);
-                                // window.location.href = '<?= base_url(); ?>' + 'leavesapps/';
+                                })
                             } else {
                                 swal({
-                                    title: "Error Message !",
-                                    text: 'An Error Occured During Process. Please try again..',
+                                    title: "Error..!",
+                                    text: result.msg,
                                     type: "danger",
                                     timer: 7000,
-                                    showCancelButton: false,
+                                    showCancelButton: true,
                                     showConfirmButton: false,
                                     allowOutsideClick: false
                                 });
+                                console.log(result.email_error);
                             }
                         },
                         error: function() {
@@ -229,7 +226,7 @@ $this->load->view('include/side_menu'); ?>
                                 text: 'An Error Occured During Process. Please try again..',
                                 type: "warning",
                                 timer: 7000,
-                                showCancelButton: false,
+                                showCancelButton: true,
                                 showConfirmButton: false,
                                 allowOutsideClick: false
                             });

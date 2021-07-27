@@ -387,7 +387,7 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-    public function process()
+    public function process_approval()
     {
         $id = $this->input->post('id');
         $act = $this->input->post('act');
@@ -413,7 +413,11 @@ class Leavesapps extends CI_Controller
             'note' => $note
         ];
 
-        $dHead = $this->session->userdata['Employee']['email'];
+        $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
+        $fromUser  = $this->session->userdata['Employee'];
+        // $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
+        $toUser    = $this->db->get_where('employees', ['id' => $leave->employee_id])->row();
+
         $this->db->trans_begin();
         $this->db->update('leave_applications', $data, array('id' => $id));
 
@@ -425,22 +429,19 @@ class Leavesapps extends CI_Controller
             );
         } else {
             $this->db->trans_commit();
-            // $sendEmail = $this->senEmail($id, $dHead);
-            // echo '<pre>';
-            // print_r(($sendEmail));
-            // echo '<pre>';
-            // exit;
-            $ArrCollback        = array(
-                'status'        => 1,
-                'msg'           => $msg_stat . ' Application leave Success and Send Email Success.'
-            );
-            // if ($sendEmail['status']) {
-            // } else {
-            //     $ArrCollback        = array(
-            //         'status'        => 1,
-            //         'msg'           => $msg_stat . ' Application leave Success but Send Email Failed.'
-            //     );
-            // }
+            $sendEmail = $this->_sendToEmail($leave, $fromUser, $toUser);
+            if ($sendEmail == true) {
+                $ArrCollback        = array(
+                    'status'        => 1,
+                    'msg'           => $msg_stat . ' Application leave Success and Send Email Success.'
+                );
+            } else {
+                $ArrCollback        = array(
+                    'status'        => 1,
+                    'msg'           => $msg_stat . ' Application leave Success but Send Email Failed.',
+                    'email_error'   =>  $this->email->print_debugger()
+                );
+            }
             history($msg_stat . ' Leave Applications');
         }
         echo json_encode($ArrCollback);
@@ -486,10 +487,15 @@ class Leavesapps extends CI_Controller
         $this->load->view('Leaveapplications/view', $data);
     }
 
-    public function sendEmail($id = null)
+    public function sendEmail()
     {
+        $id         = $this->input->post('id');
+        $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
+        $fromUser  = $this->session->userdata['Employee'];
+        $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
+        $toUser    = $this->db->get_where('employees', ['id' => $head->employee_id])->row();
 
-        if ($this->sendToEmail($id)) {
+        if ($this->_sendToEmail($leave, $fromUser, $toUser)) {
             $collback = [
                 'status' => 1,
                 'msg' => 'Data berhasil terkitim'
@@ -503,19 +509,10 @@ class Leavesapps extends CI_Controller
         echo json_encode($collback);
     }
 
-    public function sendToEmail($id = null, $approval = null)
+    protected function _sendToEmail($leave = null, $fromUser = null, $toUser = null)
     {
-        $id = $this->input->post('id');
-        $emp = $this->session->userdata['Employee'];
-        $leave = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
-        $head = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
-        $toEmp = $this->db->get_where('employees', ['id' => $head->employee_id])->row();
 
-        // echo '<pre>';
-        // print_r($emp['name']);
-        // echo '<pre>';
-        // exit;
-        $EmployeName = $emp['name'];
+        $EmployeName = $leave->name;
         $dateCreated = date('D, d M Y', strtotime($leave->created_at));
         $mail = $this->db->get('config_email')->row();
         if ($leave->status == 'OPN') :
@@ -527,7 +524,10 @@ class Leavesapps extends CI_Controller
         elseif ($leave->status == 'REJ') :
             $status = '<label class="label-danger label">Rejected</label>';
         endif;
-
+        // echo '<pre>';
+        // print_r($toUser->email);
+        // echo '<pre>';
+        // exit;
         if ($mail) {
             $config = array(
                 'protocol' => $mail->protocol,
@@ -543,8 +543,8 @@ class Leavesapps extends CI_Controller
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
             $this->email->set_mailtype('html');
-            $this->email->from($emp['email'], 'HARIS Sentral Sistem');
-            $this->email->to($toEmp->email);
+            $this->email->from($mail->email_user, 'HARIS Sentral Sistem');
+            $this->email->to($toUser->email);
             $this->email->subject("PENGAJUAN CUTI -  $EmployeName");
             $this->email->message('
             <html>
@@ -565,17 +565,11 @@ class Leavesapps extends CI_Controller
             ');
 
             if ($this->email->send()) {
-                $collback = [
-                    'status' => 1,
-                    'msg' => 'Data berhasil terkitim'
-                ];
+                $result = true;
             } else {
-                $collback = [
-                    'status' => 0,
-                    'msg' => $this->email->print_debugger()
-                ];
+                $result = false;
             }
-            echo json_encode($collback);
+            return $result;
         }
     }
 }
