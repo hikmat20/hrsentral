@@ -531,14 +531,15 @@ class Leavesapps extends CI_Controller
         // exit;
         if ($mail) {
             $config = array(
-                'protocol' => $mail->protocol,
+                'protocol'  => $mail->protocol,
                 'smtp_host' => $mail->smtp_host,
                 'smtp_port' => $mail->smtp_port,
                 'smtp_user' => $mail->email_user,
                 'smtp_pass' => $mail->password,
                 'mailtype'  => $mail->mail_type,
+                'SMTPCrypto'  => 'tls',
                 'charset'   => 'iso-8859-1',
-                'mailtype'  => 'html'
+                'SMTPTimeout'  => 15
             );
 
             $this->load->library('email', $config);
