@@ -217,26 +217,26 @@ $ses_userId = $this->session->User['employee_id'];
                             dataType: 'json',
                             success: function(result) {
                                 if (result.status == 1) {
+                                    (result.error) ? console.log(result.error): '';
                                     swal({
                                         title: "Email Terkirim!",
                                         text: result.msg,
                                         type: "success",
-                                        timer: 1500,
                                         showCancelButton: false,
-                                        showConfirmButton: false,
+                                        showConfirmButton: true,
                                         allowOutsideClick: false
-                                    });
-                                    setTimeout(function() {
+                                    }, function(isConfirm) {
                                         location.reload();
-                                    }, 1500);
+                                    });
                                 } else {
+                                    (result.error) ? console.log(result.error): '';
                                     swal({
                                         title: "Gagal Terkirim",
                                         text: 'Terkendala jaringan atau data tidak valid',
                                         type: "danger",
                                         timer: 3000,
                                         showCancelButton: false,
-                                        showConfirmButton: false,
+                                        showConfirmButton: true,
                                         allowOutsideClick: false
                                     });
                                 }
@@ -246,7 +246,6 @@ $ses_userId = $this->session->User['employee_id'];
                                     title: "Email Tidak terkirim",
                                     text: 'Mohon periksa jaringan Anda atau data yang Anda masukan tidak valid',
                                     type: "warning",
-                                    timer: 3000,
                                     showCancelButton: false,
                                     showConfirmButton: false,
                                     allowOutsideClick: false

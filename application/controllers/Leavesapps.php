@@ -498,12 +498,13 @@ class Leavesapps extends CI_Controller
         if ($this->_sendToEmail($leave, $fromUser, $toUser)) {
             $collback = [
                 'status' => 1,
-                'msg' => 'Data berhasil terkitim'
+                'msg' => 'Data berhasil terkirim'
             ];
         } else {
             $collback = [
                 'status' => 0,
-                'msg' => 'Data berhasil terkitim'
+                'msg' => 'Data gagal terkirim',
+                'error' => $this->email->print_debugger(),
             ];
         }
         echo json_encode($collback);
