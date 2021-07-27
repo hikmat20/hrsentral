@@ -466,9 +466,7 @@ class Leavesapps extends CI_Controller
             'action'        => 'add',
             'religi'        => '0',
             'employee'      => $employee[0],
-            // 'employees'     => $employees,
             'leaveCategory' => $leaveCategory,
-            // 'division'      => $division[0],
             'access'        => $Arr_Akses,
         );
         $this->load->view('Leaveapplications/view', $data);
@@ -476,8 +474,29 @@ class Leavesapps extends CI_Controller
 
     public function senEmail()
     {
+        $id = $this->input->post('id');
+
+        $emp = $this->session->userdata['Employee'];
+        $leave = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
+        $head = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
+        $toEmp = $this->db->get_where('employees', ['id' => $head->employee_id])->row();
+
+        // echo '<pre>';
+        // print_r($emp['name']);
+        // echo '<pre>';
+        // exit;
+        $EmployeName = $emp['name'];
+        $dateCreated = date('D, d M Y', strtotime($leave->created_at));
         $mail = $this->db->get('config_email')->row();
-        // $this->load->view('Leaveapplications/email', TRUE);
+        if ($leave->status == 'OPN') :
+            $status = '<label class="label-info label">Waiting Approval</label>';
+        elseif ($leave->status == 'APV') :
+            $status = '<label class="label-success label">Approved</label>';
+        elseif ($leave->status == 'CNL') :
+            $status = '<label class="label-default label">Cancel</label>';
+        elseif ($leave->status == 'REJ') :
+            $status = '<label class="label-danger label">Rejected</label>';
+        endif;
 
         if ($mail) {
             $config = array(
@@ -487,21 +506,30 @@ class Leavesapps extends CI_Controller
                 'smtp_user' => $mail->email_user,
                 'smtp_pass' => $mail->password,
                 'mailtype'  => $mail->mail_type,
-                'charset'   => 'iso-8859-1'
+                'charset'   => 'iso-8859-1',
+                'mailtype'  => 'html'
             );
 
             $this->load->library('email', $config);
             $this->email->set_newline("\r\n");
-
             $this->email->set_mailtype('html');
-            $this->email->from('hikmat.aoliar@gmail.com', 'TEST-EMAIL');
-            $this->email->to('hikmataulia20@gmail.com');
-            $this->email->subject('Subject Email Test');
+            $this->email->from($emp['email'], 'HARIS Sentral Sistem');
+            $this->email->to($toEmp->email);
+            $this->email->subject("PENGAJUAN CUTI -  $EmployeName");
             $this->email->message('
             <html>
-            <body>
-                <h1>Email Konfirmasi</h1>
-                <h1>Form pengajuan Cuti Karyawan Sentral Sistem</h1>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+            <body style="width:100%;background:#fefefe;padding:10px">
+                <p style="margin:auto;text-align:center">Berikut Form pepngajuan cuti atas nama <strong>' . $EmployeName . '</strong></p>
+                <hr>
+                <div style="text-align:center;margin:auto;">
+                    <h3><strong>PENGAJUAN CUTI KARYAWAN</strong></h3>
+                    <h4><strong>PT SENTAL TEHNOLOGI MANAGEMEN</strong></h4>
+                </div>
+                <hr>
+                <div style="text-align:center;padding:20px">
+                <a href="' . base_url('login') . '" style="margin:20px auto;padding:10px;background:blue;color:#fff">Login</a>
+                </div>
             </body>
             </html>
             ');
