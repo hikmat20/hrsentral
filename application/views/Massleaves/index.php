@@ -6,11 +6,13 @@ $this->load->view('include/side_menu');
 		<h3 class="box-title"><?= $title; ?></h3>
 		<div class="box-tool pull-right">
 			<?php
-			if ($akses_menu['create'] == '1') {?>
+			if ($akses_menu['create'] == '1') { ?>
 				<a href="<?php echo site_url('massleaves/add') ?>" class="btn btn-sm btn-success" id='btn-add'>
 					<i class="fa fa-plus"></i> Add
 				</a>
-			<?php}?>
+			<?php
+			}
+			?>
 		</div>
 	</div>
 	<!-- /.box-header -->

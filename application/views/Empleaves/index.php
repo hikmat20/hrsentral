@@ -53,7 +53,6 @@ $this->load->view('include/side_menu');
 					}
 				}
 				?>
-
 			</tbody>
 			<tfoot>
 				<tr class='bg-blue'>
