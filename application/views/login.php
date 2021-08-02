@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +27,7 @@
   <style>
 	.form-box {
 	  width: 360px;
-	  margin: 90px auto 0 auto;
+	  margin: 40px auto 0 auto;
 	}
 	.form-box .header {
 	  -webkit-border-top-left-radius: 4px;
@@ -114,7 +113,8 @@
 				</div>
 			</div>
 			<div class="footer">
-				<button type="button" class="btn btn-lg btn-primary" value="Submit" id="simpan_bro">Sign In</button>				
+				<button type="button" class="btn btn-lg btn-primary" value="Submit" id="simpan_bro">Sign In</button>
+				<a href="<?php echo str_ireplace("http://","https://",base_url("absen.php"));?>" class="pull-right btn btn-default btn-lg">Form Absen</a>
 			</div>
 		</div>    
 	</form>
