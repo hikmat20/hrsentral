@@ -14,24 +14,20 @@ $this->load->view('include/side_menu');
 
     if ($session['id'] == '2') : ?>
         <section class="content">
-            <!-- Small boxes (Stat box) -->
             <div class="row">
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-aqua rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(243deg 70% 50%),hsl(243deg 70% 50%));" onclick="location.href = '<?= base_url('leavesapps/add'); ?>'">
-                        <div class=" inner">
+                        <div class="inner" style="padding: 9px;">
                             <h3 class="font-nunito"><?= $leaveApp; ?></h3>
                             <p>Leaves Applications</p>
                         </div>
                         <div class="icon text-white-600">
                             <i class="fa fa-file-text"></i>
                         </div>
-                        <a href="<?= base_url('leavesapps/add'); ?>" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="<?= base_url('leavesapps/add'); ?>" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">Create New <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
                         <div class="inner">
                             <h3 class="font-nunito"><?= $leaveOPN; ?><sup style="font-size: 20px"></sup></h3>
@@ -40,13 +36,10 @@ $this->load->view('include/side_menu');
                         <div class="icon text-white-600">
                             <i class="fa fa-clock-o"></i>
                         </div>
-
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
                     <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
                         <div class="inner">
                             <h3 class="font-nunito"><?= $leaveAPV; ?></h3>
@@ -55,10 +48,9 @@ $this->load->view('include/side_menu');
                         <div class="icon text-white-600">
                             <i class="fa fa-history"></i>
                         </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
                 <div class="col-lg-3 col-xs-6">
                     <!-- small box -->
                     <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(5deg 100% 64%),hsl(5deg 100% 64%));" onclick="location.href = '<?= base_url('leavesapps/cancel_reject'); ?>'">
@@ -69,10 +61,22 @@ $this->load->view('include/side_menu');
                         <div class="icon text-white-600">
                             <i class="fa fa-flag"></i>
                         </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">More info <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(210deg, 69%, 61%),hsl(210deg, 69%, 61%));" onclick="location.href = '<?= base_url('leavesapps/revision'); ?>'">
+                        <div class="inner">
+                            <h3 class="font-nunito"><?= $leaveREV; ?></h3>
+                            <p>Revision</p>
+                        </div>
+                        <div class="icon text-white-600">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
             </div>
         </section>
     <?php else : ?>

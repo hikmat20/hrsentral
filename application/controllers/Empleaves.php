@@ -26,7 +26,7 @@ class Empleaves extends CI_Controller
 		// $get_Data			= $this->employees_model->get();
 		$get_Data			= $this->db->get('view_emp_year_leave')->result();
 		$data = array(
-			'title'			=> 'Indeks Of Empleaves',
+			'title'			=> 'Indeks Of Employee Anual Leave',
 			'action'		=> 'index',
 			'religi'		=> '0',
 			'data_leave'	=> $get_Data,
@@ -74,7 +74,7 @@ class Empleaves extends CI_Controller
 			$employees			= $this->employees_model->getData('employees');
 
 			$data = array(
-				'title'			=> 'Add Employee leave',
+				'title'			=> 'Add Employee Anual leave',
 				'action'		=> 'add',
 				'employees' 	=> $employees,
 			);
@@ -118,7 +118,7 @@ class Empleaves extends CI_Controller
 			$emp_leave			= $this->db->get_where('view_emp_year_leave', ['id' => $id])->row();
 
 			$data = array(
-				'title'			=> 'Edit Employee leave',
+				'title'			=> 'Edit Employee Anual leave',
 				'action'		=> 'Edit',
 				'employees' 	=> $employees,
 				'emp_leave' 	=> $emp_leave,

@@ -73,19 +73,16 @@ class Users extends CI_Controller
 		);
 		$sql_details = array(
 			'user' => 'root',
-			'pass' => 'Annabell2018',
-			'db'   => 'hr_sentral',
-			'host' => '103.228.117.98'
+			'pass' => 'adminroot',
+			'db'   => 'hrsentral_db',
+			'host' => 'localhost'
 		);
 		require('ssp.class.php');
-
 
 		echo json_encode(
 			SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
 		);
 		//echo "<pre>";print_r($data);exit;
-
-
 
 	}
 
@@ -181,11 +178,13 @@ class Users extends CI_Controller
 
 			$data_Group			= $this->master_model->getArray('groups', array(), 'id', 'name');
 			$rows_data			= $this->master_model->getData('users', 'id', $id);
+			$data_employees			= $this->employees_model->getEmployees();
 			$data = array(
 				'title'			=> 'Edit Users',
 				'action'		=> 'edit_user',
 				'data_group'	=> $data_Group,
-				'rows_data'		=> $rows_data
+				'rows_data'		=> $rows_data,
+				'data_employees'	=> $data_employees
 			);
 			$this->load->view('Users/edit', $data);
 		}

@@ -110,6 +110,30 @@ class Leavesapps extends CI_Controller
         $this->load->view('Leaveapplications/index', $data);
     }
 
+    public function revision()
+    {
+
+        $Arr_Akses            = getAcccesmenu($this->controller);
+        if ($Arr_Akses['read'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('dashboard'));
+        }
+
+        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE (`status`= 'REV') and employee_id = '" . $this->session->User['employee_id'] . "'")->result();
+        $employees         = $this->employees_model->getEmployees();
+        $data = array(
+            'title'            => 'Index Leave Applications',
+            'action'        => 'index',
+            'religi'        => '0',
+            'row'           => $get_Data,
+            'employees'     => $employees,
+            'access'        => $Arr_Akses
+        );
+
+        history('View Leave Applications');
+        $this->load->view('Leaveapplications/index', $data);
+    }
+
     public function getLeaveCategory()
     {
         $idCategory = $this->input->post('id_category');
@@ -267,18 +291,19 @@ class Leavesapps extends CI_Controller
 
     public function save()
     {
-
         $leaveApp_id                    = $this->input->post('id');
+        $flag_revision                  = $this->input->post('flag_revision');
+        $no_rev                         = $this->input->post('no_revision');
         $data                           = $this->input->post();
-        // $data['id']                     = $leaveApp_id;
-        $data['id']                     = ($leaveApp_id) ? $leaveApp_id : $this->autoNumber();
+
+        $data['id']                     = ($leaveApp_id != '' && $flag_revision == 'N') ? $leaveApp_id : $this->autoNumber();
         $data_session                   = $this->session->userdata;
         $data['name']                   = $data_session['Employee']['name'];
         $data['employee_id']            = $data_session['Employee']['id'];
         $data['division_id']            = $data_session['Employee']['division_id'];
-        $data['created_by']             = $data_session['User']['id'];
+        $data['created_by']             = $data_session['User']['username'];
         $data['created_at']             = date('Y-m-d H:i:s');
-        $data['modified_by']            = $data_session['User']['id'];
+        $data['modified_by']            = $data_session['User']['username'];
         $data['modified_at']            = date('Y-m-d H:i:s');
 
         $config['upload_path']          = './assets/documents';
@@ -335,14 +360,19 @@ class Leavesapps extends CI_Controller
             }
         }
         unset($data['doc_notpay_old']);
-        // echo '<pre>';
-        // print_r($data);
-        // echo '<pre>';
-        // exit;
+
         $this->db->trans_begin();
         if (!$leaveApp_id) {
             $this->db->insert('leave_applications', $data);
+        } elseif ($flag_revision == 'Y') {
+            $data['flag_revision'] = 'N';
+            $data['no_revision'] = ($no_rev == '' || $no_rev == null || $no_rev = '0') ? '1' : $no_rev + 1;
+            $this->db->insert('leave_applications', $data);
+            $this->db->update('leave_applications', ['status' => 'HIS'], array('id' => $leaveApp_id));
         } else {
+            $data['status']                 = 'OPN';
+            $data['modified_by']            = $data_session['User']['username'];
+            $data['modified_at']            = date('Y-m-d H:i:s');
             $this->db->update('leave_applications', $data, array('id' => $leaveApp_id));
         }
 
@@ -392,6 +422,7 @@ class Leavesapps extends CI_Controller
         $id = $this->input->post('id');
         $act = $this->input->post('act');
         $note = $this->input->post('note');
+        $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
         $data = [];
         if ($act == 'approve') {
             $msg_stat = 'Approval';
@@ -410,10 +441,10 @@ class Leavesapps extends CI_Controller
 
         $data += [
             'status' => $status,
+            'flag_revision' => 'Y',
             'note' => $note
         ];
 
-        $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
         $fromUser  = $this->session->userdata['Employee'];
         // $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
         $toUser    = $this->db->get_where('employees', ['id' => $leave->employee_id])->row();
@@ -460,9 +491,7 @@ class Leavesapps extends CI_Controller
             'action'        => 'add',
             'religi'        => '0',
             'employee'      => $employee[0],
-            // 'employees'     => $employees,
             'leaveCategory' => $leaveCategory,
-            // 'division'      => $division[0],
             'access'        => $Arr_Akses,
         );
         $this->load->view('Leaveapplications/approve', $data);
@@ -490,21 +519,29 @@ class Leavesapps extends CI_Controller
     public function sendEmail()
     {
         $id         = $this->input->post('id');
-        $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
-        $fromUser  = $this->session->userdata['Employee'];
-        $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
-        $toUser    = $this->db->get_where('employees', ['id' => $head->employee_id])->row();
+        if ($id) {
+            $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
+            $fromUser  = $this->session->userdata['Employee'];
+            $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
+            $toUser    = $this->db->get_where('employees', ['id' => $head->employee_id])->row();
 
-        if ($this->_sendToEmail($leave, $fromUser, $toUser)) {
-            $collback = [
-                'status' => 1,
-                'msg' => 'Data berhasil terkirim'
-            ];
+            if ($this->_sendToEmail($leave, $fromUser, $toUser)) {
+                $collback = [
+                    'status' => 1,
+                    'msg' => 'Data berhasil terkirim'
+                ];
+            } else {
+                $collback = [
+                    'status' => 0,
+                    'msg' => 'Data gagal terkirim',
+                    'error' => $this->email->print_debugger(),
+                ];
+            }
         } else {
             $collback = [
                 'status' => 0,
                 'msg' => 'Data gagal terkirim',
-                'error' => $this->email->print_debugger(),
+                'error' => '',
             ];
         }
         echo json_encode($collback);
@@ -525,10 +562,7 @@ class Leavesapps extends CI_Controller
         elseif ($leave->status == 'REJ') :
             $status = '<label class="label-danger label">Rejected</label>';
         endif;
-        // echo '<pre>';
-        // print_r($toUser->email);
-        // echo '<pre>';
-        // exit;
+
         if ($mail) {
             $config = array(
                 'protocol'  => $mail->protocol,
@@ -537,7 +571,7 @@ class Leavesapps extends CI_Controller
                 'smtp_user' => $mail->email_user,
                 'smtp_pass' => $mail->password,
                 'mailtype'  => $mail->mail_type,
-                'SMTPCrypto'  => 'ssl',
+                'SMTPCrypto'  => 'tls',
                 'charset'   => 'iso-8859-1',
                 'SMTPTimeout'  => 30
             );

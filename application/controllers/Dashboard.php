@@ -64,6 +64,7 @@ class Dashboard extends CI_Controller
 		$App = ($leaveCount) ? array_sum($leaveCount) : 0;
 		$CNL = (isset($leaveCount['CNL'])) ? $leaveCount['CNL'] : 0;
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
+		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
 
 		$data = array(
 			'title'			=> 'Dashboard',
@@ -89,6 +90,7 @@ class Dashboard extends CI_Controller
 			'leaveApp'			=> $App,
 			'leaveOPN'			=> (isset($leaveCount['OPN'])) ? $leaveCount['OPN'] : 0,
 			'leaveAPV'			=> (isset($leaveCount['APV'])) ? $leaveCount['APV'] : 0,
+			'leaveREV'			=> (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0,
 			'leaveCNLREJ'	    => $CNL + $REJ,
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses

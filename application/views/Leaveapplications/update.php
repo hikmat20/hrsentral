@@ -173,11 +173,22 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <label id="info_holday" class="text-red"></label>
                         </div>
                     </div>
+                    <div class="form-group hidden">
+                        <label for="" class="col-md-3 control-label">flag revision </label>
+                        <div class="col-md-9">
+                            <textarea name="flag_revision" id="flag_revision" readonly class="form-control text-red"><?= $leaveApp->flag_revision; ?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group hidden">
+                        <label for="" class="col-md-3 control-label">No Revision </label>
+                        <div class="col-md-9">
+                            <textarea name="no_revision" id="no_revision" readonly class="form-control text-red"><?= $leaveApp->no_revision; ?></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
             <div class="row">
-
                 <div class="col-md-6">
                     <div class="form-group text-center doc-special" style="display: none;">
                         <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->

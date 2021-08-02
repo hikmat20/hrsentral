@@ -101,7 +101,8 @@
 	$(function() {
 
 		$("#example1").DataTable({
-			scrollX: false
+			scrollX: false,
+			stateSave: true,
 		});
 		$('select').addClass('chosen-select');
 		/*$('input[type="text"][data-role="datepicker"]').datepicker({

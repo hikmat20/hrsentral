@@ -17,7 +17,7 @@ $ses_userId = $this->session->User['employee_id'];
                 <thead>
                     <tr class='bg-blue'>
                         <th class="text-center">No.</th>
-                        <th class="text-center">Employees Id</th>
+                        <!-- <th class="text-center">Employees Id</th> -->
                         <th class="text-center">Name Employees</th>
                         <th class="text-center">Leave Type</th>
                         <th class="text-center">From Date</th>
@@ -35,7 +35,7 @@ $ses_userId = $this->session->User['employee_id'];
                         foreach ($row as $data) : $n++; ?>
                             <tr>
                                 <td><?= $n; ?></td>
-                                <td><?= $data->employee_id; ?></td>
+                                <!-- <td><?= $data->employee_id; ?></td> -->
                                 <td><?= $data->name; ?></td>
                                 <td><?= $data->category_name; ?></td>
                                 <td><?= $data->from_date; ?></td>
@@ -73,6 +73,13 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php if ($access['create'] == '1') : ?>
                                                 <a href="javascript:void(0)" class=' btn btn-sm btn-info' id="sendEmail" data-id="<?= $data->id; ?>" title='Send Email' data-role='qtip'><i class='fa fa-send'></i></a>
                                             <?php endif ?>
+                                        <?php elseif ($data->status == 'REV') : ?>
+                                            <?php if ($access['update'] == '1') : ?>
+                                                <a href="<?= base_url(); ?>leavesapps/update/<?= $data->id; ?>" class=' btn btn-sm btn-warning' title='Update Application' data-role='qtip'><i class='fa fa-pencil'></i></a>
+                                            <?php endif ?>
+                                            <?php if ($access['read'] == '1') : ?>
+                                                <a href="<?= base_url(); ?>leavesapps/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>
+                                            <?php endif ?>
                                         <?php else : ?>
                                             <?php if ($access['read'] == '1') : ?>
                                                 <a href="<?= base_url(); ?>leavesapps/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>
@@ -92,7 +99,7 @@ $ses_userId = $this->session->User['employee_id'];
                 <tfoot>
                     <tr class='bg-blue'>
                         <th class="text-center">No.</th>
-                        <th class="text-center">Employees Id</th>
+                        <!-- <th class="text-center">Employees Id</th> -->
                         <th class="text-center">Name Employees</th>
                         <th class="text-center">Leave Type</th>
                         <th class="text-center">From Date</th>

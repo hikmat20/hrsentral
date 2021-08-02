@@ -17,7 +17,7 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td width="">Tanggal Pengajuan</td>
                                 <td class="text-center">:</td>
-                                <td colspan="3"><?= date('D, d M Y', strtotime($employee->created_at)); ?></td>
+                                <td colspan="3"><?= date('D, d F Y', strtotime($employee->created_at)); ?></td>
                             </tr>
                             <tr>
                                 <td width="">Nama</td>
@@ -64,9 +64,9 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td>Tanggal Cuti</td>
                                 <td class="text-center">:</td>
-                                <td><?= $employee->from_date; ?></td>
+                                <td><?= date("D, d F Y", strtotime($employee->from_date)); ?></td>
                                 <td class="text-center">s/d</td>
-                                <td><?= $employee->until_date; ?></td>
+                                <td><?= date("D, d F Y", strtotime($employee->until_date)); ?></td>
                             </tr>
                             <tr>
                                 <td>Status</td>
@@ -80,13 +80,22 @@ $this->load->view('include/side_menu'); ?>
                                         <label class="label-default label">Cancel</label>
                                     <?php elseif ($employee->status == 'REJ') : ?>
                                         <label class="label-danger label">Rejected</label>
+                                    <?php elseif ($employee->status == 'REV') : ?>
+                                        <label class="label-warning label">Revision</label>
+                                    <?php else : ?>
+                                        <label class="label-default label">Unknow Status</label>
                                     <?php endif; ?>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Keterangan</td>
-                                <td height="100px" class="text-center">:</td>
+                                <td height="70px" class="text-center">:</td>
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
+                            </tr>
+                            <tr>
+                                <th>Catatan</th>
+                                <td height="70px" class="text-center">:</td>
+                                <td colspan="3"><?= $employee->note; ?></td>
                             </tr>
                         </tbody>
 
@@ -116,7 +125,7 @@ $this->load->view('include/side_menu'); ?>
         <div class="row">
             <div class="col-md-12 text-center">
                 <button type="button" class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
-                <a href="<?= base_url('leavesapps/'); ?>" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
+                <a href="javascript:void(0)" onclick="history.go(-1)" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
             </div>
             <div class="col-md-6">
             </div>
