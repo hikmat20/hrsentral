@@ -75,7 +75,7 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php endif ?>
                                         <?php elseif ($data->status == 'REV') : ?>
                                             <?php if ($access['update'] == '1') : ?>
-                                                <a href="<?= base_url(); ?>leavesapps/update/<?= $data->id; ?>" class=' btn btn-sm btn-warning' title='Update Application' data-role='qtip'><i class='fa fa-pencil'></i></a>
+                                                <a href="<?= base_url(); ?>leavesapps/update_revision/<?= $data->id; ?>" class=' btn btn-sm btn-warning' title='Update Application' data-role='qtip'><i class='fa fa-pencil'></i></a>
                                             <?php endif ?>
                                             <?php if ($access['read'] == '1') : ?>
                                                 <a href="<?= base_url(); ?>leavesapps/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>

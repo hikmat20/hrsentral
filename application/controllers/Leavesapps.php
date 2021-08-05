@@ -517,25 +517,6 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-    // protected function _updateSummary($id, $leave)
-    // {
-    //     echo '<pre>';
-    //     print_r($leave);
-    //     echo '<pre>';
-    //     exit;
-
-    //     $sumLeave = $this->db->get_where('employees_leave_summary', ['employee_id' => $id])->row();
-
-    //     $data = [
-    //         'total_leave_taken' => $sumLeave->total_leave_taken + $leave->get_year_leave,
-    //         'total_remaining_leave' => $sumLeave->total_remaining_leave,
-    //         'total_special_leave' => $sumLeave->total_special_leave,
-    //         'total_urgent_leave' => $sumLeave->total_urgent_leave,
-    //     ];
-
-    //     $this->db->update('employees_leave_summary', $data, ['employee_id' => $id]);
-    // }
-
     public function view_approval($id)
     {
         // $employee           = $this->session->userdata('Employee');

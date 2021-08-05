@@ -185,6 +185,13 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <textarea name="no_revision" id="no_revision" readonly class="form-control text-red"><?= $leaveApp->no_revision; ?></textarea>
                         </div>
                     </div>
+
+                    <div class="form-group <?= ($leaveApp->status != 'REV') ? 'hidden' : ''; ?>">
+                        <label for="" class="col-md-3 control-label">Catatan Revisi </label>
+                        <div class="col-md-9">
+                            <textarea name="note" id="note" readonly class="form-control text-red"><?= $leaveApp->note; ?></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
