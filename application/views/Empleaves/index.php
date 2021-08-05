@@ -18,6 +18,7 @@ $this->load->view('include/side_menu');
 			<thead>
 				<tr class='bg-blue'>
 					<th width="50px" class="text-center">No.</th>
+					<th class="text-center">Date</th>
 					<th class="text-center">Name</th>
 					<th width="50px" class="text-center">Year</th>
 					<th width="50px" class="text-center">Leave</th>
@@ -34,6 +35,7 @@ $this->load->view('include/side_menu');
 						echo "<tr>";
 						//echo"<td align='left'><img  src='".site_url('./assets/img/'.$datas->image)."'></td>";							
 						echo "<td align='left'>" . $int . "</td>";
+						echo "<td align='left'>" . $dleave->date . "</td>";
 						echo "<td align='left'>" . $dleave->name . "</td>";
 						echo "<td align='center'>" . $dleave->year . "</td>";
 						echo "<td align='center'>" . $dleave->leave . "</td>";

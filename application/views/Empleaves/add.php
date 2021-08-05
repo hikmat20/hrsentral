@@ -40,6 +40,15 @@ $this->load->view('include/side_menu');
 				</div>
 			</div>
 			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Date <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text" name="date" id="date" class="form-control">
+					</div>
+				</div>
+			</div>
+			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b>Leave Value <span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
 					<div class="input-group">
@@ -178,11 +187,11 @@ $this->load->view('include/side_menu');
 
 	$(function() {
 		// Daterange Picker
-		$('#year').datepicker({
-			dateFormat: 'yy',
+		$('#date').datepicker({
+			dateFormat: 'yy-mm-dd',
 			changeMonth: true,
 			changeYear: true,
-			yearRange: 'c-80:c+100',
+			yearRange: 'c-10:c+0',
 
 		});
 	});

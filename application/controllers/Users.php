@@ -73,9 +73,9 @@ class Users extends CI_Controller
 		);
 		$sql_details = array(
 			'user' => 'root',
-			'pass' => 'adminroot',
-			'db'   => 'hrsentral_db',
-			'host' => 'localhost'
+			'pass' => 'Annabell2018',
+			'db'   => 'hr_sentral',
+			'host' => '103.228.117.98'
 		);
 		require('ssp.class.php');
 

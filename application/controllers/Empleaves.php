@@ -49,14 +49,40 @@ class Empleaves extends CI_Controller
 			$data['created_by']		= $data_session['User']['username'];
 			$data['created']		= date('Y-m-d H:i:s');
 
-			if ($this->employees_model->simpan('employees_leave', $data)) {
+			// $this->db->select('SUM(`leave`) as `leave`');
+			// $this->db->from('employees_leave');
+			// $this->db->where(['employee_id' => $data['employee_id'], 'year' => date('Y')]);
+			// $leaveSum = $this->db->get()->row()->leave;
 
+			$this->db->trans_begin();
+			// $row = $this->db->get_where('employees_leave_summary', ['employee_id' => $data['employee_id']])->row();
+			// $dataSum = [
+			// 	'id' 					=> $this->employees_model->code_otomatis('employees_leave_summary', 'ELS'),
+			// 	'employee_id' 			=> $data['employee_id'],
+			// 	'total_leave' 			=> $data['leave'] + $leaveSum,
+			// 	'remaining_leave' 		=> $data['leave'] + $leaveSum,
+			// 	'created' 				=> date('Y-m-d H:i:s'),
+			// 	'created_by' 			=> $data_session['User']['username'],
+			// ];
+
+			// if (!$row) {
+			// 	$this->db->insert('employees_leave_summary', $dataSum);
+			// } else {
+			// 	unset($dataSum['id']);
+			// 	$this->db->update('employees_leave_summary', $dataSum, ['id' => $row->id]);
+			// }
+
+			$this->employees_model->simpan('employees_leave', $data);
+
+			if ($this->db->trans_status() == TRUE) {
+				$this->db->trans_commit();
 				$Arr_Kembali		= array(
 					'status'		=> 1,
 					'pesan'			=> 'Add Employees leave Success. Thank you & have a nice day.......'
 				);
 				history('Add Data Employees leave' . $data['employee_id']);
 			} else {
+				$this->db->trans_rollback();
 				$Arr_Kembali		= array(
 					'status'		=> 2,
 					'pesan'			=> 'Add Employees leave failed. Please try again later......'

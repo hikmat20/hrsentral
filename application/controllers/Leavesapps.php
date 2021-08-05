@@ -232,19 +232,21 @@ class Leavesapps extends CI_Controller
         $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
         $Arr_Akses          = getAcccesmenu($this->controller);
         $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
-        $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
-        $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
+        // $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        // $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
         $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
-        $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
-        $msl                = ($massLeave->count) ? $massLeave->count : 0;
+        // $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
+        // $msl                = ($massLeave->count) ? $massLeave->count : 0;
+
         $data = array(
             'title'         => 'Add Leave Applications',
             'action'        => 'add',
             'religi'        => '0',
-            'totalLeave'    => ($ly) - ($gly) - ($msl),
+            // 'totalLeave'    => ($ly) - ($gly) - ($msl),
+            'totalLeave'    => ($ly),
             'employee'      => $employee,
             'divisionHead'  => $divisionHead,
             'leaveCategory' => $leaveCategory,
@@ -428,6 +430,7 @@ class Leavesapps extends CI_Controller
             $msg_stat = 'Approval';
             $status = 'APV';
             $data['approved_at'] = date('Y-m-d H:i:s');
+            // $this->_updateSummary($id, $leave);
         } elseif ($act == 'reject') {
             $msg_stat = 'Reject';
             $status = 'REJ';
@@ -478,19 +481,41 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
+    // protected function _updateSummary($id, $leave)
+    // {
+    //     echo '<pre>';
+    //     print_r($leave);
+    //     echo '<pre>';
+    //     exit;
+
+    //     $sumLeave = $this->db->get_where('employees_leave_summary', ['employee_id' => $id])->row();
+
+    //     $data = [
+    //         'total_leave_taken' => $sumLeave->total_leave_taken + $leave->get_year_leave,
+    //         'total_remaining_leave' => $sumLeave->total_remaining_leave,
+    //         'total_special_leave' => $sumLeave->total_special_leave,
+    //         'total_urgent_leave' => $sumLeave->total_urgent_leave,
+    //     ];
+
+    //     $this->db->update('employees_leave_summary', $data, ['employee_id' => $id]);
+    // }
+
     public function view_approval($id)
     {
         // $employee           = $this->session->userdata('Employee');
-        $employee          = $this->leavesModel->getFind(['id' => $id]);
+        $employee          = $this->leavesModel->getFind(['id' => $id])[0];
         $Arr_Akses          = getAcccesmenu($this->controller);
         // $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
+        // echo '<pre>';
+        // print_r($employee);
+        // echo '<pre>';
+        // exit;
         $leaveCategory      = $this->db->get('at_leaves')->result();
-
         $data = array(
             'title'         => 'View Leave Applications',
             'action'        => 'add',
             'religi'        => '0',
-            'employee'      => $employee[0],
+            'employee'      => $employee,
             'leaveCategory' => $leaveCategory,
             'access'        => $Arr_Akses,
         );

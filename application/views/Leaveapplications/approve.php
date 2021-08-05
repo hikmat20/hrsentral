@@ -1,8 +1,6 @@
 <?php
 $this->load->view('include/side_menu'); ?>
-
 <div class="box box-solid rounded-1">
-
     <div class="box-body ">
         <div class="row box-body" id="print_page">
             <div class="text-center">
@@ -10,6 +8,7 @@ $this->load->view('include/side_menu'); ?>
                 <h3 class="text-bold">PT SENTAL TEHNOLOGI MANAGEMEN</h3>
             </div>
             <hr>
+
             <div class="col-md-10 col-md-offset-1">
                 <div class="table-resposive">
                     <table class="table table-bordered table-condensed table-resposive">
