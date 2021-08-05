@@ -44,7 +44,7 @@ class Empleavesum extends CI_Controller
     {
         $id             = $this->input->post('id');
         $empLeave       = $this->db->get_where('employees_leave', ['employee_id' => $id])->result();
-        $empLeaveApps   = $this->db->get_where('view_leave_applications', ['employee_id' => $id, 'periode_year' => date('Y')])->result();
+        $empLeaveApps   = $this->db->get_where('view_leave_applications', ['employee_id' => $id, 'periode_year' => date('Y'), 'status' => 'APV'])->result();
 
         $data = [
             'empLeave' => $empLeave,

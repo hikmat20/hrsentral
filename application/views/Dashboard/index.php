@@ -12,7 +12,7 @@ $this->load->view('include/side_menu');
 
     <?php $session = $this->session->userdata('Group');
 
-    if ($session['id'] == '2') : ?>
+    if ($session['id'] != '1' || $session['id'] != '40') : ?>
         <section class="content">
             <div class="row">
                 <div class="col-lg-3 col-xs-6">
