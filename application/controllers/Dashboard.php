@@ -91,6 +91,7 @@ class Dashboard extends CI_Controller
 			'leaveOPN'			=> (isset($leaveCount['OPN'])) ? $leaveCount['OPN'] : 0,
 			'leaveAPV'			=> (isset($leaveCount['APV'])) ? $leaveCount['APV'] : 0,
 			'leaveREV'			=> (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0,
+			'leaveHIS'			=> (isset($leaveCount['HIS'])) ? $leaveCount['HIS'] : 0,
 			'leaveCNLREJ'	    => $CNL + $REJ,
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses

@@ -12,7 +12,7 @@ $this->load->view('include/side_menu');
 
     <?php $session = $this->session->userdata('Group');
 
-    if ($session['id'] != '1' || $session['id'] != '40') : ?>
+    if ($session['id'] != '1' && $session['id'] != '40') : ?>
         <section class="content">
             <div class="row">
                 <div class="col-lg-3 col-xs-6">
@@ -28,7 +28,7 @@ $this->load->view('include/side_menu');
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
+                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
                         <div class="inner">
                             <h3 class="font-nunito"><?= $leaveOPN; ?><sup style="font-size: 20px"></sup></h3>
                             <p>Waiting Approval</p>
@@ -40,15 +40,28 @@ $this->load->view('include/side_menu');
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
+                    <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
                         <div class="inner">
                             <h3 class="font-nunito"><?= $leaveAPV; ?></h3>
-                            <p>History</p>
+                            <p>Approved</p>
                         </div>
                         <div class="icon text-white-600">
-                            <i class="fa fa-history"></i>
+                            <i class="fa fa-check"></i>
                         </div>
                         <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(210deg, 69%, 61%),hsl(210deg, 69%, 61%));" onclick="location.href = '<?= base_url('leavesapps/revision'); ?>'">
+                        <div class="inner">
+                            <h3 class="font-nunito"><?= $leaveREV; ?></h3>
+                            <p>Revision</p>
+                        </div>
+                        <div class="icon text-white-600">
+                            <i class="fa fa-pencil"></i>
+                        </div>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-6">
@@ -65,16 +78,15 @@ $this->load->view('include/side_menu');
                     </div>
                 </div>
                 <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(210deg, 69%, 61%),hsl(210deg, 69%, 61%));" onclick="location.href = '<?= base_url('leavesapps/revision'); ?>'">
+                    <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(266deg, 97%, 69%),hsl(266deg, 97%, 69%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
                         <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveREV; ?></h3>
-                            <p>Revision</p>
+                            <h3 class="font-nunito"><?= $leaveHIS; ?></h3>
+                            <p>History</p>
                         </div>
                         <div class="icon text-white-600">
-                            <i class="fa fa-pencil"></i>
+                            <i class="fa fa-history"></i>
                         </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -679,7 +691,6 @@ $this->load->view('include/side_menu');
             <!-- /.box-body -->
         </div>
     <?php endif; ?>
-    <!-- /.box -->
 </div>
 
 <?php $this->load->view('include/footer'); ?>
