@@ -15,80 +15,120 @@ $this->load->view('include/side_menu');
     if ($session['id'] != '1' && $session['id'] != '40') : ?>
         <section class="content">
             <div class="row">
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-aqua rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(243deg 70% 50%),hsl(243deg 70% 50%));" onclick="location.href = '<?= base_url('leavesapps/add'); ?>'">
-                        <div class="inner" style="padding: 9px;">
-                            <h3 class="font-nunito"><?= $leaveApp; ?></h3>
-                            <p>Leaves Applications</p>
-                        </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-file-text"></i>
-                        </div>
-                        <a href="<?= base_url('leavesapps/add'); ?>" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">Create New <i class="fa fa-arrow-circle-right"></i></a>
+                <div class="col-lg-6">
+                    <h3 for="" style="margin-top:0px">Data Absensi Karyawan</h3>
+                    <div class="table-responsie">
+                        <table id="list-absensi" class="table table-bordered table-hover">
+                            <thead class="bg-info">
+                                <tr>
+                                    <th width="20px">No</th>
+                                    <th width="">Tgl.</th>
+                                    <th class="text-center">Waktu</th>
+                                    <th class="text-center">Absen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 0;
+                                $type = [
+                                    '1' => '<label class="label font-light label-success">Masuk</label>',
+                                    '2' => '<label class="label font-light label-info">Keluar Istirahat</label>',
+                                    '3' => '<label class="label font-light label-warning">Masuk Istirahat</label>',
+                                    '4' => '<label class="label font-light label-danger">Pulang</label>',
+                                    '5' => '<label class="label font-light bg-maroon">Lembur</label>',
+                                    ''  => '<label class="label font-light label-default">Tidak diketahui</label>',
+                                ];
+                                foreach ($absensi as $absen) : $no++;
+                                ?>
+                                    <tr>
+                                        <td><?= $no; ?></td>
+                                        <td class=""><?= date('D, d m Y', strtotime($absen->waktu)); ?></td>
+                                        <td class="text-center"><?= date('H:i:s', strtotime($absen->waktu)); ?></td>
+                                        <td class="text-center"><?= $type[$absen->tipe]; ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
-                        <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveOPN; ?><sup style="font-size: 20px"></sup></h3>
-                            <p>Waiting Approval</p>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-6 col-xs-6">
+                            <div class="small-box bg-aqua rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(243deg 70% 50%),hsl(243deg 70% 50%));" onclick="location.href = '<?= base_url('leavesapps/add'); ?>'">
+                                <div class="inner" style="padding: 9px;">
+                                    <h3 class="font-nunito"><?= $leaveApp; ?></h3>
+                                    <p>Leaves Applications</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-file-text"></i>
+                                </div>
+                                <a href="<?= base_url('leavesapps/add'); ?>" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">Create New <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
                         </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-clock-o"></i>
+                        <div class="col-lg-6 col-xs-6">
+                            <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(37deg 81% 60%),hsl(37deg 81% 60%));" onclick="location.href = '<?= base_url('leavesapps/'); ?>'">
+                                <div class="inner">
+                                    <h3 class="font-nunito"><?= $leaveOPN; ?><sup style="font-size: 20px"></sup></h3>
+                                    <p>Waiting Approval</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
                         </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                        <div class="col-lg-6 col-xs-6">
+                            <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/approved'); ?>'">
+                                <div class="inner">
+                                    <h3 class="font-nunito"><?= $leaveAPV; ?></h3>
+                                    <p>Approved</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-check"></i>
+                                </div>
+                                <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(210deg, 69%, 61%),hsl(210deg, 69%, 61%));" onclick="location.href = '<?= base_url('leavesapps/revision'); ?>'">
+                                <div class="inner">
+                                    <h3 class="font-nunito"><?= $leaveREV; ?></h3>
+                                    <p>Revision</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-pencil"></i>
+                                </div>
+                                <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-6">
+                            <!-- small box -->
+                            <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(5deg 100% 64%),hsl(5deg 100% 64%));" onclick="location.href = '<?= base_url('leavesapps/cancel_reject'); ?>'">
+                                <div class="inner">
+                                    <h3 class="font-nunito"><?= $leaveCNLREJ; ?></h3>
+                                    <p>Reject & Cancel</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-flag"></i>
+                                </div>
+                                <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-xs-6">
+                            <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(266deg, 97%, 69%),hsl(266deg, 97%, 69%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
+                                <div class="inner">
+                                    <h3 class="font-nunito"><?= $leaveHIS; ?></h3>
+                                    <p>History</p>
+                                </div>
+                                <div class="icon text-white-600">
+                                    <i class="fa fa-history"></i>
+                                </div>
+                                <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(160deg 99% 40%),hsl(160deg 99% 40%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
-                        <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveAPV; ?></h3>
-                            <p>Approved</p>
-                        </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-check"></i>
-                        </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(210deg, 69%, 61%),hsl(210deg, 69%, 61%));" onclick="location.href = '<?= base_url('leavesapps/revision'); ?>'">
-                        <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveREV; ?></h3>
-                            <p>Revision</p>
-                        </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-pencil"></i>
-                        </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View Details <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <!-- small box -->
-                    <div class="small-box bg-black rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(5deg 100% 64%),hsl(5deg 100% 64%));" onclick="location.href = '<?= base_url('leavesapps/cancel_reject'); ?>'">
-                        <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveCNLREJ; ?></h3>
-                            <p>Reject & Cancel</p>
-                        </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-flag"></i>
-                        </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <div class="small-box bg-yellow rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(266deg, 97%, 69%),hsl(266deg, 97%, 69%));" onclick="location.href = '<?= base_url('leavesapps/history'); ?>'">
-                        <div class="inner">
-                            <h3 class="font-nunito"><?= $leaveHIS; ?></h3>
-                            <p>History</p>
-                        </div>
-                        <div class="icon text-white-600">
-                            <i class="fa fa-history"></i>
-                        </div>
-                        <a href="#" class="small-box-footer" style="border-radius: 1em;background:transparent;padding:10px 0px">View All <i class="fa fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
+
             </div>
         </section>
     <?php else : ?>
@@ -700,4 +740,9 @@ $this->load->view('include/side_menu');
             $('#spinner').modal('show');
         });
     });
+
+    $('#list-absensi').DataTable({
+        'searching': false,
+        "lengthChange": false
+    })
 </script>

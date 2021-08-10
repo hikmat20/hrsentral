@@ -32,12 +32,12 @@ $ses_userId = $this->session->User['employee_id'];
                 <tbody>
                     <?php
                     $status = [
-                        'OPN' => '<span class="label label-info">Waiting Approval</span>',
+                        'OPN' => '<span class="label label-warning">Waiting Approval</span>',
                         'APV' => '<span class="label label-success">Approved</span>',
-                        'CNL' => '<span class="label label-default">Cancel</span>n>',
                         'REJ' => '<span class="label label-danger">Reject</span>',
-                        'APV' => '<span class="label label-info">Waiting Approval</span>',
-                        'HIS' => '<span class="label bg-maroon">History</span>',
+                        'CNL' => '<span class="label label-default">Cancel</span>n>',
+                        'HIS' => '<span class="label bg-purple">History</span>',
+                        'REV' => '<span class="label label-info">Revision</span>',
                         '' => '<span class="label label-default">Unknow Status</span>',
                     ];
                     if ($row) : $n  = 0;
