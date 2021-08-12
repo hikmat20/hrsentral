@@ -27,6 +27,39 @@ class Leavesapps extends CI_Controller
         }
 
         $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'employee_id' => $employee_id]);
+        $employees         = $this->employees_model->getData('employees');
+        $phone = [];
+        foreach ($employees as $emp) {
+            $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
+        }
+
+        // echo '<pre>';
+        // print_r($phone);
+        // echo '<pre>';
+        // exit;
+        $data = array(
+            'title'            => 'Index Leave Applications',
+            'action'        => 'index',
+            'religi'        => '0',
+            'row'           => $get_Data,
+            'phone'         => $phone,
+            'access'        => $Arr_Akses
+        );
+        history('View Leave Applications');
+        $this->load->view('Leaveapplications/index', $data);
+    }
+
+    public function approved()
+    {
+
+        $Arr_Akses            = getAcccesmenu($this->controller);
+        if ($Arr_Akses['read'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('dashboard'));
+        }
+        $id = $this->session->userdata['Employee']['id'];
+
+        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE `status` = 'APV' AND employee_id = '$id'")->result();
         $employees         = $this->employees_model->getEmployees();
         $data = array(
             'title'            => 'Index Leave Applications',
@@ -48,8 +81,9 @@ class Leavesapps extends CI_Controller
             $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
             redirect(site_url('dashboard'));
         }
+        $id = $this->session->userdata['Employee']['id'];
 
-        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE `status` = 'APV'")->result();
+        $get_Data            = $this->db->query("SELECT * FROM `view_leave_applications` WHERE `status` = 'HIS' AND employee_id = '$id'")->result();
         $employees         = $this->employees_model->getEmployees();
         $data = array(
             'title'            => 'Index Leave Applications',

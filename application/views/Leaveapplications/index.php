@@ -31,6 +31,15 @@ $ses_userId = $this->session->User['employee_id'];
                 </thead>
                 <tbody>
                     <?php
+                    $status = [
+                        'OPN' => '<span class="label label-warning">Waiting Approval</span>',
+                        'APV' => '<span class="label label-success">Approved</span>',
+                        'REJ' => '<span class="label label-danger">Reject</span>',
+                        'CNL' => '<span class="label label-default">Cancel</span>n>',
+                        'HIS' => '<span class="label bg-purple">History</span>',
+                        'REV' => '<span class="label label-info">Revision</span>',
+                        '' => '<span class="label label-default">Unknow Status</span>',
+                    ];
                     if ($row) : $n  = 0;
                         foreach ($row as $data) : $n++; ?>
                             <tr>
@@ -43,17 +52,7 @@ $ses_userId = $this->session->User['employee_id'];
                                 <td><?= $data->applied_leave; ?></td>
                                 <td><?= $data->descriptions; ?></td>
                                 <td><?= $data->approval_by_name; ?></td>
-                                <td>
-                                    <?php if ($data->status == 'OPN') : ?>
-                                        <span class="label label-info">Waiting Approval</span>
-                                    <?php elseif ($data->status == 'APV') : ?>
-                                        <span class="label label-success">Approved</span>
-                                    <?php elseif ($data->status == 'CNL') : ?>
-                                        <span class="label label-default">Cancel</span>
-                                    <?php elseif ($data->status == 'REJ') : ?>
-                                        <span class="label label-danger">Reject</span>
-                                    <?php endif; ?>
-                                </td>
+                                <td><?= $status[$data->status]; ?></td>
                                 <td>
                                     <?php if ($ses_userId == $data->approval_employee_id) : ?>
                                         <?php if ($access['approve'] == '1') : ?>
@@ -70,8 +69,11 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php if ($access['delete'] == '1') : ?>
                                                 <a href="javascript:void(0)" class=' btn btn-sm btn-danger' id="cancel" data-id="<?= $data->id; ?>" title='Cancel Application' data-role='qtip'><i class='fa fa-stop'></i></a>
                                             <?php endif ?>
-                                            <?php if ($access['create'] == '1') : ?>
-                                                <a href="javascript:void(0)" class=' btn btn-sm btn-info' id="sendEmail" data-id="<?= $data->id; ?>" title='Send Email' data-role='qtip'><i class='fa fa-send'></i></a>
+                                            <?php if ($access['create'] == '1') :
+                                                $text = "Dengan Hormat,%0aSaya yang bertanda tangan dibawah ini :%0a%0aNama : " . $data->name . "%0aDivisi : " . $data->divisions_name . "%0a%0aBermaksud untuk mengajukan izin cuti " . $data->category_name . "pada tanggal " . $data->from_date . " s/d " . $data->until_date . " selama " . $data->applied_leave . " hari.%0a%0aUntuk lebih detailnya bisa klik link dibawah ini:%0a" . base_url('leavesapps/view/' . $data->id) . "%0a%0aDemikian surat izin cuti ini saya sampaikan. Atas perhatiannya saya ucapkan terima kasih.%0a%0aHormat Saya,%0a" . $data->name;
+                                            ?>
+                                                <a href="https://api.whatsapp.com/send/?phone=<?= $phone[$data->approval_employee_id]; ?>&text=<?= $text; ?>" class='btn btn-success btn-sm' id="wa" data-id="<?= $data->id; ?>" target="_blank" title='Send Whatsapp' data-role='qtip'><i class='fa fa-whatsapp' style="font-size: 1.4em;"></i></a>
+                                                <!-- <a href="javascript:void(0)" class=' btn btn-sm btn-info' id="sendEmail" data-id="<?= $data->id; ?>" title='Send Email' data-role='qtip'><i class='fa fa-send'></i></a> -->
                                             <?php endif ?>
                                         <?php elseif ($data->status == 'REV') : ?>
                                             <?php if ($access['update'] == '1') : ?>
@@ -116,7 +118,10 @@ $ses_userId = $this->session->User['employee_id'];
     </div>
 </div>
 <?php
-
+// echo '<pre>';
+// print_r($row);
+// echo '<pre>';
+// exit;
 ?>
 <?php $this->load->view('include/footer'); ?>
 <script>

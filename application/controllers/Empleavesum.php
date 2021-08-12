@@ -28,14 +28,25 @@ class Empleavesum extends CI_Controller
 
         $get_Data          = $this->db->get('view_employee_leave_summary')->result();
         $employees         = $this->employees_model->getEmployees();
+        $id             = $this->session->userdata['Employee']['id'];
+        $empLeave       = $this->db->get_where('employees_leave', ['employee_id' => $id])->result();
+        $empLeaveApps   = $this->db->get_where('view_leave_applications', ['employee_id' => $id, 'periode_year' => date('Y'), 'status' => 'APV'])->result();
+
         $data = array(
             'title'            => 'Index Employee Leave Summary',
             'action'        => 'index',
             'religi'        => '0',
             'row'           => $get_Data,
             'employees'     => $employees,
+            'empLeave' => $empLeave,
+            'empLeaveApps' => $empLeaveApps,
             'access'        => $Arr_Akses
         );
+        $group = $this->session->userdata['Group']['id'];
+        if ($group != '1' && $group != '40') {
+        }
+
+
         history('View Leave Applications');
         $this->load->view('Empleavesum/index', $data);
     }

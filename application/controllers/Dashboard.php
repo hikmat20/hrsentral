@@ -66,6 +66,7 @@ class Dashboard extends CI_Controller
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
 		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
 
+		$absensi = $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin])->result();
 		$data = array(
 			'title'			=> 'Dashboard',
 			'action'		=> 'index',
@@ -86,11 +87,13 @@ class Dashboard extends CI_Controller
 			'danestlatest1' => $danestlatest1,
 			'danestlatest2' => $danestlatest2,
 			'danestlatest3' => $danestlatest3,
+			'absensi' 		=> $absensi,
 			'semua'			=> $all,
 			'leaveApp'			=> $App,
 			'leaveOPN'			=> (isset($leaveCount['OPN'])) ? $leaveCount['OPN'] : 0,
 			'leaveAPV'			=> (isset($leaveCount['APV'])) ? $leaveCount['APV'] : 0,
 			'leaveREV'			=> (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0,
+			'leaveHIS'			=> (isset($leaveCount['HIS'])) ? $leaveCount['HIS'] : 0,
 			'leaveCNLREJ'	    => $CNL + $REJ,
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses
