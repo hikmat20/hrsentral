@@ -14,6 +14,12 @@ $this->load->view('include/side_menu');
 
     if ($session['id'] != '1' && $session['id'] != '40') : ?>
         <section class="content">
+            <?php if ($dataApproval) : ?>
+                <div class="alert bg-yellow">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $dataApproval; ?> Pengajuan cuti karyawan diperlukan Approval Anda! <a class="btn btn-info btn-sm" href="/leavesapps/approval">Lihat</a>
+                </div>
+            <?php endif; ?>
             <div class="row">
                 <div class="col-lg-6">
                     <h3 for="" style="margin-top:0px">Data Absensi Karyawan <small>(Hari Ini)</small></h3>
@@ -58,7 +64,7 @@ $this->load->view('include/side_menu');
                             <div class="small-box bg-aqua rounded-1 box-shadow" style="cursor:pointer;background-image:linear-gradient(hsl(243deg 70% 50%),hsl(243deg 70% 50%));" onclick="location.href = '<?= base_url('leavesapps/add'); ?>'">
                                 <div class="inner" style="padding: 9px;">
                                     <h3 class="font-nunito"><?= $leaveApp; ?></h3>
-                                    <p>Leaves Applications</p>
+                                    <p>All Leaves Apps</p>
                                 </div>
                                 <div class="icon text-white-600">
                                     <i class="fa fa-file-text"></i>

@@ -269,7 +269,7 @@ class Leavesapps extends CI_Controller
         // $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
         // $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
-        $leaveCategory      = $this->db->get('at_leaves')->result();
+        $leaveCategory      = $this->db->order_by('id', 'ASC')->get('at_leaves')->result();
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
         $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
         // $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
@@ -507,6 +507,14 @@ class Leavesapps extends CI_Controller
         } elseif ($act == 'revisi') {
             $msg_stat = 'Revision';
             $status = 'REV';
+            $data['flag_revision'] = 'Y';
+        } elseif ($act == 'aplha') {
+            $msg_stat = 'Alpha';
+            $status = 'APV';
+            $data['flag_leave_type'] = 'ALP';
+            $data['aplha_value'] = $leave->applied_leave;
+            $data['get_year_leave'] = $leave->applied_leave;
+            $data['remaining_leave'] = ($leave->unused_leave) - ($leave->applied_leave);
         } else {
             $msg_stat = 'Process';
             $status = 'OPN';
@@ -514,13 +522,12 @@ class Leavesapps extends CI_Controller
 
         $data += [
             'status' => $status,
-            'flag_revision' => 'Y',
             'note' => $note
         ];
 
-        $fromUser  = $this->session->userdata['Employee'];
-        // $head       = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
-        $toUser    = $this->db->get_where('employees', ['id' => $leave->employee_id])->row();
+        $fromUser       = $this->session->userdata['Employee'];
+        // $head        = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
+        $toUser         = $this->db->get_where('employees', ['id' => $leave->employee_id])->row();
 
         $this->db->trans_begin();
         $this->db->update('leave_applications', $data, array('id' => $id));

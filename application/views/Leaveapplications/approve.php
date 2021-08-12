@@ -120,6 +120,7 @@ $this->load->view('include/side_menu'); ?>
                     <button id="revisi" class="btn btn-info btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-reply"></i> Revisi</button>
                     <button id="approve" class="btn btn-success btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-check"></i> Approve</button>
                     <button id="reject" class="btn btn-danger bg-maroon btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-minus-circle"></i> Reject</button>
+                    <button id="aplha" class="btn btn-default btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-minus"></i> Aplha</button>
                 <?php endif; ?>
                 <a href="javascript:void(0)" onclick="window.history.go(-1)" class="btn btn-danger btn-lg"><i class="fa fa-times"></i> Kembali</a>
                 <!-- <button type="button" class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button> -->
@@ -128,7 +129,6 @@ $this->load->view('include/side_menu'); ?>
             </div>
         </div>
     </div>
-
 </div>
 <style>
     @page {
@@ -166,7 +166,7 @@ $this->load->view('include/side_menu'); ?>
         window.print($('#print_page'))
     })
 
-    $(document).on('click', '#approve,#revisi,#reject', function() {
+    $(document).on('click', '#approve,#revisi,#reject,#aplha', function() {
         let id = $(this).data('id');
         let act = $(this)[0].id;
         let note = $('#note').val()
