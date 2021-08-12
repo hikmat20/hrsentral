@@ -68,7 +68,7 @@ if(isset($_POST["username"])) {
 	$fileName = $userid.'_'.time().'_'.uniqid().'.jpg';
 	$file = $folderPath . $fileName;
 	file_put_contents($file, $image_base64);
-	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$latitude."','".$tipe."')";
+	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$longitude."','".$tipe."')";
 	mysqli_query($con, $sql);
 	mysqli_close($con);
 	$Arr_Return		= array(

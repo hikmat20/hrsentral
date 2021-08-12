@@ -39,7 +39,8 @@ class Absensi extends CI_Controller
      $postData = $this->input->post();
 	 $userlist=$this->session->userdata['User']['username'];
 	 if($Arr_Akses['update']=='1') $userlist='';
-     $data = $this->Absensi_model->GetListAbsensiJSON($postData,$userlist);
-     echo json_encode($data);
-	}
-	}
+		 $data = $this->Absensi_model->GetListAbsensiJSON($postData,$userlist);
+		 echo json_encode($data);
+	 }
+	 
+}

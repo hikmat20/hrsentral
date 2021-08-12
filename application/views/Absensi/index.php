@@ -38,11 +38,15 @@ $this->load->view('include/side_menu');
             <div class="box-body text-center text-black">
               <img id="idfoto" width="300" class="img-responsive img-thumbnail" src="<?=base_url("assets/img/karyawan/noimage.jpg")?>" alt="User Picture"><br />
               <h1 id="idnm_lengkap"></h1>
+              <p id="idnik"></p>
               <p id="idwaktu"></p>
               <p id="idtipe"></p>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Lokasi</strong>
+              <p id="idalamat" class="text-muted"></p>
             </div>
-            <div class="box-footer hidden">
-				<div id="map" style="height: 300px;width: 100%;"></div>
+            <div class="box-footer">
+				<div id="map_canvas" style="height: 300px;width: 100%;"></div>
             </div>
             <!-- /.box-body -->
           </div>	  
@@ -83,23 +87,55 @@ $this->load->view('include/side_menu');
         });
      });
 
-  	function view_data(nm_lengkap,waktu,foto,latitude,longitude,tipe){
+
+var geocoder;
+var map;
+var geoMarker;
+
+function initialize() {
+    map = new google.maps.Map(
+    document.getElementById("map_canvas"), {
+      center: new google.maps.LatLng(-6.243928791536213, 106.86912452203919),
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+  geoMarker = new google.maps.Marker();
+  geoMarker.setPosition(map.getCenter());
+  geoMarker.setMap(map);
+}
+google.maps.event.addDomListener(window, "load", initialize);
+
+  	function view_data(nm_lengkap,waktu,foto,latitude,longitude,tipe,nik){
 		$("#idnm_lengkap").html(nm_lengkap);
+		$("#idnik").html(nik);
 		$("#idwaktu").html(waktu);
-		$("#idtipe").html(tipe);
+		$("#idtipe").html('Absen : '+tipe);
 		$("#idfoto").attr("src", "<?=base_url("data_absen/")?>"+foto);
-		$("#idwaktu").html(waktu);
-/*
-        var panPoint = new google.maps.LatLng(latitude, longitude);
-        map.panTo(panPoint);
-		marker.setTitle("Nama :"+nm_lengkap+" | Absen :"+waktu);
-		marker.setPosition(panPoint);
-*/
+		$("#idwaktu").html(waktu);		
+		position = new google.maps.LatLng(latitude, longitude);
+		geoMarker.setPosition(position);
+		map.setCenter(position, 15); 
+		if(latitude!=''){
+			var alamat=GetAddress(latitude,longitude);
+		}else{
+			$("#idalamat").html('NOT FOUND');
+		}
+		
+		//geoMarker.setMap(map);
 		$("#dialog-popup").modal('show');
 	}
-</script>
-<script>
 
+         function GetAddress(latitude,longitude) {
+            var latlng = new google.maps.LatLng(latitude, longitude);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+//				console.log(results);
+                if (status == 'OK') {
+					$("#idalamat").html(results[0].formatted_address);
+                }
+				return;
+            });
+        }
 /*var map;
 function initialize(){
 	var myCenter = new google.maps.LatLng(-6.243928791536213, 106.86912452203919);

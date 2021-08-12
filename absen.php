@@ -28,11 +28,11 @@ if (mysqli_connect_errno()) die('Error Connection');
 				<div class="col-md-6 col-md-offset-3 col-sm-12">
 					<div class="panel panel-primary">
 						<div class="panel-heading">
-							<div id="my_camera" width="490" height="390" class="hidden"></div>
+							<div id="my_camera" class="img-responsive text-center"></div>
 							<strong class="text-center">ABSENSI</strong><br />
 							<input type=button value="Ambil Gambar" onClick="take_snapshot()" class="btn btn-danger">
 							<br />
-							<div id="results" style="padding:10px ; min-height: 250px"></div>
+							<div id="results"></div>
 						</div>
 						<div class="panel-body" style="background:#b3c4cb">
 							<input type="hidden" name="captcha" value="<?= $_SESSION["captcha"] ?>">
@@ -72,14 +72,15 @@ if (mysqli_connect_errno()) die('Error Connection');
 	<!-- Configure a few settings and attach camera -->
 	<script language="JavaScript">
 		Webcam.set({
-			width: 490,
-			height: 390,
+			width: 300,
+			height: 300,
 			image_format: 'jpg',
 			jpeg_quality: 50
 		});
 		Webcam.attach('#my_camera');
 
 		function take_snapshot() {
+			showPosition();
 			Webcam.snap(function(data_uri) {
 				$(".image-tag").val(data_uri);
 				document.getElementById('results').innerHTML = '<img src="' + data_uri + '" height="300" class="img-responsive" />';
@@ -96,19 +97,23 @@ if (mysqli_connect_errno()) die('Error Connection');
 				alert("Sorry, your browser does not support HTML5 geolocation.");
 			}
 		}
-		showPosition();
 
 		$(function() {
 			$('#simpan').click(function(e) {
 				e.preventDefault();
 				var users = $('#username').val();
 				var password = $('#password').val();
+				var koordinat = $("#latitude").val();
 				if (users == '' || users == null) {
 					alert("Username harus diisi.");
 					return false;
 				}
 				if (password == '' || password == null) {
 					alert("Password harus diisi.");
+					return false;
+				}
+				if (koordinat == '') {
+					alert("Harap GPS dihidupkan dan Ambil gambar lagi");
 					return false;
 				}
 				if ($('input[type=radio]:checked').size() < 1) {
