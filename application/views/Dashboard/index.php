@@ -17,7 +17,7 @@ $this->load->view('include/side_menu');
             <?php if ($dataApproval) : ?>
                 <div class="alert bg-yellow">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $dataApproval; ?> Pengajuan cuti karyawan diperlukan Approval Anda! <a class="btn btn-info btn-sm" href="/leavesapps/approval">Lihat</a>
+                    <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $dataApproval; ?> Pengajuan cuti karyawan diperlukan Approval Anda! <a class="btn btn-info btn-sm" href="<?= base_url('leavesapps/approval'); ?>">Lihat</a>
                 </div>
             <?php endif; ?>
             <div class="row">
