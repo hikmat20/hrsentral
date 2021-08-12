@@ -1,5 +1,12 @@
 <?php
-$this->load->view('include/side_menu'); ?>
+$this->load->view('include/side_menu');
+$flag_leave_type = [
+    'ALP' => 'Alpha',
+    'AMC' => 'Ambil Cuti',
+    'CBS' => 'Cuti Bersama',
+    'TMC' => 'Tambah Cuti',
+];
+?>
 
 <div class="box box-solid">
 
@@ -71,7 +78,7 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td>Status</td>
                                 <td height="20px" class="text-center">:</td>
-                                <td colspan="3">
+                                <td colspan="">
                                     <?php if ($employee->status == 'OPN') : ?>
                                         <label class="label-warning font-light label">Waiting Approval</label>
                                     <?php elseif ($employee->status == 'APV') : ?>
@@ -88,6 +95,7 @@ $this->load->view('include/side_menu'); ?>
                                         <label class="label-default label">Unknow Status</label>
                                     <?php endif; ?>
                                 </td>
+                                <td colspan="2">Keterangan Cuti : <label class="label label-warning font-light"><?= $flag_leave_type[$employee->flag_leave_type]; ?></label></td>
                             </tr>
                             <tr>
                                 <td>Keterangan</td>

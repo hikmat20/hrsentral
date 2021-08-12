@@ -52,6 +52,7 @@ $this->load->view('include/side_menu');
 						<th rowspan="2" width="50px"><small>No.</small></th>
 						<th rowspan="2" width="200px"><small>Tgl.</small></th>
 						<th colspan="3" class="text-center"><small>Cuti Tahunan</small></th>
+						<th rowspan="3" class="text-center"><small>Cuti Tahunan</small></th>
 						<th colspan="2" class="text-center"><small>Cuti Khusus</small></th>
 						<th colspan="2" class="text-center"><small>Cuti Urgent</small></th>
 						<th rowspan="2" class="text-center"><small>Keterangan</small></th>
@@ -69,6 +70,12 @@ $this->load->view('include/side_menu');
 				</thead>
 				<tbody>
 					<?php $n = 0;
+					$flag_leave_type = [
+						'ALP' => 'Alpha',
+						'AMC' => 'Ambil Cuti',
+						'CBS' => 'Cuti Bersama',
+						'TMC' => 'Tambah Cuti',
+					];
 					foreach ($empLeaveApps as $la) : $n++; ?>
 						<tr>
 							<td><?= $n; ?></td>
@@ -83,19 +90,22 @@ $this->load->view('include/side_menu');
 								<span class="badge bg-green"><?= $la->remaining_leave; ?></span>
 							</td>
 							<td class="text-center">
+								<span class="label label-warning font-light"><?= $flag_leave_type[$la->flag_leave_type]; ?></span>
+							</td>
+							<td class="text-center">
 								<span class="badge bg-green"><?= $la->special_leave; ?></span>
 							</td>
 							<td><?= $la->category_name; ?></td>
-							<td class="text-center"><?= $la->notpay_leave; ?></td>
-							<td><?= $la->notpay_leave_desc; ?></td>
-							<td><?= $la->descriptions; ?></td>
-							<td><?= $la->note; ?></td>
+							<td class="text-center"><span class="badge bg-green"><?= $la->notpay_leave; ?></span></td>
+							<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : '-'; ?></td>
+							<td><?= ($la->descriptions) ? $la->descriptions : '-'; ?></td>
+							<td><?= ($la->note) ? $la->note : '-'; ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
 			</table>
 			<br>
-			<h4><strong>Rekap Alpha</strong></h4>
+			<!-- <h4><strong>Rekap Alpha</strong></h4>
 			<table class="table table-condensed table-bordered">
 				<thead class="bg-danger">
 					<tr>
@@ -120,7 +130,7 @@ $this->load->view('include/side_menu');
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
-			</table>
+			</table> -->
 		<?php else : ?>
 			<table id="example1" class="table table-bordered table-striped">
 				<thead>

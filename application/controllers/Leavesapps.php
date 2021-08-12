@@ -500,6 +500,9 @@ class Leavesapps extends CI_Controller
             $msg_stat = 'Approval';
             $status = 'APV';
             $data['approved_at'] = date('Y-m-d H:i:s');
+            if ($leave->get_year_leave) {
+                $data['flag_leave_type'] = 'AMC';
+            }
             // $this->_updateSummary($id, $leave);
         } elseif ($act == 'reject') {
             $msg_stat = 'Reject';
