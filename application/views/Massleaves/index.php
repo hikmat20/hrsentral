@@ -21,7 +21,9 @@ $this->load->view('include/side_menu');
 			<thead>
 				<tr class='bg-blue'>
 					<th class="text-center">Id</th>
-					<th class="text-center">Date</th>
+					<th class="text-center">From Date</th>
+					<th class="text-center">To Date</th>
+					<th class="text-center">Day(s)</th>
 					<th class="text-center">Name</th>
 					<th class="text-center">Description</th>
 					<th class="text-center">Status</th>
@@ -35,26 +37,32 @@ $this->load->view('include/side_menu');
 					foreach ($row as $datas) {
 						$int++;
 						if ($datas->status == 'Y') {
-							$status = '<span class="label bg-green">Terpakai</span>';
+							$status = '<span class="label font-light bg-green">Terpakai</span>';
 						} else {
-							$status = '<span class="label bg-orange">Belum Terpakai</span>';
+							$status = '<span class="label font-light bg-orange">Belum Terpakai</span>';
 						}
 
 						echo "<tr>";
 						echo "<td align='left'>" . $datas->id . "</td>";
-						echo "<td align='left'>" . $datas->date . "</td>";
+						echo "<td align='center'>" . $datas->from_date . "</td>";
+						echo "<td align='center'>" . $datas->to_date . "</td>";
+						echo "<td align='center'>" . $datas->value_day . " Day(s)</td>";
 						echo "<td align='left'>" . $datas->name . "</td>";
 						echo "<td align='left'>" . $datas->descr . "</td>";
 						echo "<td align='center'>" . $status . "</td>";
-						echo "<td align='center'>";
+						echo "<td align=''>";
 						if ($datas->status == 'N') {
-							echo "<a href='#'  onClick='return approveData(\"{$datas->id}\")' class='btn btn-sm btn-success' title='Terpakai' data-role='qtip'><i class='fa fa-check'></i></a>&nbsp;";
-						}
-						if ($akses_menu['update'] == '1') {
-							echo "<a href='" . site_url('massleaves/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
-						}
-						if ($akses_menu['delete'] == '1') {
-							echo "&nbsp;<a href='#' onClick='return deleteData(\"{$datas->id}\");' class='btn btn-sm btn-danger' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
+							echo "<a href='#'  onClick='return post(\"{$datas->id}\")' class='btn btn-sm btn-success' title='Posting' data-role='qtip'><i class='fa fa-check'></i></a>&nbsp;";
+							if ($akses_menu['delete'] == '1') {
+								echo "<a href='#' onClick='return deleteData(\"{$datas->id}\");' class='btn btn-sm btn-danger' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>&nbsp;";
+							}
+							if ($akses_menu['update'] == '1') {
+								echo "<a href='" . site_url('massleaves/edit/' . $datas->id) . "' class='btn btn-sm btn-primary' title='Edit Data' data-role='qtip'><i class='fa fa-edit'></i></a>";
+							}
+						} else {
+							if ($akses_menu['update'] == '1') {
+								echo "<a href='javascript:void(0)' onClick='return unpost(\"{$datas->id}\")' class='btn btn-sm btn-warning' title='Unposting' data-role='qtip'><i class='fa fa-times'></i></a>";
+							}
 						}
 						echo "</td>";
 						echo "</tr>";
@@ -107,7 +115,8 @@ $this->load->view('include/side_menu');
 
 	}
 
-	function approveData(id) {
+	function post(id) {
+		console.log(id);
 		swal({
 				title: "Are you sure?",
 				text: "You will not be able to process again this data!",
@@ -116,17 +125,32 @@ $this->load->view('include/side_menu');
 				confirmButtonClass: "btn-danger",
 				confirmButtonText: "Yes, Process it!",
 				cancelButtonText: "No, cancel process!",
-				closeOnConfirm: true,
-				closeOnCancel: false
+				closeOnConfirm: false,
 			},
 			function(isConfirm) {
 				if (isConfirm) {
 					loading_spinner();
-					window.location.href = base_url + active_controller + '/approve/' + id;
+					$.ajax({
+						url: base_url + active_controller + '/post',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							console.log(result);
+						},
+						error: function(result) {
+							console.log(result);
+							swal({
+								title: "Error!",
+								text: "Internal Server Error!!",
+								type: "error",
+								closeOnConfirm: true,
+							})
+						}
+					})
+					// window.location.href = base_url + active_controller + '/approve/' + id;
 
-				} else {
-					swal("Cancelled", "Data can be process again :)", "error");
-					return false;
 				}
 			});
 

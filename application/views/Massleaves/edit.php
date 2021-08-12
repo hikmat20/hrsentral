@@ -38,17 +38,44 @@ $this->load->view('include/side_menu');
 				</div>
 			</div> -->
 			<div class='form-group row'>
-				<label class='label-control col-sm-2'><b>Date <span class='text-red'>*</span></b></label>
+				<label class='label-control col-sm-2'><b>From Date <span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-file"></i></span>
 						<?php
-						echo form_input(array('id' => 'date', 'name' => 'date', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Mass Leave Date'), $row[0]->date);
+						echo form_input(array('id' => 'from_date', 'name' => 'from_date', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'From Date'), $row[0]->from_date);
 						?>
 					</div>
 
 				</div>
 			</div>
+			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>To Date <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+						<?php
+						echo form_input(array('id' => 'to_date', 'name' => 'to_date', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'To Date'), $row[0]->to_date);
+						?>
+					</div>
+
+				</div>
+			</div>
+			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Value Day(s) <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-file"></i></span>
+						<?php
+						echo form_input(array('id' => 'value_day', 'name' => 'value_day', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Value Day', 'readonly' => 'readonly'), $row[0]->value_day);
+						?>
+						<span class="input-group-addon">Day(s)</span>
+
+					</div>
+
+				</div>
+			</div>
+
 			<div class='form-group row'>
 				<label class='label-control col-sm-2'><b> Leave Name<span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
@@ -71,7 +98,6 @@ $this->load->view('include/side_menu');
 						echo form_input(array('id' => 'descr', 'name' => 'descr', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Description'), $row[0]->descr);
 						?>
 					</div>
-
 				</div>
 			</div>
 
@@ -85,9 +111,7 @@ $this->load->view('include/side_menu');
 								Terpakai
 							</label>
 						</div>
-
 					</div>
-
 				</div>
 			</div>
 
@@ -103,6 +127,19 @@ $this->load->view('include/side_menu');
 
 <?php $this->load->view('include/footer'); ?>
 <script>
+	$(document).on('change', '#from_date,#to_date', function() {
+		let from_date = new Date($('#from_date').val());
+		let to_date = new Date($('#to_date').val());
+		if (from_date < to_date) {
+			calc = parseInt(to_date.getTime() || 0) - parseInt(from_date.getTime() || 0);
+			days = parseInt(calc) / parseInt(1000 * 3600 * 24) + 1;
+			// days = dateDifference(from_date, to_date);
+			$('#value_day').val(days)
+		} else {
+			$('#value_day').val(0)
+		}
+	})
+
 	$(document).ready(function() {
 		$('#simpan-bro').click(function() {
 			var id = $('#id').val();
@@ -205,5 +242,12 @@ $this->load->view('include/side_menu');
 					}
 				});
 		});
+	});
+	// Daterange Picker
+	$('#from_date,#to_date').datepicker({
+		dateFormat: 'yy-mm-dd',
+		changeMonth: true,
+		changeYear: true,
+		yearRange: 'c-10:c+1',
 	});
 </script>

@@ -16,15 +16,15 @@ $this->load->view('include/side_menu');
         <section class="content">
             <div class="row">
                 <div class="col-lg-6">
-                    <h3 for="" style="margin-top:0px">Data Absensi Karyawan</h3>
+                    <h3 for="" style="margin-top:0px">Data Absensi Karyawan <small>(Hari Ini)</small></h3>
                     <div class="table-responsie">
                         <table id="list-absensi" class="table table-bordered table-hover">
                             <thead class="bg-info">
                                 <tr>
                                     <th width="20px">No</th>
                                     <th width="">Tgl.</th>
-                                    <th class="text-center">Waktu</th>
                                     <th class="text-center">Absen</th>
+                                    <th class="text-center">Waktu</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -37,15 +37,17 @@ $this->load->view('include/side_menu');
                                     '5' => '<label class="label font-light bg-maroon">Lembur</label>',
                                     ''  => '<label class="label font-light label-default">Tidak diketahui</label>',
                                 ];
-                                foreach ($absensi as $absen) : $no++;
+                                if ($absensi) :
+                                    foreach ($absensi as $absen) : $no++;
                                 ?>
-                                    <tr>
-                                        <td><?= $no; ?></td>
-                                        <td class=""><?= date('D, d m Y', strtotime($absen->waktu)); ?></td>
-                                        <td class="text-center"><?= date('H:i:s', strtotime($absen->waktu)); ?></td>
-                                        <td class="text-center"><?= $type[$absen->tipe]; ?></td>
-                                    </tr>
-                                <?php endforeach ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td class=""><?= date('D, d m Y', strtotime($absen->waktu)); ?></td>
+                                            <td class="text-center"><?= $type[$absen->tipe]; ?></td>
+                                            <td class="text-center"><?= date('H:i:s', strtotime($absen->waktu)); ?></td>
+                                        </tr>
+                                <?php endforeach;
+                                endif;  ?>
                             </tbody>
                         </table>
                     </div>

@@ -156,4 +156,41 @@ class Massleaves extends CI_Controller
             redirect(site_url('massleaves'));
         }
     }
+
+    function post()
+    {
+        $controller            = ucfirst(strtolower($this->uri->segment(1)));
+        $Arr_Akses            = getAcccesmenu($controller);
+        if ($Arr_Akses['approve'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('massleaves'));
+        }
+        $id = $this->input->post('id');
+        $ml = $this->db->get_where('at_mass_leaves', ['id' => $id])->row();
+
+
+        $Arr_leave = [];
+        $this->db->select('id as employee_id,name,division_id');
+        $employees = $this->db->get('employees')->result_array();
+        $Arr_leave = $employees;
+
+        foreach ($employees as $key => $emp) {
+            $Arr_leave[$key] += [
+                'get_year_leave'   => '3',
+            ];
+        }
+
+        echo '<pre>';
+        print_r($Arr_leave);
+        echo '<pre>';
+        exit;
+
+        $this->db->where('id', $id);
+        $this->db->update("at_mass_leaves", ['status' => 'Y']);
+        if ($this->db->affected_rows() > 0) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully Approved..!!</div>");
+            history('Approve Data Mass Leaves id' . $id);
+            redirect(site_url('massleaves'));
+        }
+    }
 }

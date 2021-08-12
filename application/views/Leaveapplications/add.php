@@ -57,7 +57,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="col-sm-9 text-3right">
                             <span for="" class="text-muted">Sisa Cuti Tahunan : <span class="remaining_leave"><?= $totalLeave; ?></span> hari</span>
                             <div class="input-group hidden">
-                                <input type="text" name="remaining_leave" id="remaining_leave">
+                                <input type="text" name="remaining_leave" id="remaining_leave" value="<?= $totalLeave; ?>">
                             </div>
                         </div>
                     </div>

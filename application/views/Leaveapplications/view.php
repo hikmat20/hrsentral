@@ -73,15 +73,17 @@ $this->load->view('include/side_menu'); ?>
                                 <td height="20px" class="text-center">:</td>
                                 <td colspan="3">
                                     <?php if ($employee->status == 'OPN') : ?>
-                                        <label class="label-info label">Waiting Approval</label>
+                                        <label class="label-warning font-light label">Waiting Approval</label>
                                     <?php elseif ($employee->status == 'APV') : ?>
-                                        <label class="label-success label">Approved</label>
+                                        <label class="label-success font-light label">Approved</label>
                                     <?php elseif ($employee->status == 'CNL') : ?>
-                                        <label class="label-default label">Cancel</label>
+                                        <label class="label-default font-light label">Cancel</label>
                                     <?php elseif ($employee->status == 'REJ') : ?>
-                                        <label class="label-danger label">Rejected</label>
+                                        <label class="label-danger font-light label">Rejected</label>
                                     <?php elseif ($employee->status == 'REV') : ?>
-                                        <label class="label-warning label">Revision</label>
+                                        <label class="label-info font-light label">Revision</label>
+                                    <?php elseif ($employee->status == 'HIS') : ?>
+                                        <label class="bg-maroon font-light label">History</label>
                                     <?php else : ?>
                                         <label class="label-default label">Unknow Status</label>
                                     <?php endif; ?>
@@ -93,12 +95,20 @@ $this->load->view('include/side_menu'); ?>
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
                             <tr>
+                                <td>Dokumen Pendukung</td>
+                                <td height="100px" class="text-center">:</td>
+                                <td colspan="3">
+                                    <!-- <p><label for="">Nama Dokumen</label></p> -->
+                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Catatan</th>
                                 <td height="70px" class="text-center">:</td>
                                 <td colspan="3"><?= $employee->note; ?></td>
                             </tr>
                         </tbody>
-
                     </table>
                 </div>
                 <div class="table-responsive">

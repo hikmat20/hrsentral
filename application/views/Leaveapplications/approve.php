@@ -89,14 +89,22 @@ $this->load->view('include/side_menu'); ?>
                                 <td height="100px" class="text-center">:</td>
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
+                            <tr>
+                                <td>Dokumen Pendukung</td>
+                                <td height="100px" class="text-center">:</td>
+                                <td colspan="3">
+                                    <!-- <p><label for="">Nama Dokumen</label></p> -->
+                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                            </tr>
                         </tbody>
-
                     </table>
                 </div>
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label for="" class="col-md-2 control-label">Catatan:</label>
-                        <div class="col-md-10">
+                        <label for="" class="col-md-1 control-labe">Catatan:</label>
+                        <div class="col-md-11">
                             <textarea name="note" class="form-control" id="note" rows="3" placeholder="Catatan"><?= $employee->note; ?></textarea>
                         </div>
                     </div>
