@@ -47,12 +47,23 @@ if (mysqli_connect_errno()) die('Error Connection');
 								<label class="control-label text-blue">Password</label>
 								<input type="password" name="password" id="password" class="form-control" placeholder="Password" autocomplete="off" required>
 							</div>
-							<div class="form-group" style="padding-top:10px;">
+							<div class="form-group" style="padding-top:10px;" id="ctipe">
 								<?php
-								$sql = "select kode_1,kode_2 from ms_generate where tipe='tipe_absen' order by kode_1";
+								$sql = "select kode_1,kode_2 from ms_generate where tipe='tipe_absen' and kode_1<>'9' order by kode_1";
 								if ($result = mysqli_query($con, $sql)) {
 									while ($row = mysqli_fetch_row($result)) {
 										echo " <label><input id='tipe_$row[0]' name='tipe' type='radio' value='$row[0]' required> $row[1] </label> ";
+									}
+									mysqli_free_result($result);
+								}
+								?>
+							</div>
+							<div class="form-group" style="padding-top:10px;" id="cjam">Jam Kerja : 
+								<?php
+								$sql = "select id,name from at_shifts where id like 'KERJA%' order by id";
+								if ($result = mysqli_query($con, $sql)) {
+									while ($row = mysqli_fetch_row($result)) {
+										echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
 									}
 									mysqli_free_result($result);
 								}
@@ -116,8 +127,12 @@ if (mysqli_connect_errno()) die('Error Connection');
 					alert("Harap GPS dihidupkan dan Ambil gambar lagi");
 					return false;
 				}
-				if ($('input[type=radio]:checked').size() < 1) {
+				if ($('#ctipe input:radio:checked').size() < 1) {
 					alert("Pilihan harus diisi.");
+					return false;
+				}
+				if ($('#cjam input:radio:checked').size() < 1) {
+					alert("Pilihan jam kerja harus diisi.");
 					return false;
 				}
 				$('#simpan').val('Proses .....');
