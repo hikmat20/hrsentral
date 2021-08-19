@@ -82,7 +82,7 @@ class Shifts extends CI_Controller {
 			$data_session			= $this->session->userdata;			
 			$data['modified_by']	= $data_session['User']['username'];  
 			$data['modified']		= date('Y-m-d H:i:s');
-			if($this->master_model->getUpdate('Shifts',$data,'id',$this->input->post('id'))){
+			if($this->master_model->getUpdate('at_shifts',$data,'id',$this->input->post('id'))){
 				$Arr_Kembali		= array(
 					'status'		=> 1,
 					'pesan'			=> 'Edit Shifts Success. Thank you & have a nice day.......'
@@ -104,20 +104,14 @@ class Shifts extends CI_Controller {
 				redirect(site_url('Shifts'));
 			}
 			$arr_Where			= '';
-			$get_Data			= $this->master_model->getCompanies($arr_Where);
-			$get_Data2			= $this->master_model->getDivisions($arr_Where);
-			$get_Data3			= $this->master_model->getDepartments($arr_Where);
-			$detail				= $this->master_model->getData('Shifts','id',$id); 
+			$detail				= $this->master_model->getData('at_shifts','id',$id); 
 			$data = array(
 				'title'			=> 'Edit Shifts',
 				'action'		=> 'edit',
-				'data_companies'=> $get_Data,
-				'data_divisions'=> $get_Data2,
-				'data_department'=> $get_Data3,
 				'row'			=> $detail
 			);
 			
-			$this->load->view('Shifts/edit',$data);
+			$this->load->view('Shifts/form',$data);
 		}
 	}
 

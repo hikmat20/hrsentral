@@ -58,5 +58,28 @@ class Absensi_model extends CI_Model
         "aaData" => $data
      );
      return $response; 
-   }	
+   }
+   function GetReportAbsensi($postData=null){
+		$sqlwhere='';
+		if($postData['company_id']!='0') $sqlwhere.=" and e.company_id='".$postData['company_id']."'";
+		if($postData['division_id']!='0') $sqlwhere.=" and e.division_id='".$postData['division_id']."'";
+		if($postData['department_id']!='0') $sqlwhere.=" and e.department_id='".$postData['department_id']."'";
+		$sqlquery="SELECT a.id, a.user_id, a.waktu, a.jam_standar, a.tipe, b.employee_id, d.name, d.ndiv, d.ndept, d.ncomp FROM 
+		absensi_log a
+		JOIN users b ON a.user_id = b.username
+		join 
+		(select e.id,e.name,e.nik, f.name as ndiv, g.name as ndept, i.name as ncomp from employees e 
+		left join divisions f on e.division_id=f.id 
+		left join departments g on e.department_id=g.id
+		left join companies i on e.company_id=i.id ".($sqlwhere==''?'':" where 1=1 ".$sqlwhere)." ) d on b.employee_id=d.id 
+		where DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and  DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."' and (tipe='1' or tipe='9')
+		ORDER BY d.ndept, d.name asc,a.waktu desc";
+//		echo $sqlquery;
+		$query=$this->db->query($sqlquery);
+		if($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+   }
 }

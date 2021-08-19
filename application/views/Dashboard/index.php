@@ -22,14 +22,18 @@ $this->load->view('include/side_menu');
             <?php endif; ?>
             <div class="row">
                 <div class="col-lg-6">
-                    <h3 for="" style="margin-top:0px">Data Absensi Karyawan <small>(Hari Ini)</small></h3>
-                    <div class="table-responsie">
+                    <h3 for="" style="margin-top:0px">Absensi Karyawan
+					  <div class="pull-right">						
+						<a href="<?=base_url('absensi/form_absen')?>" class="btn btn-primary"><i class="fa fa-user"></i> Form Absen</a>
+					  </div>
+					</h3>
+                    <div>
                         <table id="list-absensi" class="table table-bordered table-hover">
                             <thead class="bg-info">
                                 <tr>
-                                    <th width="20px">No</th>
-                                    <th width="">Tgl.</th>
-                                    <th class="text-center">Absen</th>
+                                    <th width="10">No</th>
+                                    <th width="220">Tgl</th>
+                                    <th width="20" class="text-center">Absen</th>
                                     <th class="text-center">Waktu</th>
                                 </tr>
                             </thead>
@@ -48,9 +52,9 @@ $this->load->view('include/side_menu');
                                 ?>
                                         <tr>
                                             <td><?= $no; ?></td>
-                                            <td class=""><?= date('D, d m Y', strtotime($absen->waktu)); ?></td>
+                                            <td><?= date('D, d-m-Y', strtotime($absen->waktu)); ?></td>
                                             <td class="text-center"><?= $type[$absen->tipe]; ?></td>
-                                            <td class="text-center"><?= date('H:i:s', strtotime($absen->waktu)); ?></td>
+                                            <td class="text-center"><?= date('H:i', strtotime($absen->waktu)); ?></td>
                                         </tr>
                                 <?php endforeach;
                                 endif;  ?>
@@ -750,7 +754,9 @@ $this->load->view('include/side_menu');
     });
 
     $('#list-absensi').DataTable({
-        'searching': false,
-        "lengthChange": false
+		dom: 't',
+        "searching": false,
+        "lengthChange": false,
+		"ordering": false
     })
 </script>

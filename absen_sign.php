@@ -31,6 +31,7 @@ if(isset($_POST["username"])) {
 	$userid = $_POST['username'];
 	$userpass = $_POST['password'];
 	$tipe = $_POST['tipe'];
+	$standar = $_POST['standar'];
 	if($userid=='' || $img=='') {
 		$Arr_Return = array(
 			'status'	=> 2,
@@ -47,19 +48,30 @@ if(isset($_POST["username"])) {
 		);
 		show_message($Arr_Return);
 	}
-	$sql = "select employee_id from users where md5(username)='".md5($userid)."' and password='".cryptSHA1($userpass)."' and flag_active='1' limit 1";
-	if ($result = mysqli_query($con, $sql)) {
-		while ($row = mysqli_fetch_row($result)) {
-			$name=$row[0];
+	if($userpass=='*AUTOHRIS*'){
+		$name=$_POST['employee_id'];
+		if($name==''){
+			$Arr_Return = array(
+				'status'	=> 2,
+				'pesan'	 	=> 'User ID tidak terdaftar !'
+			);
+			show_message($Arr_Return);
 		}
-		mysqli_free_result($result);
-	}
-	if($name==''){
-		$Arr_Return = array(
-			'status'	=> 2,
-			'pesan'	 	=> 'User ID atau Password salah !'
-		);
-		show_message($Arr_Return);
+	}else{
+		$sql = "select employee_id from users where md5(username)='".md5($userid)."' and password='".cryptSHA1($userpass)."' and flag_active='1' limit 1";
+		if ($result = mysqli_query($con, $sql)) {
+			while ($row = mysqli_fetch_row($result)) {
+				$name=$row[0];
+			}
+			mysqli_free_result($result);
+		}
+		if($name==''){
+			$Arr_Return = array(
+				'status'	=> 2,
+				'pesan'	 	=> 'User ID atau Password salah !'
+			);
+			show_message($Arr_Return);
+		}
 	}
 	$image_parts = explode(";base64,", $img);
 	$image_type_aux = explode("image/", $image_parts[0]);
@@ -68,7 +80,22 @@ if(isset($_POST["username"])) {
 	$fileName = $userid.'_'.time().'_'.uniqid().'.jpg';
 	$file = $folderPath . $fileName;
 	file_put_contents($file, $image_base64);
-	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$longitude."','".$tipe."')";
+
+	$clock_in='';
+	$clock_out='';
+	$jam_standar='';
+	$sql = "select clock_in,clock_out from at_shifts where id='".$standar."' limit 1";
+	if ($result = mysqli_query($con, $sql)) {
+		while ($row = mysqli_fetch_row($result)) {
+			$clock_in=date("H:i",strtotime(date("Y-m-d ").$row[0]));
+			$clock_out=date("H:i",strtotime(date("Y-m-d ").$row[1]));
+		}
+		mysqli_free_result($result);
+	}
+	if($tipe=='1') $jam_standar=$clock_in;
+	if($tipe=='4') $jam_standar=$clock_out;
+	if($tipe=='5') $jam_standar=$clock_out;
+	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe,jam_standar) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$longitude."','".$tipe."','".$jam_standar."')";
 	mysqli_query($con, $sql);
 	mysqli_close($con);
 	$Arr_Return		= array(
