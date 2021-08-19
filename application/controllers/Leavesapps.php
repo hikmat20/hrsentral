@@ -553,6 +553,13 @@ class Leavesapps extends CI_Controller
             'status' => $status,
             'note' => $note
         ];
+        $absen = $this->db->get_where('users', ['employee_id' => $leave->employee_id])->row();
+
+        $dataAbsen = [
+            'employee_id' => $leave->employee_id,
+            'user_id' => $absen->username,
+            'flag_cuti' => 'C'
+        ];
 
         $fromUser       = $this->session->userdata['Employee'];
         // $head        = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
@@ -560,6 +567,7 @@ class Leavesapps extends CI_Controller
 
         $this->db->trans_begin();
         $this->db->update('leave_applications', $data, array('id' => $id));
+        $this->db->insert('absensi_log', $dataAbsen);
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
