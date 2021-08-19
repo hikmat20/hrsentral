@@ -39,8 +39,7 @@ $flag_leave_type = [
                             <tr>
                                 <td>Periode Tahun</td>
                                 <td class="text-center">:</td>
-                                <td colspan=""><?= $employee->periode_year; ?></td>
-                                <td colspan="3"><?= $employee->periode_year; ?></td>
+                                <td colspan="4"><?= $employee->periode_year; ?></td>
                             </tr>
                             <tr>
                                 <td>Hak Cuti Tahunan</td>
@@ -51,13 +50,18 @@ $flag_leave_type = [
 
                             </tr>
                             <tr>
-                                <td>Cuti Khusus</td>
+                                <td>Hak Cuti Sakit</td>
+                                <td class="text-center">:</td>
+                                <td colspan="3"><?= $employee->sick_leave; ?> hari</td>
+                            </tr>
+                            <tr>
+                                <td>Cuti Pemerintah</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->special_leave; ?> hari</td>
                                 <td colspan="2"><?= $employee->category_name; ?></td>
                             </tr>
                             <tr>
-                                <td>Cuti Urgent</td>
+                                <td>Cuti Tdk. Dibayar</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->notpay_leave; ?> hari</td>
                                 <td colspan="2">Keperluan : <?= ($employee->notpay_leave_desc) ? $employee->notpay_leave_desc : '-'; ?></td>
@@ -78,7 +82,7 @@ $flag_leave_type = [
                             <tr>
                                 <td>Status</td>
                                 <td height="20px" class="text-center">:</td>
-                                <td colspan="">
+                                <td colspan="2">
                                     <?php if ($employee->status == 'OPN') : ?>
                                         <label class="label-warning font-light label">Waiting Approval</label>
                                     <?php elseif ($employee->status == 'APV') : ?>
@@ -95,7 +99,6 @@ $flag_leave_type = [
                                         <label class="label-default label">Unknow Status</label>
                                     <?php endif; ?>
                                 </td>
-                                <td colspan="2">Keterangan Cuti : <label class="label label-warning font-light"><?= $flag_leave_type[$employee->flag_leave_type]; ?></label></td>
                             </tr>
                             <tr>
                                 <td>Keterangan</td>
@@ -107,8 +110,9 @@ $flag_leave_type = [
                                 <td height="100px" class="text-center">:</td>
                                 <td colspan="3">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
-                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
-                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : ''; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : ''; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : ''; ?>" alt="" height="200px">
                                 </td>
                             </tr>
                             <tr>

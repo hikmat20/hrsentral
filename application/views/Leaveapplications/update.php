@@ -64,7 +64,19 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     </div>
 
                     <div class="form-group">
-                        <label for="special_leave_category" class="col-md-3 control-label">Cuti Khusus <span class="text-red"></span></label>
+                        <label for="sick_leave" class="col-md-3 control-label">Cuti Sakit<span class="text-red"></span></label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" value="" <?= ($leaveApp->sick_leave) ? 'checked' : ''; ?> id="check_sick_leave">
+                                </span>
+                                <input type="number" value="<?= $leaveApp->sick_leave; ?>" name="sick_leave" id="sick_leave" class="form-control" placeholder="Jml. Hari">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special_leave_category" class="col-md-3 control-label">Cuti Pemerintah <span class="text-red"></span></label>
                         <div class="col-sm-12 col-md-9" style="margin-bottom: 8px;">
                             <select name="special_leave_category" id="special_leave_category" required class="form-control" required="required">
                                 <option value=""></option>
@@ -86,11 +98,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     </div>
 
                     <div class="form-group">
-                        <label for="notpay_leave_desc" class="col-md-3 control-label">Cuti Urgent <span class="text-red"></span></label>
+                        <label for="notpay_leave_desc" class="col-md-3 control-label">Cuti Tidak Dibayar <span class="text-red"></span></label>
                         <div class="col-md-9">
                             <div class="input-group">
                                 <span class="input-group-addon">
-                                    <input type="checkbox" value="" id="check_notpay_leave">
+                                    <input type="checkbox" value="" <?= ($leaveApp->notpay_leave) ? 'checked' : ''; ?> id="check_notpay_leave">
                                 </span>
                                 <input type="text" readonly value="<?= $leaveApp->notpay_leave_desc; ?>" name="notpay_leave_desc" id="notpay_leave_desc" class="form-control" placeholder="Keperluan Cuti">
                             </div>
@@ -196,32 +208,47 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             </div>
             <hr>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group text-center doc-special" style="display: none;">
+                <div class="col-md-4">
+                    <div class="form-group text-center doc-sick" <?= ($leaveApp->sick_leave) ? '' : 'style="display: none;"'; ?>>
+                        <!-- <label for="doc_sick_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
+                        <div class="col-sm-12" style="margin-bottom: 8px;">
+                            <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
+                            <input type="file" class="hidden" name="doc_sick_leave" id="doc_sick_leave">
+                            <input type="text" class="hidden" name="doc_sick_old">
+                            <div class="">
+                                <a href="<?= base_url('assets/documents/' . ($leaveApp->doc_sick_leave) ? $leaveApp->doc_sick_leave : 'document.png'); ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->doc_sick_leave) ? $leaveApp->doc_sick_leave : 'document.png'; ?>" alt="" id="prev_img_sick" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group text-center doc-special" <?= ($leaveApp->special_leave) ? '' : 'style="display: none;"'; ?>>
                         <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12">
                             <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Khusus</button>
                             <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
                             <input type="text" class="hidden" name="doc_special_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                <a href="<?= base_url('assets/documents/' . ($leaveApp->doc_special_leave) ? $leaveApp->doc_special_leave : 'document.png'); ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->doc_special_leave) ? $leaveApp->doc_special_leave : 'document.png'; ?>" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group text-center doc-notpay" style="display: none;">
+                <div class="col-md-4">
+                    <div class="form-group text-center doc-notpay" <?= ($leaveApp->notpay_leave) ? '' : 'style="display: none;"'; ?>>
                         <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12" style="margin-bottom: 8px;">
-                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Urgent</button>
+                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
                             <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
                             <input type="text" class="hidden" name="doc_notpay_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                <a href="<?= base_url('assets/documents/' . ($leaveApp->notpay_leave) ? $leaveApp->notpay_leave : 'document.png'); ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->notpay_leave) ? $leaveApp->notpay_leave : 'document.png'; ?>" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
                                 </a>
                             </div>
                         </div>
@@ -307,6 +334,27 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         $('#btn-doc-notpay').attr('disabled');
         $('#doc_notpay_leave').removeClass('doc_notpay_leave_req');
         $('.doc-notpay').hide('ease')
+        getLeave()
+    })
+
+    $(document).on('change', '#check_sick_leave', function() {
+        let check = $(this).prop('checked')
+        console.log(check)
+        if (check == true) {
+            $('#sick_leave_desc').removeAttr('readonly').addClass('sick_leave_desc_req').val('')
+            $('#sick_leave').removeAttr('readonly').addClass('sick_leave_req').val('')
+            $('#btn-doc-sick').removeAttr('disabled');
+            $('#doc_sick_leave').addClass('doc_sick_leave_req');
+            $('.doc-sick').show('ease')
+            return false;
+        }
+        $('#sick_leave_desc').attr('readonly', 'readonly').removeClass('sick_leave_desc_req').val('')
+        $('#sick_leave').attr('readonly', 'readonly').removeClass('sick_leave_req').val('')
+        $('#btn-doc-sick').attr('disabled');
+        $('#doc_sick_leave').removeClass('doc_sick_leave_req');
+        $('.doc-sick').hide('ease')
+        getLeave()
+
     })
 
     $(document).on('change', '#periode_year', function() {
@@ -486,6 +534,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let desc = $('#descriptions').val();
         let special_leave = $('.special_leave_req').val();
         let notpay_leave = $('.notpay_leave_req').val();
+        let sick_leave = $('.sick_leave_req').val();
         let nl_desc_req = $('.notpay_leave_desc_req').val();
         let nl_req = $('.notpay_leave_req').val();
         let from_date = $('#from_date').val();
@@ -495,8 +544,10 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let approval = $('#approval_by').val();
         let doc_special_leave = $('.doc_special_leave_req')[0] || '';
         let doc_notpay_leave = $('.doc_notpay_leave_req')[0] || '';
+        let doc_sick_leave = $('.doc_sick_leave_req')[0] || '';
         let doc_special = (doc_special_leave) ? doc_special_leave.files.length : '';
         let doc_notpay = (doc_notpay_leave) ? doc_notpay_leave.files.length : '';
+        let doc_sick = (doc_sick_leave) ? doc_sick_leave.files.length : '';
 
         console.log((doc_special) + ", " + doc_notpay);
         if (applied <= 0) {
@@ -510,7 +561,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Mohon mengisi pengambilan jumlah hari cuti khusus terlebih dahulu!'
+                text: 'Mohon mengisi pengambilan jumlah hari cuti pemerintah terlebih dahulu!'
+            })
+            return false;
+        } else if (sick_leave <= 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Mohon mengisi pengambilan jumlah hari cuti sakit terlebih dahulu!'
             })
             return false;
         } else if (nl_desc_req == '') {
@@ -580,7 +638,13 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Dokumen Pendukung cuti urgent belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
+                text: 'Dokumen Pendukung cuti tdk dibayar belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
+            })
+        } else if (doc_sick === 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Dokumen Pendukung cuti sakit/surat dokter belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
             })
 
         } else {
@@ -627,7 +691,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 
     })
 
-    $(document).on('change', '#get_year_leave,#special_leave,#notpay_leave', function() {
+    $(document).on('change', '#get_year_leave,#special_leave,#notpay_leave,#sick_leave', function() {
         getLeave();
     })
 
@@ -636,6 +700,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let getYearLeave = $('#get_year_leave').val() || 0;
         let specialLeave = $('#special_leave').val() || 0;
         let otherLeave = $('#notpay_leave').val() || 0;
+        let sickLeave = $('#sick_leave').val() || 0;
 
         if (yearLeave == 0) {
             getYearLeave = 0;
@@ -663,7 +728,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             $('.remaining_leave').text(remLeave);
         }
 
-        totalLeave = parseInt(getYearLeave) + parseInt(specialLeave) + parseInt(otherLeave);
+        totalLeave = parseInt(getYearLeave) + parseInt(specialLeave) + parseInt(otherLeave) + parseInt(sickLeave);
         $('#applied_leave').val(totalLeave);
         console.log(totalLeave);
         return false
@@ -673,6 +738,16 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         var reader = new FileReader();
         reader.onload = function() {
             var output = document.getElementById('prev_img_notpay');
+            output.src = reader.result;
+            // dataUpload = new FormData($('#dataUpload')[0]);
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    })
+
+    $(document).on('change', '#doc_sick_leave', function(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('prev_img_sick');
             output.src = reader.result;
             // dataUpload = new FormData($('#dataUpload')[0]);
         }

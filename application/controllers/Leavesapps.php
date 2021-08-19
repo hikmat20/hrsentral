@@ -370,6 +370,7 @@ class Leavesapps extends CI_Controller
 
         $data['id']                     = ($leaveApp_id != '' && $flag_revision == 'N') ? $leaveApp_id : $this->autoNumber();
         $data_session                   = $this->session->userdata;
+        $data['flag_leave_type']        = 'CT';
         $data['name']                   = $data_session['Employee']['name'];
         $data['employee_id']            = $data_session['Employee']['id'];
         $data['division_id']            = $data_session['Employee']['division_id'];
@@ -405,10 +406,10 @@ class Leavesapps extends CI_Controller
                 if ($data['doc_special_old']) {
                     unlink($upload['file_path'] . $data['doc_special_old']);
                 }
-                $data['doc_special_leave'] = $data['employee_id'] . "-" .  $upload['file_name'];
+                $data['doc_special_leave'] =  $upload['file_name'];
             }
         }
-        unset($data['doc_special_old']);
+
         if ($_FILES['doc_notpay_leave']['name']) {
             if (!$this->upload->do_upload('doc_notpay_leave')) {
                 $error = $this->upload->display_errors('', '');
@@ -428,10 +429,36 @@ class Leavesapps extends CI_Controller
                 if ($data['doc_notpay_old']) {
                     unlink($upload['file_path'] . $data['doc_notpay_old']);
                 }
-                $data['doc_notpay_leave'] = $data['employee_id'] . "-" . $upload['file_name'];
+                $data['doc_notpay_leave'] =  $upload['file_name'];
             }
         }
+
+        if ($_FILES['doc_sick_leave']['name']) {
+            if (!$this->upload->do_upload('doc_sick_leave')) {
+                $error = $this->upload->display_errors('', '');
+                $ArrCollback = [
+                    'msg' => $error,
+                    'status' => '0'
+                ];
+                echo json_encode($ArrCollback);
+                return false;
+            } else {
+                $upload = $this->upload->data();
+                $ArrCollback = [
+                    'msg' => 'Upload Berhasil',
+                    'status' => '1'
+                ];
+                $this->load->helper('file');
+                if ($data['doc_sick_old']) {
+                    unlink($upload['file_path'] . $data['doc_sick_old']);
+                }
+                $data['doc_sick_leave'] = $upload['file_name'];
+            }
+        }
+
         unset($data['doc_notpay_old']);
+        unset($data['doc_sick_old']);
+        unset($data['doc_special_old']);
 
         $this->db->trans_begin();
         if (!$leaveApp_id) {
@@ -500,9 +527,9 @@ class Leavesapps extends CI_Controller
             $msg_stat = 'Approval';
             $status = 'APV';
             $data['approved_at'] = date('Y-m-d H:i:s');
-            if ($leave->get_year_leave) {
-                $data['flag_leave_type'] = 'AMC';
-            }
+            // if ($leave->get_year_leave) {
+            //     $data['flag_leave_type'] = 'CT';
+            // }
             // $this->_updateSummary($id, $leave);
         } elseif ($act == 'reject') {
             $msg_stat = 'Reject';
@@ -514,7 +541,6 @@ class Leavesapps extends CI_Controller
         } elseif ($act == 'aplha') {
             $msg_stat = 'Alpha';
             $status = 'APV';
-            $data['flag_leave_type'] = 'ALP';
             $data['aplha_value'] = $leave->applied_leave;
             $data['get_year_leave'] = $leave->applied_leave;
             $data['remaining_leave'] = ($leave->unused_leave) - ($leave->applied_leave);

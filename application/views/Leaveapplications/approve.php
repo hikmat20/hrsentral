@@ -31,8 +31,7 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td>Periode Tahun</td>
                                 <td class="text-center">:</td>
-                                <td colspan=""><?= $employee->periode_year; ?></td>
-                                <td colspan="3"><?= $employee->periode_year; ?></td>
+                                <td colspan="4"><?= $employee->periode_year; ?></td>
                             </tr>
                             <tr>
                                 <td>Hak Cuti Tahunan</td>
@@ -43,13 +42,18 @@ $this->load->view('include/side_menu'); ?>
 
                             </tr>
                             <tr>
-                                <td>Cuti Khusus</td>
+                                <td>Cuti Sakit</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->special_leave; ?> hari</td>
                                 <td colspan="2"><?= $employee->category_name; ?></td>
                             </tr>
                             <tr>
-                                <td>Cuti Urgent</td>
+                                <td>Cuti Pemerintah</td>
+                                <td class="text-center">:</td>
+                                <td colspan="3"><?= $employee->sick_leave; ?> hari</td>
+                            </tr>
+                            <tr>
+                                <td>Cuti Tdk. Dibayar</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->notpay_leave; ?> hari</td>
                                 <td colspan="2">Keperluan : <?= ($employee->notpay_leave_desc) ? $employee->notpay_leave_desc : '-'; ?></td>
@@ -72,15 +76,15 @@ $this->load->view('include/side_menu'); ?>
                                 <td height="20px" class="text-center">:</td>
                                 <td colspan="3">
                                     <?php if ($employee->status == 'OPN') : ?>
-                                        <label class="label-info label">Waiting Approval</label>
+                                        <label class="label-warning font-light label">Waiting Approval</label>
                                     <?php elseif ($employee->status == 'APV') : ?>
-                                        <label class="label-success label">Approved</label>
+                                        <label class="label-success font-light label">Approved</label>
                                     <?php elseif ($employee->status == 'CNL') : ?>
-                                        <label class="label-default label">Cancel</label>
+                                        <label class="label-default font-light label">Cancel</label>
                                     <?php elseif ($employee->status == 'REJ') : ?>
-                                        <label class="label-danger label">Rejected</label>
+                                        <label class="label-danger font-light label">Rejected</label>
                                     <?php elseif ($employee->status == 'REV') : ?>
-                                        <label class="label-warning label">Revision</label>
+                                        <label class="label-info font-light label">Revision</label>
                                     <?php endif; ?>
                                 </td>
                             </tr>
@@ -96,6 +100,7 @@ $this->load->view('include/side_menu'); ?>
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
                                     <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
                                     <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="/assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                             </tr>
                         </tbody>
@@ -120,7 +125,7 @@ $this->load->view('include/side_menu'); ?>
                     <button id="revisi" class="btn btn-info btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-reply"></i> Revisi</button>
                     <button id="approve" class="btn btn-success btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-check"></i> Approve</button>
                     <button id="reject" class="btn btn-danger bg-maroon btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-minus-circle"></i> Reject</button>
-                    <button id="aplha" class="btn btn-default btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-minus"></i> Aplha</button>
+                    <!-- <button id="aplha" class="btn btn-default btn-lg" data-id="<?= $employee->id; ?>" type="button"><i class="fa fa-minus"></i> Aplha</button> -->
                 <?php endif; ?>
                 <a href="javascript:void(0)" onclick="window.history.go(-1)" class="btn btn-danger btn-lg"><i class="fa fa-times"></i> Kembali</a>
                 <!-- <button type="button" class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button> -->
