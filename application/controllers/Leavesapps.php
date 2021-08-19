@@ -522,11 +522,19 @@ class Leavesapps extends CI_Controller
         $act = $this->input->post('act');
         $note = $this->input->post('note');
         $leave      = $this->db->get_where('view_leave_applications', ['id' => $id])->row();
+        $absen = $this->db->get_where('users', ['employee_id' => $leave->employee_id])->row();
         $data = [];
+        $dataAbsen = [];
         if ($act == 'approve') {
             $msg_stat = 'Approval';
             $status = 'APV';
             $data['approved_at'] = date('Y-m-d H:i:s');
+            $dataAbsen = [
+                'employee_id' => $leave->employee_id,
+                'user_id' => $absen->username,
+                'flag_cuti' => 'C'
+            ];
+
             // if ($leave->get_year_leave) {
             //     $data['flag_leave_type'] = 'CT';
             // }
@@ -553,21 +561,18 @@ class Leavesapps extends CI_Controller
             'status' => $status,
             'note' => $note
         ];
-        $absen = $this->db->get_where('users', ['employee_id' => $leave->employee_id])->row();
-
-        $dataAbsen = [
-            'employee_id' => $leave->employee_id,
-            'user_id' => $absen->username,
-            'flag_cuti' => 'C'
-        ];
 
         $fromUser       = $this->session->userdata['Employee'];
         // $head        = $this->db->get_where('divisions_head', ['id' => $leave->approval_by])->row();
         $toUser         = $this->db->get_where('employees', ['id' => $leave->employee_id])->row();
 
         $this->db->trans_begin();
-        $this->db->update('leave_applications', $data, array('id' => $id));
-        $this->db->insert('absensi_log', $dataAbsen);
+        if ($data) {
+            $this->db->update('leave_applications', $data, array('id' => $id));
+        }
+        if ($dataAbsen) {
+            $this->db->insert('absensi_log', $dataAbsen);
+        }
 
         if ($this->db->trans_status() === FALSE) {
             $this->db->trans_rollback();
