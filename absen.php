@@ -27,12 +27,13 @@ if (mysqli_connect_errno()) die('Error Connection');
 			<div class="row text-center">
 				<div class="col-md-6 col-md-offset-3 col-sm-12">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div id="my_camera" class="img-responsive text-center"></div>
+						<div class="panel-heading"><center>
+							<div id="my_camera" class="img-responsive"></div>
 							<strong class="text-center">ABSENSI</strong><br />
 							<input type=button value="Ambil Gambar" onClick="take_snapshot()" class="btn btn-danger">
 							<br />
 							<div id="results"></div>
+							</center>
 						</div>
 						<div class="panel-body" style="background:#b3c4cb">
 							<input type="hidden" name="captcha" value="<?= $_SESSION["captcha"] ?>">
