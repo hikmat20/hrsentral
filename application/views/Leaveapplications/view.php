@@ -8,13 +8,12 @@ $flag_leave_type = [
 ];
 ?>
 
-<div class="box box-solid">
-
+<div class="box box-solid box-shadow" style="border-radius: 1rem;">
     <div class="box-body">
         <div class="row box-body" id="print_page">
             <div class="text-center">
                 <h3 class="text-bold">PENGAJUAN CUTI KARYAWAN</h3>
-                <h3 class="text-bold">PT SENTAL TEHNOLOGI MANAGEMEN</h3>
+                <h3 class="text-bold">PT. SENTRAL TEHNOLOGI MANAGEMEN</h3>
             </div>
             <hr>
             <div class="col-md-10 col-md-offset-1">
@@ -106,13 +105,22 @@ $flag_leave_type = [
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
                             <tr>
-                                <td>Dokumen Pendukung</td>
-                                <td height="100px" class="text-center">:</td>
-                                <td colspan="3">
+                                <td rowspan="2">Dokumen Pendukung</td>
+                                <td rowspan="2" class="text-center">:</td>
+                                <td class="text-center">Dok. Cuti Sakit/Surat Dokter</td>
+                                <td class="text-center">Dok. Cuti Pemerintah</td>
+                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+                            </tr>
+                            <tr height="100px">
+                                <td colspan="">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : ''; ?>" alt="" height="200px">
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : ''; ?>" alt="" height="200px">
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : ''; ?>" alt="" height="200px">
+                                    <img src="/assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                                <td colspan="">
+                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                                <td colspan="">
+                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                             </tr>
                             <tr>
@@ -123,12 +131,45 @@ $flag_leave_type = [
                         </tbody>
                     </table>
                 </div>
+
+                <div class="table-responsive">
+                    <?php
+                    $sttsApvHR = [
+                        'Y' => ' <label class="label-success label">Approved</label>',
+                        'N' => ' <label class="label-warning label">Waiting Approval</label>'
+                    ]; ?>
+                    <table class="table table-bordered table-responsive">
+                        <tbody>
+                            <tr>
+                                <td width="20%" class="">Stts. Approve HR</td>
+                                <td width="30px" class="text-center">:</td>
+                                <td class=""><?= ($employee->approved_hr) ? $sttsApvHR[$employee->approved_hr] : '-'; ?></td>
+                            </tr>
+                            <tr>
+                                <td class="">Total Pengajuan Cuti</td>
+                                <td width="30px" class="text-center">:</td>
+                                <td class=""><?= ($employee->applied_leave) ? $employee->applied_leave : '-'; ?> hari</td>
+                            </tr>
+                            <tr>
+                                <td class="">Aktual Cuti</td>
+                                <td class="text-center">:</td>
+                                <td class=""><?= ($employee->actual_leave) ? $employee->actual_leave : '-'; ?> hari</td>
+                            </tr>
+                            <tr>
+                                <td class="">Alpha</td>
+                                <td class="text-center">:</td>
+                                <td class=""><?= ($employee->alpha_value) ? $employee->alpha_value : '-'; ?> hari</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-responsive">
                         <tbody>
                             <tr>
                                 <td width="50%" class="text-center">Jakarta, <?= date('d M Y'); ?></td>
-                                <td class="text-center">Disetujui, <?= date('d M Y', strtotime($employee->approved_at)); ?></td>
+                                <td class="text-center">Disetujui, <?= ($employee->approved_at) ? date('d M Y', strtotime($employee->approved_at)) : '-'; ?></td>
                             </tr>
                             <tr>
                             </tr>
@@ -136,6 +177,7 @@ $flag_leave_type = [
                                 <td class="text-center text-bold"> ( <?= $employee->name; ?> )</td>
                                 <td class="text-center text-bold"> ( <?= $employee->approval_by_name; ?> )</td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
@@ -143,13 +185,11 @@ $flag_leave_type = [
         </div>
     </div>
 
-    <div class="box-footer">
+    <div class="box-footer" style="border-radius: 1rem;">
         <div class="row">
             <div class="col-md-12 text-center">
                 <button type="button" class="btn btn-default" id="print"><i class="fa fa-print"></i> Print</button>
                 <a href="javascript:void(0)" onclick="history.go(-1)" class="btn btn-danger"><i class="fa fa-times"></i> Cancel</a>
-            </div>
-            <div class="col-md-6">
             </div>
         </div>
     </div>

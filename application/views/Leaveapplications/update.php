@@ -212,11 +212,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     <div class="form-group text-center doc-sick" <?= ($leaveApp->sick_leave) ? '' : 'style="display: none;"'; ?>>
                         <!-- <label for="doc_sick_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12" style="margin-bottom: 8px;">
-                            <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
+                            <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Sakit/Surat Dokter</button>
                             <input type="file" class="hidden" name="doc_sick_leave" id="doc_sick_leave">
                             <input type="text" class="hidden" name="doc_sick_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/' . ($leaveApp->doc_sick_leave) ? $leaveApp->doc_sick_leave : 'document.png'); ?>" target="_blank">
+                                <a href="<?= base_url('assets/documents/'); ?><?= ($leaveApp->doc_sick_leave) ? $leaveApp->doc_sick_leave : 'document.png'; ?>" target="_blank">
                                     <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->doc_sick_leave) ? $leaveApp->doc_sick_leave : 'document.png'; ?>" alt="" id="prev_img_sick" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
                                 </a>
                             </div>
@@ -227,11 +227,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     <div class="form-group text-center doc-special" <?= ($leaveApp->special_leave) ? '' : 'style="display: none;"'; ?>>
                         <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12">
-                            <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Khusus</button>
+                            <button type="button" id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Pemerintah</button>
                             <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
                             <input type="text" class="hidden" name="doc_special_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/' . ($leaveApp->doc_special_leave) ? $leaveApp->doc_special_leave : 'document.png'); ?>" target="_blank">
+                                <a href="<?= base_url('assets/documents/'); ?><?= ($leaveApp->doc_special_leave) ? $leaveApp->doc_special_leave : 'document.png'; ?>" target="_blank">
                                     <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->doc_special_leave) ? $leaveApp->doc_special_leave : 'document.png'; ?>" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
                                 </a>
                             </div>
@@ -240,15 +240,15 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 </div>
 
                 <div class="col-md-4">
-                    <div class="form-group text-center doc-notpay" <?= ($leaveApp->notpay_leave) ? '' : 'style="display: none;"'; ?>>
+                    <div class="form-group text-center doc-notpay" <?= ($leaveApp->doc_notpay_leave) ? '' : 'style="display: none;"'; ?>>
                         <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12" style="margin-bottom: 8px;">
-                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
+                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
                             <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
                             <input type="text" class="hidden" name="doc_notpay_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/' . ($leaveApp->notpay_leave) ? $leaveApp->notpay_leave : 'document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->notpay_leave) ? $leaveApp->notpay_leave : 'document.png'; ?>" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                                <a href="<?= base_url('assets/documents/'); ?><?= ($leaveApp->doc_notpay_leave) ? $leaveApp->doc_notpay_leave : 'document.png'; ?>" target="_blank">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($leaveApp->doc_notpay_leave) ? $leaveApp->doc_notpay_leave : 'document.png'; ?>" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
                                 </a>
                             </div>
                         </div>
@@ -575,14 +575,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Mohon mengisi keterangan keperluan cuti urgent terlebih dahulu!'
+                text: 'Mohon mengisi keterangan keperluan cuti tdk dibayar terlebih dahulu!'
             })
             return false;
         } else if (nl_req <= 0) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Mohon mengisi pengambilan jumlah hari cuti urgent terlebih dahulu!'
+                text: 'Mohon mengisi pengambilan jumlah hari cuti tdk dibayar terlebih dahulu!'
             })
             return false;
         } else if (from_date == '') {
@@ -628,68 +628,90 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             })
             return false;
         } else if (doc_special === 0) {
+            textMsg = 'Pengajuan Cuti Pemerintah tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
             swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung cuti khusus belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-            return false;
-        } else if (doc_notpay === 0) {
-            swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung cuti tdk dibayar belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-        } else if (doc_sick === 0) {
-            swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung cuti sakit/surat dokter belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-
-        } else {
-            let formdata = new FormData($('#form-leave')[0]);
-            $.ajax({
-                url: '<?= base_url('leavesapps/save'); ?>',
-                data: formdata,
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(result, response) {
-                    if (result.status == 1) {
-                        swal({
-                            title: 'Succes',
-                            text: result.msg,
-                            type: 'success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function() {
-                            window.open('<?= base_url('leavesapps/'); ?>', '_self');
-                        }, 1500)
-                    } else if (result.status == 0) {
-                        swal({
-                            title: 'Kesalahan Upload',
-                            text: result.msg,
-                            type: 'warning',
-                        });
-                    }
-                    console.log(result + ", " + response);
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
                 },
-                error: function(result) {
-                    swal({
-                        title: 'Error!!',
-                        text: 'Internal Error',
-                        type: 'error'
-                    })
-
-                }
-            })
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else if (doc_notpay === 0) {
+            textMsg = 'Pengajuan Cuti Tdk. Dibayar tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
+            swal({
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
+                },
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else if (doc_sick === 0) {
+            textMsg = 'Pengajuan Cuti Sakit tidak disertain dokumen pendukung/surat dokter. Klik OK untuk melanjutkan.'
+            swal({
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
+                },
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else {
+            // alert(doc_special + ", " + doc_notpay + ", " + doc_sick)
+            save_application()
         }
-
     })
+
+    function save_application() {
+        let formdata = new FormData($('#form-leave')[0]);
+        $.ajax({
+            url: '<?= base_url('leavesapps/save'); ?>',
+            data: formdata,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(result, response) {
+                if (result.status == 1) {
+                    swal({
+                        title: 'Succes',
+                        text: result.msg,
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function() {
+                        window.open('<?= base_url('leavesapps/'); ?>', '_self');
+                    }, 1500)
+                } else if (result.status == 0) {
+                    swal({
+                        title: 'Kesalahan Upload',
+                        text: result.msg,
+                        type: 'warning',
+                    });
+                }
+                console.log(result + ", " + response);
+            },
+            error: function(result) {
+                swal({
+                    title: 'Error!!',
+                    text: 'Internal Error',
+                    type: 'error'
+                })
+            }
+        })
+    }
 
     $(document).on('change', '#get_year_leave,#special_leave,#notpay_leave,#sick_leave', function() {
         getLeave();

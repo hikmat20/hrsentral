@@ -106,18 +106,105 @@ class Leavesapps extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'approval_employee_id' => $employee_id]);
+
+        if ($this->session->userdata('Group')['id'] == 40) {
+            $get_Data          = $this->leavesModel->getFind(['status' => 'APV', 'approved_hr' => 'N']);
+        } else {
+            $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'approval_employee_id' => $employee_id]);
+        }
+
         $employees         = $this->employees_model->getEmployees();
         $data = array(
-            'title'            => 'Index Leave Applications',
+            'title'         => 'Index Leave Applications',
             'action'        => 'index',
             'religi'        => '0',
             'row'           => $get_Data,
             'employees'     => $employees,
             'access'        => $Arr_Akses
         );
+
         history('View Leave Applications');
         $this->load->view('Leaveapplications/index', $data);
+    }
+
+    public function approvalLeave($id)
+    {
+        $Arr_Akses            = getAcccesmenu($this->controller . '/approval');
+        if ($Arr_Akses['read'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('dashboard'));
+        }
+
+        $leaveApp           = $this->leavesModel->getFind(['id' => $id])[0];
+        $employees          = $this->leavesModel->getAllEmployees();
+        $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $leaveApp->employee_id]);
+        // $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        // $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
+        $division           = $this->employees_model->getData('divisions', 'id', $leaveApp->division_id)[0];
+
+        $leaveCategory      = $this->db->get('at_leaves')->result();
+        $divisionHead       = $this->db->get_where('divisions_head', ['id' => $leaveApp->division_id])->row();
+        $freq               = $this->leavesModel->getFreqLeave($leaveApp->id, 'LV001', 'APV');
+        $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
+        // $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
+        // $msl                = ($massLeave->count) ? $massLeave->count : 0;
+        $data = array(
+            'title'         => 'Approval Leave Applications',
+            'action'        => 'approvalLeave',
+            'religi'        => '0',
+            'leaveApp'      => $leaveApp,
+            'totalLeave'    => ($ly),
+            'employee'      => $leaveApp,
+            'employees'     => $employees,
+            'leaveCategory' => $leaveCategory,
+            'divisionHead'  => $divisionHead,
+            'division'      => $division,
+            'access'        => $Arr_Akses,
+            'freq'          => $freq,
+        );
+        history('Approval Applications by HR');
+        $this->load->view('Leaveapplications/approval_hr', $data);
+    }
+
+    public function approveHR()
+    {
+        $data = $this->input->post();
+
+        if ($data) {
+            $ArrData = [
+                'approved_hr' => 'Y',
+                'approved_hr_by' => $this->session->userdata('User')['id'],
+                'approved_hr_at' => date('Y-m-d H:i:s'),
+                'alpha_value' => $data['alpha'],
+                'actual_leave' => $data['actual_leave'],
+                'flag_alpha' => ($data['alpha']) ? 'Y' : 'N',
+                'modified_by' => $this->session->userdata('User')['id'],
+                'modified_at' => date('Y-m-d H:i:s')
+            ];
+            // echo '<pre>';
+            // print_r($ArrData);
+            // echo '<pre>';
+            // exit;
+            $this->db->trans_begin();
+            $this->db->update('leave_applications', $ArrData, array('id' => $data['id']));
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $ArrCollback        = array(
+                    'status'        => 0,
+                    'msg'           => 'Proses Approve Cuti gagal diproses. Mohon ulangi kembali.'
+                );
+            } else {
+                $this->db->trans_commit();
+                $ArrCollback        = array(
+                    'status'        => 1,
+                    'msg'           => 'Proses Approve Cuti berhasil.'
+                );
+                history('Save Leave Applications' . $data['id']);
+            }
+        }
+
+        echo json_encode($ArrCollback);
     }
 
     public function cancel_reject()
@@ -322,6 +409,7 @@ class Leavesapps extends CI_Controller
             'access'        => $Arr_Akses,
             'freq'          => $freq,
         );
+
 
         $this->load->view('Leaveapplications/update', $data);
     }
@@ -532,7 +620,8 @@ class Leavesapps extends CI_Controller
             $dataAbsen = [
                 'employee_id' => $leave->employee_id,
                 'user_id' => $absen->username,
-                'flag_cuti' => 'C'
+                'flag_cuti' => 'C',
+                'waktu' => date('Y-m-d H:i:s', strtotime($leave->from_date))
             ];
 
             // if ($leave->get_year_leave) {
@@ -627,6 +716,7 @@ class Leavesapps extends CI_Controller
         // $employee           = $this->session->userdata('Employee');
         $employee          = $this->leavesModel->getFind(['id' => $id]);
         $Arr_Akses          = getAcccesmenu($this->controller);
+        $employees          = $this->employees_model->getEmployees();
         // $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $leaveCategory      = $this->db->get('at_leaves')->result();
 
@@ -635,9 +725,11 @@ class Leavesapps extends CI_Controller
             'action'        => 'add',
             'religi'        => '0',
             'employee'      => $employee[0],
+            'employees'      => $employees,
             'leaveCategory' => $leaveCategory,
             'access'        => $Arr_Akses,
         );
+
         $this->load->view('Leaveapplications/view', $data);
     }
 

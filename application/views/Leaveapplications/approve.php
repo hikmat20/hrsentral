@@ -5,7 +5,7 @@ $this->load->view('include/side_menu'); ?>
         <div class="row box-body" id="print_page">
             <div class="text-center">
                 <h3 class="text-bold">PENGAJUAN CUTI KARYAWAN</h3>
-                <h3 class="text-bold">PT SENTAL TEHNOLOGI MANAGEMEN</h3>
+                <h3 class="text-bold">PT. SENTRAL TEHNOLOGI MANAGEMEN</h3>
             </div>
             <hr>
 
@@ -94,13 +94,23 @@ $this->load->view('include/side_menu'); ?>
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
                             <tr>
-                                <td>Dokumen Pendukung</td>
-                                <td height="100px" class="text-center">:</td>
-                                <td colspan="3">
+                                <td rowspan="2">Dokumen Pendukung</td>
+                                <td rowspan="2" class="text-center">:</td>
+                                <td class="text-center">Dok. Cuti Sakit/Surat Dokter</td>
+                                <td class="text-center">Dok. Cuti Pemerintah</td>
+                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+
+                            </tr>
+                            <tr height="100px">
+                                <td colspan="">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
-                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
-                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
                                     <img src="/assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                                <td colspan="">
+                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                </td>
+                                <td colspan="">
+                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                             </tr>
                         </tbody>
@@ -177,12 +187,13 @@ $this->load->view('include/side_menu'); ?>
         let note = $('#note').val()
         if (note == '' || note == null) {
             swal({
-                title: "Terjadi Kesalahan.",
+                title: "Peringatan!",
                 text: "Mohon isi catatan terlebih dahulu.",
                 type: "warning",
             })
             return false
         }
+
         swal({
                 title: "Are you sure?",
                 text: "You will not be able to process again this data!",

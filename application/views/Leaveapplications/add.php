@@ -209,7 +209,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     <div class="form-group text-center doc-special" style="display: none;">
                         <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12">
-                            <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Khusus</button>
+                            <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Pemerintah</button>
                             <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
                             <input type="text" class="hidden" name="doc_special_old">
                             <div class="">
@@ -225,7 +225,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     <div class="form-group text-center doc-notpay" style="display: none;">
                         <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
                         <div class="col-sm-12" style="margin-bottom: 8px;">
-                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Urgent</button>
+                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
                             <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
                             <input type="text" class="hidden" name="doc_notpay_old">
                             <div class="">
@@ -438,7 +438,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
     $(document).on('change', '#special_leave_category', function() {
         if ($(this).val() == '') {
             $('#special_leave').attr('readonly', 'readonly').val('').removeClass('special_leave_req');
-            $('#doc_special_leave').removeClass('doc_special_leave_req');
+            // $('#doc_special_leave').removeClass('doc_special_leave_req');
             $('.doc-special').hide('ease')
             getLeave()
         } else {
@@ -451,21 +451,24 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 },
                 dataType: 'JSON',
                 success: function(result) {
-                    console.log(result);
+                    // console.log(result);
                     if (result.document == 'Y') {
                         $('#btn-doc-special').removeAttr('disabled');
                         $('.doc-special').show('ease')
+                        $('#doc_special_leave').addClass('doc_special_leave_req');
+                        // console.log($('.doc_special_leave_req'));
                     } else {
                         $('#btn-doc-special').attr('disabled', 'disabled');
                         $('.doc-special').hide('ease')
+                        $('#doc_special_leave').removeClass('doc_special_leave_req');
                     }
                     if (result.values > 0) {
                         $('#special_leave').attr('readonly', 'readonly').val(result.values);
                         getLeave()
                         return false
                     }
-                    $('#doc_special_leave').addClass('doc_special_leave_req');
                     $('#special_leave').removeAttr('readonly').val('').addClass('special_leave_req');
+                    // console.log($('.doc_special_leave_req'));
                     getLeave()
                 },
 
@@ -483,7 +486,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             $('#doc_notpay_leave').removeClass('doc_notpay_leave_req');
             getLeave()
         } else {
-            // $('#notpay_leave').removeAttr('readonly');
             let id_category = $(this).val();
             $.ajax({
                 url: '<?= base_url('leavesapps/getLeaveCategory'); ?>',
@@ -532,7 +534,8 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let doc_notpay = (doc_notpay_leave) ? doc_notpay_leave.files.length : '';
         let doc_sick = (doc_sick_leave) ? doc_sick_leave.files.length : '';
 
-        console.log((doc_special) + ", " + doc_notpay);
+        console.log(doc_special + ", " + doc_notpay + ", " + doc_sick);
+        // return false
         if (applied <= 0) {
             swal({
                 title: 'Terjadi Kesalahan!',
@@ -604,68 +607,90 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             })
             return false;
         } else if (doc_special === 0) {
+            textMsg = 'Pengajuan Cuti Pemerintah tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
             swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung Cuti Pemerintah belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-            return false;
-        } else if (doc_notpay === 0) {
-            swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung Cuti Tidak Dibayar belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-        } else if (doc_sick === 0) {
-            swal({
-                title: 'Terjadi Kesalahan!',
-                type: 'warning',
-                text: 'Dokumen Pendukung cuti Sakit/Surat Dokter belum diupload. Mohon upload dokumen pendukung terlebih dahulu.'
-            })
-
-        } else {
-            let formdata = new FormData($('#form-leave')[0]);
-            $.ajax({
-                url: '<?= base_url('leavesapps/save'); ?>',
-                data: formdata,
-                type: 'POST',
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(result, response) {
-                    if (result.status == 1) {
-                        swal({
-                            title: 'Succes',
-                            text: result.msg,
-                            type: 'success',
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                        setTimeout(function() {
-                            window.open('<?= base_url('leavesapps/'); ?>', '_self');
-                        }, 1500)
-                    } else if (result.status == 0) {
-                        swal({
-                            title: 'Kesalahan Upload',
-                            text: result.msg,
-                            type: 'warning',
-                        });
-                    }
-                    console.log(result + ", " + response);
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
                 },
-                error: function(result) {
-                    swal({
-                        title: 'Error!!',
-                        text: 'Internal Error',
-                        type: 'error'
-                    })
-
-                }
-            })
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else if (doc_notpay === 0) {
+            textMsg = 'Pengajuan Cuti Tdk. Dibayar tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
+            swal({
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
+                },
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else if (doc_sick === 0) {
+            textMsg = 'Pengajuan Cuti Sakit tidak disertain dokumen pendukung/surat dokter. Klik OK untuk melanjutkan.'
+            swal({
+                    title: 'Peringatan!',
+                    type: 'warning',
+                    text: textMsg,
+                    showCancelButton: true
+                },
+                function(value) {
+                    if (value == true) {
+                        save_application()
+                    }
+                })
+        } else {
+            // alert(doc_special + ", " + doc_notpay + ", " + doc_sick)
+            save_application()
         }
-
     })
+
+    function save_application() {
+        let formdata = new FormData($('#form-leave')[0]);
+        $.ajax({
+            url: '<?= base_url('leavesapps/save'); ?>',
+            data: formdata,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(result, response) {
+                if (result.status == 1) {
+                    swal({
+                        title: 'Succes',
+                        text: result.msg,
+                        type: 'success',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function() {
+                        window.open('<?= base_url('leavesapps/'); ?>', '_self');
+                    }, 1500)
+                } else if (result.status == 0) {
+                    swal({
+                        title: 'Kesalahan Upload',
+                        text: result.msg,
+                        type: 'warning',
+                    });
+                }
+                console.log(result + ", " + response);
+            },
+            error: function(result) {
+                swal({
+                    title: 'Error!!',
+                    text: 'Internal Error',
+                    type: 'error'
+                })
+            }
+        })
+    }
 
     $(document).on('change', '#get_year_leave,#special_leave,#notpay_leave,#sick_leave', function() {
         getLeave();
@@ -720,6 +745,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         reader.readAsDataURL(event.target.files[0]);
 
     })
+
     $(document).on('change', '#doc_sick_leave', function(event) {
         var reader = new FileReader();
         reader.onload = function() {
