@@ -39,7 +39,7 @@ class Reports extends CI_Controller
 	public function kehadiran()
 	{
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));
-		$Arr_Akses			= getAcccesmenu($controller);
+		$Arr_Akses			= getAcccesmenu($controller . '/kehadiran');
 		if ($Arr_Akses['read'] != '1') {
 			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
 			redirect(site_url('dashboard'));
