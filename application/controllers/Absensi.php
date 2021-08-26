@@ -72,16 +72,20 @@ class Absensi extends CI_Controller
 			redirect(site_url('dashboard'));
 		}
 		$postData	= $this->input->post();
-		$results	= $this->Absensi_model->GetReportAbsensi($postData);
-		$data = array(
-			'title'		=> 'Report Absensi',
-			'action'	=> 'index',
-			'akses_menu'=> $Arr_Akses,
-			'tgl_awal'	=> $postData['tgl_awal'],
-			'tgl_akhir'	=> $postData['tgl_akhir'],
-			'results'  	=> $results,
-		);
-		$this->load->view('Absensi/report',$data);
+		if($postData){
+			$results	= $this->Absensi_model->GetReportAbsensi($postData);
+			$data = array(
+				'title'		=> 'Report Absensi',
+				'action'	=> 'index',
+				'akses_menu'=> $Arr_Akses,
+				'tgl_awal'	=> $postData['tgl_awal'],
+				'tgl_akhir'	=> $postData['tgl_akhir'],
+				'results'  	=> $results,
+			);
+			$this->load->view('Absensi/report',$data);
+		}else{
+			redirect('absensi/report');
+		}
 	}
 	
 	function form_absen(){

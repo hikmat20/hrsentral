@@ -1,6 +1,9 @@
 <?php
 $this->load->view('include/side_menu');
 ?>
+<style>
+
+</style>
 <div class="box">
 	<div class="box-body"><div class="table-responsive">
 		<table id="mytabledata" class="table table-bordered table-striped">
@@ -9,9 +12,9 @@ $this->load->view('include/side_menu');
 			<th>No</th>
 			<th>Nama</th>
 			<th>Departemen</th>
-			<th>Kumulatif Datang Terlambat</th>
-			<th>Frekuensi Keterlambatan</th>
-			<th>Rata-rata Keterlambatan</th>
+			<th width=80>Kumulatif<br/>Datang<br/>Terlambat</th>
+			<th width=80>Frekuensi<br/>Keterlambatan</th>
+			<th width=80>Rata-rata<br/>Keterlambatan</th>
 			<?php
 			$dates = range(strtotime($tgl_awal), strtotime($tgl_akhir),86400);
 			$range_of_dates = array_map("toDate", $dates);
@@ -35,6 +38,7 @@ $this->load->view('include/side_menu');
 		<tbody>
 		<?php
 		$nama='';$urutan=0;$numb=0; $colkdt=0;
+		$tgl_loop=''; $nama_loop='';
 		if(!empty($results)){			
 			foreach($results AS $record){ $numb++; 
 			  if($numb>1){
@@ -57,20 +61,21 @@ $this->load->view('include/side_menu');
 			  $nama=$record->name;
 			  $ndept=$record->ndept;
 			  $tanggal=date("Y-m-d",strtotime($record->waktu));
-			  if($record->tipe=='1'){
-				  $coltanggal[$tanggal]=date("H:i",strtotime($record->waktu));
-				  $datetime1 = strtotime($tanggal.' '.$record->jam_standar);
-				  $datetime2 = strtotime($record->waktu);
-				  $interval  = ($datetime2 - $datetime1);
-				  $minutes   = round(abs($interval) / 60);
-				  if($interval>0){
-					$colstatus[$tanggal]='1';
-					$colkdt=($colkdt+$minutes);
-					$colfk++;
+				  if($record->tipe=='1'){
+					  $coltanggal[$tanggal]=date("H:i",strtotime($record->waktu));
+					  $datetime1 = strtotime($tanggal.' '.$record->jam_standar);
+					  $datetime2 = strtotime($record->waktu);
+					  $interval  = ($datetime2 - $datetime1);
+					  $minutes   = round(abs($interval) / 60);
+					  if($interval>0){
+						$colstatus[$tanggal]='1';
+						$colkdt=($colkdt+$minutes);
+						$colfk++;
+					  }
+				  }else{
+					  $coltanggal[$tanggal]='CUTI';
 				  }
-			  }else{
-				  $coltanggal[$tanggal]='CUTI';
-			  }
+			  $tgl_loop=$tanggal;$nama_loop=$nama;
 			}
 			echo '<tr><td>'.$urutan.'</td><td>'.$nama.'</td><td>'.$ndept.'</td>
 			<td align=right>'.($colkdt==0?'':number_format($colkdt)).'</td>

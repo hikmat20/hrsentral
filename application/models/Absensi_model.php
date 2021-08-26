@@ -29,7 +29,7 @@ class Absensi_model extends CI_Model
      if($searchValue != '') {
         $searchQuery = " (a.user_id like '%".$searchValue."%' or d.name like '%".$searchValue."%' or a.waktu like '%".$searchValue."%' or b.employee_id like '%".$searchValue."%' or c.kode_2 like '%".$searchValue."%') ";
      }
-	 $fields = "SELECT a.id, a.user_id, a.foto, a.waktu, a.latitude, a.longitude, b.employee_id, c.kode_2, d.name ";
+	 $fields = "SELECT a.id, a.user_id, a.foto, a.waktu, a.latitude, a.longitude, a.flag_cuti, b.employee_id, c.kode_2, d.name ";
 	 $sql = " FROM absensi_log a LEFT JOIN users b ON a.user_id = b.username LEFT JOIN (select kode_1,kode_2 from ms_generate where tipe='tipe_absen') c ON a.tipe = c.kode_1 
 	 left join employees d on b.employee_id=d.id
 	 where 1 ".(($searchQuery=="")? "" :" and ".$searchQuery)." ".$sqluser;
@@ -39,7 +39,11 @@ class Absensi_model extends CI_Model
 	 $records=$this->db->query($fields.$sql." order by ".$columnName." ".$columnSortOrder." limit ".$start." , ".$rowperpage)->result();
 	 $data = array();
      foreach($records as $record ){
-		$detail='<a class="btn btn-info btn-sm" href="javascript:void(0)" title="View Detail" onclick="view_data(\''.$record->name.'\',\''.$record->waktu.'\',\''.$record->foto.'\','.$record->latitude.','.$record->longitude.',\''.$record->kode_2.'\',\''.$record->employee_id.'\')"><i class="fa fa-search"></i></a>';
+		 if($record->flag_cuti!=''){
+			$detail='CUTI';
+		 }else{
+			$detail='<a class="btn btn-info btn-sm" href="javascript:void(0)" title="View Detail" onclick="view_data(\''.$record->name.'\',\''.$record->waktu.'\',\''.$record->foto.'\','.$record->latitude.','.$record->longitude.',\''.$record->kode_2.'\',\''.$record->employee_id.'\')"><i class="fa fa-search"></i></a>';
+		 }
         $data[] = array( 
 		   "id"=>$record->id,
 		   "user_id"=>$record->employee_id,
@@ -72,7 +76,7 @@ class Absensi_model extends CI_Model
 		left join divisions f on e.division_id=f.id 
 		left join departments g on e.department_id=g.id
 		left join companies i on e.company_id=i.id ".($sqlwhere==''?'':" where 1=1 ".$sqlwhere)." ) d on b.employee_id=d.id 
-		where DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and  DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."' and (tipe='1' or tipe='9')
+		where DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and  DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."' and (tipe='1' or flag_cuti='C')
 		ORDER BY d.ndept, d.name asc,a.waktu desc";
 //		echo $sqlquery;
 		$query=$this->db->query($sqlquery);
