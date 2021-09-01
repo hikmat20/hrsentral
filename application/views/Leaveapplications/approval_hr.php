@@ -43,7 +43,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 
                             </tr>
                             <tr>
-                                <td>Hak Cuti Sakit</td>
+                                <td>Sakit</td>
                                 <td class="text-center">:</td>
                                 <td colspan="3"><?= $employee->sick_leave; ?> hari</td>
                             </tr>
@@ -101,7 +101,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <tr>
                                 <td rowspan="2">Dokumen Pendukung</td>
                                 <td rowspan="2" class="text-center">:</td>
-                                <td class="text-center">Dok. Cuti Sakit/Surat Dokter</td>
+                                <td class="text-center">Dok. Surat Sakit/Surat Dokter</td>
                                 <td class="text-center">Dok. Cuti Pemerintah</td>
                                 <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
                             </tr>

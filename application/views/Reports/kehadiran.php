@@ -48,6 +48,4 @@ $this->load->view('include/side_menu');
     </div>
 
 </div>
-
-
 <?php $this->load->view('include/footer'); ?>
