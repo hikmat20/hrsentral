@@ -63,7 +63,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     </div>
 
                     <div class="form-group">
-                        <label for="special_leave_category" class="col-md-3 control-label">Cuti Sakit <span class="text-red"></span></label>
+                        <label for="special_leave_category" class="col-md-3 control-label">Sakit <span class="text-red"></span></label>
                         <div class="col-sm-12 col-md-9" style="margin-bottom: 8px;">
                             <div class="input-group">
                                 <span class="input-group-addon">
@@ -254,7 +254,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 <div class="box box-solid rounded-1 box-shadow">
     <div class="box-body">
         <div class="box-header">
-            <h2 class="box-title font-nunito">Frekuensi Cuti Sakit</h2>
+            <h2 class="box-title font-nunito">Frekuensi Sakit</h2>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-responsive table-condensed">
@@ -383,8 +383,8 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         let from_date = ($('#from_date').val());
         let until_date = ($('#until_date').val());
 
-        // calc = parseInt(until_date.getTime() || 0) - parseInt(from_date.getTime() || 0);
-        // days = parseInt(calc) / parseInt(1000 * 3600 * 24);
+        // calc = parseFloat(until_date.getTime() || 0) - parseFloat(from_date.getTime() || 0);
+        // days = parseFloat(calc) / parseFloat(1000 * 3600 * 24);
         // days = dateDifference(from_date, until_date);
 
         if (applied_leave) {
@@ -578,14 +578,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 text: 'Tanggal akhir cuti belum di isi.'
             })
             return false;
-        } else if (parseInt(total_days) > parseInt(applied)) {
+        } else if (parseFloat(total_days) > parseFloat(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Jumlah hari yang diajukan tidak sama atau melebihi dari total cuti!.'
             })
             return false;
-        } else if (parseInt(total_days) < parseInt(applied)) {
+        } else if (parseFloat(total_days) < parseFloat(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
@@ -633,7 +633,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     }
                 })
         } else if (doc_sick === 0) {
-            textMsg = 'Pengajuan Cuti Sakit tidak disertain dokumen pendukung/surat dokter. Klik OK untuk melanjutkan.'
+            textMsg = 'Pengajuan Sakit tidak disertain dokumen pendukung/surat dokter. Klik OK untuk melanjutkan.'
             swal({
                     title: 'Peringatan!',
                     type: 'warning',
@@ -713,7 +713,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             //     text: 'Hak Cuti Tahunan tidak tersedia!',
             //     type: 'warning'
             // })
-        } else if (parseInt(getYearLeave) > parseInt(yearLeave)) {
+        } else if (parseFloat(getYearLeave) > parseFloat(yearLeave)) {
             getYearLeave = 0;
             $('#get_year_leave').val('0');
             $('#remaining_leave').val(yearLeave);
@@ -724,12 +724,12 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 type: 'warning'
             })
         } else {
-            remLeave = (parseInt(yearLeave)) - parseInt(getYearLeave);
+            remLeave = (parseFloat(yearLeave)) - parseFloat(getYearLeave);
             $('#remaining_leave').val(remLeave);
             $('.remaining_leave').text(remLeave);
         }
 
-        totalLeave = parseInt(getYearLeave) + parseInt(specialLeave) + parseInt(otherLeave) + parseInt(sickLeave);
+        totalLeave = parseFloat(getYearLeave) + parseFloat(specialLeave) + parseFloat(otherLeave) + parseFloat(sickLeave);
         $('#applied_leave').val(totalLeave);
         console.log(getYearLeave + ", " + specialLeave + ", " + otherLeave + ", " + totalLeave);
         return false

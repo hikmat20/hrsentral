@@ -42,7 +42,7 @@ $this->load->view('include/side_menu'); ?>
 
                             </tr>
                             <tr>
-                                <td>Cuti Sakit</td>
+                                <td>Sakit</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->special_leave; ?> hari</td>
                                 <td colspan="2"><?= $employee->category_name; ?></td>
@@ -96,7 +96,7 @@ $this->load->view('include/side_menu'); ?>
                             <tr>
                                 <td rowspan="2">Dokumen Pendukung</td>
                                 <td rowspan="2" class="text-center">:</td>
-                                <td class="text-center">Dok. Cuti Sakit/Surat Dokter</td>
+                                <td class="text-center">Dok. Surat Sakit/Surat Dokter</td>
                                 <td class="text-center">Dok. Cuti Pemerintah</td>
                                 <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
 

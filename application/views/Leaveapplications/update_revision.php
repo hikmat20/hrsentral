@@ -224,7 +224,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 <div class="box box-solid rounded-1 box-shadow">
     <div class="box-body">
         <div class="box-header">
-            <h2 class="box-title font-nunito">Frekuensi Cuti Sakit</h2>
+            <h2 class="box-title font-nunito">Frekuensi Sakit</h2>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-responsive table-condensed">
@@ -518,14 +518,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 text: 'Tanggal akhir cuti belum di isi.'
             })
             return false;
-        } else if (parseInt(total_days) > parseInt(applied)) {
+        } else if (parseFloat(total_days) > parseFloat(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Jumlah hari yang diajukan tidak sama atau melebihi dari total cuti!.'
             })
             return false;
-        } else if (parseInt(total_days) < parseInt(applied)) {
+        } else if (parseFloat(total_days) < parseFloat(applied)) {
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
@@ -624,7 +624,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 text: 'Hak Cuti Tahunan tidak tersedia!',
                 type: 'warning'
             })
-        } else if (parseInt(getYearLeave) > parseInt(yearLeave)) {
+        } else if (parseFloat(getYearLeave) > parseFloat(yearLeave)) {
             getYearLeave = 0;
             $('#get_year_leave').val('0');
             $('#remaining_leave').val(yearLeave);
@@ -635,12 +635,12 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 type: 'warning'
             })
         } else {
-            remLeave = (parseInt(yearLeave)) - parseInt(getYearLeave);
+            remLeave = (parseFloat(yearLeave)) - parseFloat(getYearLeave);
             $('#remaining_leave').val(remLeave);
             $('.remaining_leave').text(remLeave);
         }
 
-        totalLeave = parseInt(getYearLeave) + parseInt(specialLeave) + parseInt(otherLeave);
+        totalLeave = parseFloat(getYearLeave) + parseFloat(specialLeave) + parseFloat(otherLeave);
         $('#applied_leave').val(totalLeave);
         console.log(totalLeave);
         return false

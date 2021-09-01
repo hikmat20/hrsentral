@@ -99,7 +99,7 @@ $this->load->view('include/side_menu');
 							<td><?= ($la->category_name) ? $la->category_name : ''; ?></td>
 							<td class="text-center"><span class="badge bg-red"><?= $la->notpay_leave; ?></span></td>
 							<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : ''; ?></td>
-							<td><span class="badge bg-default"><?= ($la->aplha_value) ? $la->aplha_value : ''; ?></span></td>
+							<td><span class="badge bg-default"><?= ($la->alpha_value) ? $la->alpha_value : ''; ?></span></td>
 							<td><?= ($la->descriptions) ? $la->descriptions : ''; ?></td>
 							<td><?= ($la->note) ? $la->note : ''; ?></td>
 						</tr>
@@ -125,7 +125,7 @@ $this->load->view('include/side_menu');
 							<td><?= $n; ?></td>
 							<td><?= date("D, m d Y", strtotime($la->created_at)); ?></td>
 							<td class="text-center">
-								<span class="badge bg-red"><?= $la->aplha_value; ?> hari</span>
+								<span class="badge bg-red"><?= $la->alpha_value; ?> hari</span>
 							</td>
 							<td><?= $la->descriptions; ?></td>
 							<td><?= $la->note; ?></td>
