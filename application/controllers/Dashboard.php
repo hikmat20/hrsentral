@@ -65,7 +65,7 @@ class Dashboard extends CI_Controller
 		$CNL = (isset($leaveCount['CNL'])) ? $leaveCount['CNL'] : 0;
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
 		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
-		$absensi = $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
+		$absensi = $this->db->query("SELECT a.id, a.user_id, a.foto, a.waktu, a.latitude, a.longitude, a.flag_cuti, b.employee_id, c.kode_2, d.name FROM absensi_log a LEFT JOIN users b ON a.user_id = b.username LEFT JOIN (select kode_1,kode_2 from ms_generate where tipe='tipe_absen') c ON a.tipe = c.kode_1 left join employees d on b.employee_id=d.id where b.employee_id='".$userLogin."' and DATE_FORMAT(a.waktu, '%Y-%m-%d') ='".date('Y-m-d')."'")->result();
 		$dataApproval = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN'])->row();
 
 		$data = array(
