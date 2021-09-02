@@ -1,6 +1,5 @@
 <?php
 $this->load->view('include/side_menu');
-
 $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 ?>
 
@@ -16,20 +15,21 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="form-group">
                             <label for="employee_id" class="col-sm-3 control-label">Employee <span class="text-red">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="employee_id" id="employee_id" required readonly value="<?= $employee['id']; ?>">
-                                <input type="text" class="form-control" name="name" id="employee_name" readonly value="<?= $employee['name']; ?>">
+                                <input type="text" class="form-control" name="id" id="id" readonly value="<?= $employee->id; ?>">
+                                <input type="text" class="form-control" name="employee_id" id="employee_id" readonly value="<?= $employee->employee_id; ?>">
+                                <input type="text" class="form-control" name="name" id="employee_name" readonly value="<?= $employee->name; ?>">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="division" class="col-sm-3 control-label">Division</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" name="division_id" readonly value="<?= $division->id; ?>">
+                                <input type="text" class="form-control" name="division_id" readonly value="<?= $employee->division_id; ?>">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="periode_year" class="col-sm-3 control-label">Year Periode <span class="text-red">*</span></label>
                             <div class="col-sm-9">
-                                <input type="text" name="periode_year" class="form-control" value="<?= date('Y'); ?>">
+                                <input type="text" name="periode_year" class="form-control" value="<?= ($employee->periode_year) ? $employee->periode_year : date('Y'); ?>">
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                <input type="date" name="from_date" min="<?= date('Y-m-d', strtotime(date('Y-m-d') . "-1 Month")); ?>" class="form-control" id="from_date">
+                                <input type="date" name="from_date" min="<?= date('Y-m-d', strtotime(date('Y-m-d') . "-1 Month")); ?>" value="<?= $employee->from_date; ?>" class="form-control" id="from_date">
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="col-sm-9">
                             <div class="input-group">
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                                <input type="date" name="until_date" min="<?= date('Y-m-d', strtotime(date('Y-m-d') . "-1 Month")); ?>" class="form-control" id="until_date">
+                                <input type="date" name="until_date" min="<?= date('Y-m-d', strtotime(date('Y-m-d') . "-1 Month")); ?>" value="<?= $employee->until_date; ?>" class="form-control" id="until_date">
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <label for="total_days" class="col-sm-3 control-label">Jumlah Hari </label>
                         <div class="col-sm-9">
                             <div class="input-group">
-                                <input type="text" readonly name="total_days" class="form-control" id="total_days" placeholder="0">
+                                <input type="text" readonly name="total_days" value="<?= $employee->total_days; ?>" class="form-control" id="total_days" placeholder="0">
                                 <span class="input-group-addon">hari</span>
                             </div>
                         </div>
@@ -84,24 +84,24 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="col-md-9">
                             <select name="request_by" id="request_by" class="form-control" style="margin-bottom:10px">
                                 <option value=""></option>
-                                <option value="CLIENT">Client</option>
-                                <option value="OTHER">Lainnya</option>
+                                <option value="CLIENT" <?= ($employee->request_by == 'CLIENT') ? 'selected' : ''; ?>>Client</option>
+                                <option value="OTHER" <?= ($employee->request_by == 'OTHER') ? 'selected' : ''; ?>>Lainnya</option>
                             </select>
-                            <input style="margin-top:10px" disabled name="reason_request" id="reason_request" class="form-control" required="required" placeholder="Asal Permintaan Lainnya">
+                            <input style="margin-top:10px" <?= ($employee->reason_request) ? '' : 'disabled'; ?> name="reason_request" value="<?= ($employee->reason_request) ? $employee->reason_request : ''; ?>" id="reason_request" class="form-control" required="required" placeholder="Asal Permintaan Lainnya">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="" class="col-md-3 control-label">Alasan <span class="text-red">*</span></label>
                         <div class="col-md-9">
-                            <textarea name="reason" id="reason" class="form-control" rows="3" required="required" placeholder="Alasan"></textarea>
+                            <textarea name="reason" id="reason" class="form-control" rows="3" required="required" placeholder="Alasan"><?= $employee->reason; ?></textarea>
                         </div>
                     </div>
 
                     <div class="form-group hidden">
                         <label for="approval_by" class="col-md-3 control-label">Approval By <span class="text-red">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" name="approval_by" id="approval_by" value="<?= ($divisionHead) ? $divisionHead->id : ''; ?>">
+                            <input type="text" name="approval_by" id="approval_by" value="<?= ($employee->approval_by) ? $employee->approval_by : '' ?>">
                         </div>
                     </div>
                 </div>
@@ -114,10 +114,10 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         <div class="col-sm-12">
                             <button type="button" id="btn-doc" onclick="$('#doc').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung</button>
                             <input type="file" class="hidden" name="doc" id="doc">
-                            <input type="text" class="hidden" name="doc_old">
+                            <input type="text" class="hidden" value="<?= ($employee->doc) ? $employee->doc : ''; ?>" name="doc_old">
                             <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev" class="img-responsive img-thumbnail" style="max-height: 250px;">
+                                <a href="<?= base_url('assets/dokumen_pengajuan/'); ?><?= ($employee->doc) ? $employee->doc : 'document.png'; ?>" target="_blank">
+                                    <img src="<?= base_url('assets/dokumen_pengajuan/'); ?><?= ($employee->doc) ? $employee->doc : 'document.png'; ?>" alt="" id="prev" class="img-responsive img-thumbnail" style="max-height: 250px;">
                                 </a>
                             </div>
                         </div>
