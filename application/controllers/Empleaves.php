@@ -55,22 +55,22 @@ class Empleaves extends CI_Controller
 			// $leaveSum = $this->db->get()->row()->leave;
 
 			$this->db->trans_begin();
-			// $row = $this->db->get_where('employees_leave_summary', ['employee_id' => $data['employee_id']])->row();
-			// $dataSum = [
-			// 	'id' 					=> $this->employees_model->code_otomatis('employees_leave_summary', 'ELS'),
-			// 	'employee_id' 			=> $data['employee_id'],
-			// 	'total_leave' 			=> $data['leave'] + $leaveSum,
-			// 	'remaining_leave' 		=> $data['leave'] + $leaveSum,
-			// 	'created' 				=> date('Y-m-d H:i:s'),
-			// 	'created_by' 			=> $data_session['User']['username'],
-			// ];
+			$row = $this->db->get_where('employees_leave_summary', ['employee_id' => $data['employee_id']])->row();
+			$dataSum = [
+				'id' 					=> $this->employees_model->code_otomatis('employees_leave_summary', 'ELS'),
+				'employee_id' 			=> $data['employee_id'],
+				'date_update' 			=> date('Y-m-d'),
+				'total_leave' 			=> $data['leave'],
+				'description' 			=> 'Updated by system #HRD',
+				'updated_at' 			=> date('Y-m-d H:i:s')
+			];
 
-			// if (!$row) {
-			// 	$this->db->insert('employees_leave_summary', $dataSum);
-			// } else {
-			// 	unset($dataSum['id']);
-			// 	$this->db->update('employees_leave_summary', $dataSum, ['id' => $row->id]);
-			// }
+			if (!$row) {
+				$this->db->insert('employees_leave_summary', $dataSum);
+			} else {
+				unset($dataSum['id']);
+				$this->db->update('employees_leave_summary', $dataSum, ['id' => $row->id]);
+			}
 
 			$this->employees_model->simpan('employees_leave', $data);
 
