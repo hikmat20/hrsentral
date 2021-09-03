@@ -38,7 +38,7 @@ class Pengganti extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data          = $this->db->where(['status' => 'OPN', 'employee_id' => $employee_id])->or_where(['division_employee_id' => $employee_id])->get('view_pengganti')->result();
+        $get_Data          = $this->db->where(['status' => 'OPN', 'division_employee_id' => $employee_id])->or_where(['employee_id' => $employee_id])->get('view_pengganti')->result();
 
         $employees         = $this->employees_model->getData('employees');
         $phone = [];
@@ -134,6 +134,81 @@ class Pengganti extends CI_Controller
         );
         $this->load->view('Pengganti/view', $data);
     }
+
+    public function approval()
+    {
+        $Arr_Akses            = getAcccesmenu($this->controller . '/approval');
+        $employee_id          = $this->session->User['employee_id'];
+
+        if ($Arr_Akses['read'] != '1') {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+            redirect(site_url('dashboard'));
+        }
+        if ($this->session->Group['id'] == 40) {
+            $get_Data          = $this->db->where(['status' => 'APV', 'approved_hr' => 'N'])->get('view_pengganti')->result();
+        } else {
+            $get_Data          = $this->db->where(['status' => 'OPN', 'division_employee_id' => $employee_id])->or_where(['employee_id' => $employee_id])->get('view_pengganti')->result();
+        }
+
+        $employees         = $this->employees_model->getData('employees');
+        $phone = [];
+        foreach ($employees as $emp) {
+            $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
+        }
+
+        $data = array(
+            'title'         => 'Index Cuti Pengganti',
+            'action'        => 'approval',
+            'religi'        => '0',
+            'sts'           => $this->sts,
+            'row'           => $get_Data,
+            'phone'         => $phone,
+            'access'        => $Arr_Akses
+        );
+        history('Index Cuti Pengganti');
+        $this->load->view('Pengganti/index_approval', $data);
+    }
+
+    public function approvehr($id)
+    {
+        $Arr_Akses            = getAcccesmenu($this->controller);
+        if (!$Arr_Akses) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
+            redirect(site_url($this->controller));
+        }
+
+        $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
+
+        $data = array(
+            'title'         => 'View Cuti Pengganti',
+            'action'        => 'edit',
+            'sts'           => $this->sts,
+            'employee'      => $employee,
+            'access'        => $Arr_Akses
+        );
+        $this->load->view('Pengganti/approval', $data);
+    }
+
+    public function approve($id)
+    {
+        $Arr_Akses            = getAcccesmenu($this->controller);
+        if (!$Arr_Akses) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
+            redirect(site_url($this->controller));
+        }
+
+        $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
+
+        $data = array(
+            'title'         => 'View Cuti Pengganti',
+            'action'        => 'edit',
+            'sts'           => $this->sts,
+            'employee'      => $employee,
+            'access'        => $Arr_Akses
+        );
+        $this->load->view('Pengganti/approval', $data);
+    }
+
 
     public function save()
     {
@@ -239,7 +314,7 @@ class Pengganti extends CI_Controller
     }
 
 
-    public function approve()
+    public function save_approve()
     {
         $session   = $this->session->userdata;
         $id        = $this->input->post('id');
@@ -269,6 +344,70 @@ class Pengganti extends CI_Controller
             history('Persetujuan Cuti Pengganti' . $id);
         }
 
+        echo json_encode($ArrCollback);
+    }
+
+    public function save_approve_hr()
+    {
+        $session        = $this->session->userdata;
+        $id             = $this->input->post('id');
+        $emp            = $this->db->get_where('pengganti', ['id' => $id])->row();
+        $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
+
+        $dataEmpLeave   = [
+            'id'            => $this->employees_model->code_otomatis('employees_leave', 'EL'),
+            'date'          => date('Y-m-d'),
+            'employee_id'   => $emp->employee_id,
+            'year'          => date('Y'),
+            'leave'         => $emp->total_days,
+            'description'   => 'Updated by system ##Pengajuan Cuti Pengganti##',
+            'created_by'    => $session['User']['username'],
+            'created'       => date('Y-m-d H:i:s')
+        ];
+
+        $this->db->trans_begin();
+
+        if ($id) {
+            $data['modified_by']             = $session['User']['username'];
+            $data['modified_at']             = date('Y-m-d H:i:s');
+            $data['approved_hr_at']          = date('Y-m-d H:i:s');
+            $data['approved_hr_by']          = $session['User']['username'];
+            $data['approved_hr']             = 'Y';
+            $this->db->where('id', $id)->update('pengganti', $data);
+            // $this->db->insert('employees_leave', $dataEmpLeave);
+
+            // $axis_data = $this->db->get_where('employees_leave_summary', ['employee_id' => $emp->employee_id])->row();
+            // $dataSum = [
+            //     'id' => $this->employees_model->code_otomatis('employees_leave_summary', 'ELS'),
+            //     'employee_id' => $emp->employee_id,
+            //     'date_update' => date('Y-m-d'),
+            //     'total_leave' => $emp->total_days,
+            //     'description' => 'Updated by system',
+            //     'updated_at' => date('Y-m-d H:i:s'),
+            // ];
+            if ($axis_data) {
+                unset($dataEmpLeave['id']);
+                $dataEmpLeave['leave'] = $axis_data->leave + $emp->total_days;
+                $this->db->where('employee_id', $emp->employee_id)->update('employees_leave', $dataEmpLeave);
+            } else {
+                $this->db->insert('employees_leave', $dataEmpLeave);
+            }
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            $ArrCollback        = array(
+                'status'        => 0,
+                'msg'           => 'Data Pengajuan Cuti Pengganti gagal disetujui. Mohon ulangi kembali.'
+            );
+        } else {
+            $this->db->trans_commit();
+            $ArrCollback        = array(
+                'status'        => 1,
+                'msg'           => 'Data Pengajuan Cuti Pengganti berhasil disetujui.'
+            );
+            history('Persetujuan Cuti Pengganti' . $id);
+        }
         echo json_encode($ArrCollback);
     }
 
