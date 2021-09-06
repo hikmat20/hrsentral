@@ -468,7 +468,7 @@ class Leavesapps extends CI_Controller
         $data['modified_at']            = date('Y-m-d H:i:s');
 
         $config['upload_path']          = './assets/documents';
-        $config['allowed_types']        = 'gif|jpg|png|pdf';
+        $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
         $config['max_size']             = 2000;
         $config['max_width']            = 1024;
         $config['max_height']           = 1224;
