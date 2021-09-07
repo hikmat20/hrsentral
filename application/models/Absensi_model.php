@@ -68,7 +68,7 @@ class Absensi_model extends CI_Model
 		if($postData['company_id']!='0') $sqlwhere.=" and e.company_id='".$postData['company_id']."'";
 		if($postData['division_id']!='0') $sqlwhere.=" and e.division_id='".$postData['division_id']."'";
 		if($postData['department_id']!='0') $sqlwhere.=" and e.department_id='".$postData['department_id']."'";
-		$sqlquery="SELECT a.id, a.user_id, a.waktu, a.jam_standar, a.tipe, b.employee_id, d.name, d.ndiv, d.ndept, d.ncomp FROM 
+		$sqlquery="SELECT a.id, a.user_id, a.waktu, a.jam_standar, a.tipe, b.employee_id, d.name, d.ndiv, d.ndept, d.ncomp, h.waktu as jam_pulang, h.jam_standar as standar_pulang FROM 
 		absensi_log a
 		JOIN users b ON a.user_id = b.username
 		join 
@@ -76,7 +76,9 @@ class Absensi_model extends CI_Model
 		left join divisions f on e.division_id=f.id 
 		left join departments g on e.department_id=g.id
 		left join companies i on e.company_id=i.id ".($sqlwhere==''?'':" where 1=1 ".$sqlwhere)." ) d on b.employee_id=d.id 
-		where DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and  DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."' and (tipe='1' or flag_cuti='C')
+		left join (select user_id, waktu, jam_standar from absensi_log where tipe='4' and DATE_FORMAT(waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and DATE_FORMAT(waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."') h
+		on a.user_id=h.user_id and DATE_FORMAT(a.waktu, '%Y-%m-%d')=DATE_FORMAT(h.waktu, '%Y-%m-%d')
+		where DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$postData['tgl_awal']."' and DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$postData['tgl_akhir']."' and (tipe='1' or flag_cuti='C')
 		ORDER BY d.ndept, d.name asc,a.waktu desc";
 //		echo $sqlquery;
 		$query=$this->db->query($sqlquery);

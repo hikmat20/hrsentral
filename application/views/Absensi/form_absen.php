@@ -34,17 +34,22 @@ $this->load->view('include/side_menu');
 								}
 								?>
 							</div>
-							<div class="form-group" style="padding-top:10px;" id="cjam">Jam Kerja : 
+							<div class="form-group text-left" style="padding-top:10px;" id="cjam">
 								<?php
-								$sqlquery = "select id,name from at_shifts where id like 'KERJA%' order by id";
+								$sqlquery = "select id,name from at_shifts where id like 'KERJA%' order by clock_in";
 								$query=$this->db->query($sqlquery);
 								if($query->num_rows() != 0) {
 									$results=$query->result();
 									foreach($results AS $record){ 
-										echo " <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label> ";
+										if($record->id=='KERJA10'){
+											echo "<div>Kalibrasi  &nbsp; : <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label></div>
+											<div>Konsultan : ";
+										}else{
+											echo " <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label> ";
+										}
 									}
 								}
-								?>
+								?></div>
 							</div>
 						</div>
 						<div class="panel-footer" style="background:#5d7b89">

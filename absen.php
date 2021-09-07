@@ -59,16 +59,21 @@ if (mysqli_connect_errno()) die('Error Connection');
 								}
 								?>
 							</div>
-							<div class="form-group" style="padding-top:10px;" id="cjam">Jam Kerja : 
+							<div class="form-group text-left" style="padding-top:10px;" id="cjam">
 								<?php
-								$sql = "select id,name from at_shifts where id like 'KERJA%' order by id";
+								$sql = "select id,name from at_shifts where id like 'KERJA%' order by clock_in";
 								if ($result = mysqli_query($con, $sql)) {
 									while ($row = mysqli_fetch_row($result)) {
-										echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
+										if($row[0]=='KERJA10'){
+											echo "<div>Kalibrasi  &nbsp; : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label></div>
+											<div>Konsultan : ";
+										}else{
+											echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
+										}
 									}
 									mysqli_free_result($result);
 								}
-								?>
+								?></div>
 							</div>
 						</div>
 						<div class="panel-footer" style="background:#5d7b89">

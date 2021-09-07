@@ -66,7 +66,6 @@ class Dashboard extends CI_Controller
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
 		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
 
-		// $absensi 	= $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
 		$absensi = $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
 		$approvalCT = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CT'])->row();
 		$approvalCP = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CP'])->row();
