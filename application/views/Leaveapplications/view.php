@@ -114,10 +114,10 @@ $flag_leave_type = [
                             <tr height="100px">
                                 <td colspan="">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ?  ((file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave.jpg")) ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>" alt="" height="200px">
                                 </td>
                                 <td colspan="">
-                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? ((file_exists(FCPATH . "assets/documents/$employee->doc_special_leave.jpg")) ? $employee->doc_special_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
                                 </td>
                                 <td colspan="">
                                     <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
