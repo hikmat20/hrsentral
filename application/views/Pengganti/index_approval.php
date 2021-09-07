@@ -1,5 +1,9 @@
 <?php
 $this->load->view('include/side_menu');
+$req = [
+    'OTHER' => 'Lainnya',
+    'CLIENT' => 'Client'
+]
 ?>
 <div class="box box-primary">
     <div class="box-header">
@@ -32,14 +36,14 @@ $this->load->view('include/side_menu');
                         <td><?= $data->until_date; ?></td>
                         <td><?= $data->total_days; ?></td>
                         <td><?= $data->reason; ?></td>
-                        <td><?= $data->request_by; ?></td>
+                        <td><?= $req[$data->request_by]; ?></td>
                         <td><?= $data->approval_by_name; ?></td>
                         <td><?= $sts[$data->status]; ?></td>
                         <td><?= $sts[$data->approved_hr]; ?></td>
                         <td>
                             <a href="<?= base_url('pengganti/view/') . $data->id; ?>" class="btn btn-primary btn-sm view" title="View Pengajuan" tooltip="qtip"><i class="fa fa-eye"></i></a>
                             <?php if ($access['approve'] == '1') : ?>
-                                <a href="<?= base_url('pengganti/approvehr/') . $data->id; ?>" class="btn btn-success btn-sm approve" title="Approve Pengajuan" tooltip="qtip"><i class="fa fa-check"></i></a>
+                                <a href="<?= base_url('pengganti/approval/') . $data->id; ?>" class="btn btn-success btn-sm approve" title="Approve Pengajuan" tooltip="qtip"><i class="fa fa-check"></i></a>
                             <?php endif; ?>
                         </td>
                     </tr>

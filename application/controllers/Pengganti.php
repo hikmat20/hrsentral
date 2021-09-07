@@ -38,8 +38,7 @@ class Pengganti extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data          = $this->db->where(['status' => 'OPN', 'division_employee_id' => $employee_id])->or_where(['employee_id' => $employee_id])->get('view_pengganti')->result();
-
+        $get_Data          = $this->db->where(['approved_hr' => 'N', 'employee_id' => $employee_id])->get('view_pengganti')->result();
         $employees         = $this->employees_model->getData('employees');
         $phone = [];
         foreach ($employees as $emp) {
@@ -104,7 +103,7 @@ class Pengganti extends CI_Controller
             redirect(site_url($this->controller));
         }
 
-        $employee           = $this->db->get_where('pengganti', ['id' => $id])->row();
+        $employee           = $this->db->get_where('leave_applications', ['id' => $id])->row();
 
         $data = array(
             'title'         => 'Edit Cuti Pengganti',
@@ -135,7 +134,7 @@ class Pengganti extends CI_Controller
         $this->load->view('Pengganti/view', $data);
     }
 
-    public function approval()
+    public function approval($id = '')
     {
         $Arr_Akses            = getAcccesmenu($this->controller . '/approval');
         $employee_id          = $this->session->User['employee_id'];
@@ -144,49 +143,44 @@ class Pengganti extends CI_Controller
             $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
             redirect(site_url('dashboard'));
         }
-        if ($this->session->Group['id'] == 40) {
-            $get_Data          = $this->db->where(['status' => 'APV', 'approved_hr' => 'N'])->get('view_pengganti')->result();
+
+        if (!$id) {
+            if ($this->session->Group['id'] == 40) {
+                $get_Data          = $this->db->where(['status' => 'APV', 'approved_hr' => 'N'])->get('view_pengganti')->result();
+            } else {
+                $get_Data          = $this->db->where(['status' => 'OPN', 'approval_employee_id' => $employee_id, 'flag_leave_type' => 'CP'])->or_where(['employee_id' => $employee_id])->get('view_pengganti')->result();
+            }
+
+            $employees         = $this->employees_model->getData('employees');
+            $phone = [];
+            foreach ($employees as $emp) {
+                $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
+            }
+
+            $data = array(
+                'title'         => 'Index Cuti Pengganti',
+                'action'        => 'approval',
+                'religi'        => '0',
+                'sts'           => $this->sts,
+                'row'           => $get_Data,
+                'phone'         => $phone,
+                'access'        => $Arr_Akses
+            );
+            history('Index Cuti Pengganti');
+            $this->load->view('Pengganti/index_approval', $data);
         } else {
-            $get_Data          = $this->db->where(['status' => 'OPN', 'division_employee_id' => $employee_id])->or_where(['employee_id' => $employee_id])->get('view_pengganti')->result();
+            $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
+
+            $data = array(
+                'title'         => 'View Cuti Pengganti',
+                'action'        => 'edit',
+                'sts'           => $this->sts,
+                'employee'      => $employee,
+                'access'        => $Arr_Akses
+            );
+            history('View Cuti Pengganti');
+            $this->load->view('Pengganti/approval', $data);
         }
-
-        $employees         = $this->employees_model->getData('employees');
-        $phone = [];
-        foreach ($employees as $emp) {
-            $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
-        }
-
-        $data = array(
-            'title'         => 'Index Cuti Pengganti',
-            'action'        => 'approval',
-            'religi'        => '0',
-            'sts'           => $this->sts,
-            'row'           => $get_Data,
-            'phone'         => $phone,
-            'access'        => $Arr_Akses
-        );
-        history('Index Cuti Pengganti');
-        $this->load->view('Pengganti/index_approval', $data);
-    }
-
-    public function approvehr($id)
-    {
-        $Arr_Akses            = getAcccesmenu($this->controller);
-        if (!$Arr_Akses) {
-            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
-            redirect(site_url($this->controller));
-        }
-
-        $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
-
-        $data = array(
-            'title'         => 'View Cuti Pengganti',
-            'action'        => 'edit',
-            'sts'           => $this->sts,
-            'employee'      => $employee,
-            'access'        => $Arr_Akses
-        );
-        $this->load->view('Pengganti/approval', $data);
     }
 
     public function approve($id)
@@ -209,7 +203,6 @@ class Pengganti extends CI_Controller
         $this->load->view('Pengganti/approval', $data);
     }
 
-
     public function save()
     {
         $data_session                   = $this->session->userdata;
@@ -217,10 +210,10 @@ class Pengganti extends CI_Controller
         $id                             = $this->input->post('id');
 
         $data['id']                     = ($id) ? $id : $this->autoNumber();
-        // $data['id']                     = $this->autoNumber();
+        $data['flag_leave_type']        = 'CP';
 
         $config['upload_path']          = './assets/dokumen_pengajuan';
-        $config['allowed_types']        = 'gif|jpg|png|pdf';
+        $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
         $config['max_size']             = 2000;
         $config['max_width']            = 1024;
         $config['max_height']           = 1224;
@@ -256,11 +249,11 @@ class Pengganti extends CI_Controller
         if ($id) {
             $data['modified_by']             = $data_session['User']['username'];
             $data['modified_at']             = date('Y-m-d H:i:s');
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $this->db->where('id', $id)->update('leave_applications', $data);
         } else {
             $data['created_by']             = $data_session['User']['username'];
             $data['created_at']             = date('Y-m-d H:i:s');
-            $this->db->insert('pengganti', $data);
+            $this->db->insert('leave_applications', $data);
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -292,7 +285,7 @@ class Pengganti extends CI_Controller
             $data['modified_by']             = $data_session['User']['username'];
             $data['modified_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'CNL';
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $this->db->where('id', $id)->update('leave_applications', $data);
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -313,7 +306,6 @@ class Pengganti extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-
     public function save_approve()
     {
         $session   = $this->session->userdata;
@@ -326,7 +318,7 @@ class Pengganti extends CI_Controller
             $data['modified_at']             = date('Y-m-d H:i:s');
             $data['approved_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'APV';
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $this->db->where('id', $id)->update('leave_applications', $data);
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -351,7 +343,7 @@ class Pengganti extends CI_Controller
     {
         $session        = $this->session->userdata;
         $id             = $this->input->post('id');
-        $emp            = $this->db->get_where('pengganti', ['id' => $id])->row();
+        $emp            = $this->db->get_where('leave_applications', ['id' => $id])->row();
         $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
 
         $dataEmpLeave   = [
@@ -373,7 +365,12 @@ class Pengganti extends CI_Controller
             $data['approved_hr_at']          = date('Y-m-d H:i:s');
             $data['approved_hr_by']          = $session['User']['username'];
             $data['approved_hr']             = 'Y';
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $data['unused_leave']            = $axis_data->leave;
+            $data['substitute_leave']        = $emp->total_days;
+            $data['remaining_leave']         = $axis_data->leave + $emp->total_days;
+
+
+            $this->db->where('id', $id)->update('leave_applications', $data);
             // $this->db->insert('employees_leave', $dataEmpLeave);
 
             // $axis_data = $this->db->get_where('employees_leave_summary', ['employee_id' => $emp->employee_id])->row();
@@ -422,7 +419,7 @@ class Pengganti extends CI_Controller
             $data['modified_by']             = $session['User']['username'];
             $data['modified_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'REJ';
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $this->db->where('id', $id)->update('leave_applications', $data);
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -456,7 +453,7 @@ class Pengganti extends CI_Controller
             $data['approved_hr']             = 'Y';
             $data['approved_hr_by']          = $session['User']['employee_id'];
             $data['approved_hr_at']          = date('Y-m-d H:i:s');
-            $this->db->where('id', $id)->update('pengganti', $data);
+            $this->db->where('id', $id)->update('leave_applications', $data);
         }
 
         if ($this->db->trans_status() === FALSE) {

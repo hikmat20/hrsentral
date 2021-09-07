@@ -51,8 +51,8 @@ $this->load->view('include/side_menu');
 					<tr>
 						<th rowspan="2" width="50px"><small>No.</small></th>
 						<th rowspan="2" width="200px"><small>Tgl.</small></th>
-						<th colspan="3" class="text-center"><small>Cuti Tahunan</small></th>
-						<th rowspan="3" class="text-center"><small>Cuti Sakit</small></th>
+						<th colspan="4" class="text-center"><small>Cuti Tahunan</small></th>
+						<th rowspan="3" class="text-center"><small>Sakit</small></th>
 						<th colspan="2" class="text-center"><small>Cuti Pemerintah</small></th>
 						<th colspan="2" class="text-center"><small>Cuti Tdk. Dibayar</small></th>
 						<th rowspan="2" class="text-center"><small>Alpha</small></th>
@@ -60,8 +60,9 @@ $this->load->view('include/side_menu');
 						<th rowspan="2" class="text-center"><small>Catatan</small></th>
 					</tr>
 					<tr>
-						<th width="100px" class="text-center"><small>Jml. Hak Cuti</small></th>
-						<th width="100px" class="text-center"><small>Jml. Ambil</small></th>
+						<th width="100px" class="text-center"><small>Hak Cuti</small></th>
+						<th width="100px" class="text-center"><small>Ambil Cuti</small></th>
+						<th width="100px" class="text-center"><small>Cuti Pengganti</small></th>
 						<th width="100px" class="text-center"><small>Sisa Cuti</small></th>
 						<th width="100px" class="text-center"><small>Jml. Hari</small></th>
 						<th width="" class="text-center"><small>Keterangan</small></th>
@@ -72,8 +73,8 @@ $this->load->view('include/side_menu');
 				<tbody>
 					<?php $n = 0;
 					$flag_leave_type = [
-						'ALP' => 'Alpha',
-						'AMC' => 'Ambil Cuti',
+						'CP' => 'Cuti Pegganti',
+						'CT' => 'Ambil Cuti',
 						'CBS' => 'Cuti Bersama',
 						'TMC' => 'Tambah Cuti',
 					];
@@ -82,26 +83,29 @@ $this->load->view('include/side_menu');
 							<td><?= $n; ?></td>
 							<td><?= date("D, m d Y", strtotime($la->created_at)); ?></td>
 							<td class="text-center">
-								<span class="badge bg-aqua"><?= ($la->unused_leave) ? $la->unused_leave : ''; ?></span>
+								<span class="badge bg-aqua"><?= ($la->unused_leave) ? $la->unused_leave : '-'; ?></span>
 							</td>
 							<td class="text-center">
-								<span class="badge bg-blue"><?= ($la->get_year_leave) ? $la->get_year_leave : ''; ?></span>
+								<span class="badge bg-blue"><?= ($la->get_year_leave) ? $la->get_year_leave : '-'; ?></span>
 							</td>
 							<td class="text-center">
-								<span class="badge bg-green"><?= ($la->remaining_leave) ? $la->remaining_leave : ''; ?></span>
+								<span class="badge bg-purple"><?= ($la->substitute_leave) ? $la->substitute_leave : '-'; ?></span>
 							</td>
 							<td class="text-center">
-								<span class="badge bg-maroon"><?= ($la->sick_leave) ? $la->sick_leave : ''; ?></span>
+								<span class="badge bg-green"><?= ($la->remaining_leave) ? $la->remaining_leave : '-'; ?></span>
 							</td>
 							<td class="text-center">
-								<span class="badge bg-yellow"><?= ($la->special_leave) ? $la->special_leave : ''; ?></span>
+								<span class="badge bg-maroon"><?= ($la->sick_leave) ? $la->sick_leave : '-'; ?></span>
 							</td>
-							<td><?= ($la->category_name) ? $la->category_name : ''; ?></td>
-							<td class="text-center"><span class="badge bg-red"><?= $la->notpay_leave; ?></span></td>
-							<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : ''; ?></td>
-							<td><span class="badge bg-default"><?= ($la->alpha_value) ? $la->alpha_value : ''; ?></span></td>
-							<td><?= ($la->descriptions) ? $la->descriptions : ''; ?></td>
-							<td><?= ($la->note) ? $la->note : ''; ?></td>
+							<td class="text-center">
+								<span class="badge bg-yellow"><?= ($la->special_leave) ? $la->special_leave : '-'; ?></span>
+							</td>
+							<td><?= ($la->category_name) ? $la->category_name : '-'; ?></td>
+							<td class="text-center"><span class="badge bg-red"><?= ($la->notpay_leave) ? $la->notpay_leave : '-'; ?></span></td>
+							<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : '-'; ?></td>
+							<td><span class="badge bg-default"><?= ($la->alpha_value) ? $la->alpha_value : '-'; ?></span></td>
+							<td><?= ($la->descriptions) ? $la->descriptions : '-'; ?></td>
+							<td><?= ($la->note) ? $la->note : '-'; ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>

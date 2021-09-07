@@ -33,7 +33,7 @@ $flag_leave_type = [
                             <tr>
                                 <td>Divisi</td>
                                 <td class="text-center">:</td>
-                                <td colspan="3"><?= $employee->division_name; ?></td>
+                                <td colspan="3"><?= $employee->divisions_name; ?></td>
                             </tr>
                             <tr>
                                 <td>Periode Tahun</td>
@@ -55,14 +55,10 @@ $flag_leave_type = [
                                 <td height="70px" class="text-center">:</td>
                                 <td colspan="3"><?= $employee->reason; ?></td>
                             </tr>
-                            <tr>
-                                <td rowspan="2">Dokumen Pendukung</td>
-                                <td rowspan="2" class="text-center">:</td>
-                                <td class="text-center">Dok. Pendukung</td>
-                            </tr>
                             <tr height="100px">
-                                <td colspan="">
-                                    <!-- <p><label for="">Nama Dokumen</label></p> -->
+                                <td>Dokumen Pendukung</td>
+                                <td class="text-center">:</td>
+                                <td class="text-center">
                                     <img src="/assets/dokumen_pengajuan/<?= ($employee->doc) ? $employee->doc : '-'; ?>" alt="" height="200px">
                                 </td>
                             </tr>

@@ -110,7 +110,7 @@ class Leavesapps extends CI_Controller
         if ($this->session->userdata('Group')['id'] == 40) {
             $get_Data          = $this->leavesModel->getFind(['status' => 'APV', 'approved_hr' => 'N']);
         } else {
-            $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'approval_employee_id' => $employee_id]);
+            $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'approval_employee_id' => $employee_id, 'flag_leave_type' => 'CT']);
         }
 
         $employees         = $this->employees_model->getEmployees();
@@ -168,25 +168,43 @@ class Leavesapps extends CI_Controller
 
     public function approveHR()
     {
-        $data = $this->input->post();
+        $session        = $this->session->userdata;
+        $data           = $this->input->post();
+        $emp            = $this->db->get_where('leave_applications', ['id' => $data->id])->row();
+        $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
+
+        $dataEmpLeave   = [
+            'id'            => $this->employees_model->code_otomatis('employees_leave', 'EL'),
+            'date'          => date('Y-m-d'),
+            'employee_id'   => $emp->employee_id,
+            'year'          => date('Y'),
+            'leave'         => $emp->total_days,
+            'description'   => 'Updated by system ##Pengajuan Cuti Pengganti##',
+            'created_by'    => $session['User']['username'],
+            'created'       => date('Y-m-d H:i:s')
+        ];
 
         if ($data) {
             $ArrData = [
-                'approved_hr' => 'Y',
-                'approved_hr_by' => $this->session->userdata('User')['id'],
-                'approved_hr_at' => date('Y-m-d H:i:s'),
-                'alpha_value' => $data['alpha'],
-                'actual_leave' => $data['actual_leave'],
-                'flag_alpha' => ($data['alpha']) ? 'Y' : 'N',
-                'modified_by' => $this->session->userdata('User')['id'],
-                'modified_at' => date('Y-m-d H:i:s')
+                'approved_hr'        => 'Y',
+                'approved_hr_by'     => $this->session->userdata('User')['id'],
+                'approved_hr_at'     => date('Y-m-d H:i:s'),
+                'alpha_value'        => $data['alpha'],
+                'actual_leave'       => $data['actual_leave'],
+                'flag_alpha'         => ($data['alpha']) ? 'Y' : 'N',
+                'modified_by'        => $this->session->userdata('User')['id'],
+                'modified_at'        => date('Y-m-d H:i:s')
             ];
-            // echo '<pre>';
-            // print_r($ArrData);
-            // echo '<pre>';
-            // exit;
+
             $this->db->trans_begin();
             $this->db->update('leave_applications', $ArrData, array('id' => $data['id']));
+            if ($axis_data) {
+                unset($dataEmpLeave['id']);
+                $dataEmpLeave['leave'] = $axis_data->leave - $emp->actual_leave;
+                $this->db->where('employee_id', $emp->employee_id)->update('employees_leave', $dataEmpLeave);
+            } else {
+                $this->db->insert('employees_leave', $dataEmpLeave);
+            }
 
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();

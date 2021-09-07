@@ -27,7 +27,7 @@ $this->load->view('include/side_menu');
                             <tr>
                                 <td>Divisi</td>
                                 <td class="text-center">:</td>
-                                <td colspan="3"><?= $employee->division_name; ?></td>
+                                <td colspan="3"><?= $employee->divisions_name; ?></td>
                             </tr>
                             <tr>
                                 <td>Periode Tahun</td>
