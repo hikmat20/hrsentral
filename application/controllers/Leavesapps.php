@@ -179,7 +179,7 @@ class Leavesapps extends CI_Controller
             'employee_id'   => $emp->employee_id,
             'year'          => date('Y'),
             'leave'         => $emp->total_days,
-            'description'   => 'Updated by system ##Pengajuan Cuti Pengganti##',
+            'description'   => 'Updated by system ##Abil Cuti@' . $emp->from_date,
             'created_by'    => $session['User']['username'],
             'created'       => date('Y-m-d H:i:s')
         ];
