@@ -62,7 +62,7 @@ $this->load->view('include/side_menu');
                                         <tr>
                                             <td><?= $no; ?></td>
                                             <td><?= date('D, d-m-Y', strtotime($absen->waktu)); ?></td>
-                                            <td class="text-center"><?= $type[$absen->kode_2]; ?></td>
+                                            <td class="text-center"><?= $type[$absen->tipe]; ?></td>
                                             <td class="text-center"><?= date('H:i', strtotime($absen->waktu)); ?></td>
                                         </tr>
                                 <?php endforeach;
