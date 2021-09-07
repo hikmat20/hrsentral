@@ -66,7 +66,8 @@ class Dashboard extends CI_Controller
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
 		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
 		$absensi = $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
-		$dataApproval = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN'])->row();
+		$approvalCT = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CT'])->row();
+		$approvalCP = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CP'])->row();
 
 		$data = array(
 			'title'			=> 'Dashboard',
@@ -96,7 +97,8 @@ class Dashboard extends CI_Controller
 			'leaveREV'			=> (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0,
 			'leaveHIS'			=> (isset($leaveCount['HIS'])) ? $leaveCount['HIS'] : 0,
 			'leaveCNLREJ'	    => $CNL + $REJ,
-			'dataApproval'		=> ($dataApproval->num) ? $dataApproval->num : '',
+			'approvalCT'		=> ($approvalCT->num) ? $approvalCT->num : '',
+			'approvalCP'		=> ($approvalCP->num) ? $approvalCP->num : '',
 			'data_menu'		=> $Employees,
 			'akses_menu'	=> $Arr_Akses
 		);
