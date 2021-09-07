@@ -30,7 +30,7 @@ class Empleavesum extends CI_Controller
         $employees         = $this->employees_model->getEmployees();
         $id                = $this->session->userdata['User']['employee_id'];
         $empLeave          = $this->db->get_where('employees_leave', ['employee_id' => $id])->result();
-        $empLeaveApps      = $this->db->get_where('view_leave_applications', ['employee_id' => $id, 'periode_year' => date('Y'), 'status' => 'APV'])->result();
+        $empLeaveApps      = $this->db->get_where('view_leave_applications', ['employee_id' => $id, 'periode_year' => date('Y'), 'approved_hr' => 'Y', 'status' => 'APV'])->result();
 
         $data = array(
             'title'            => 'Index Employee Leave Summary',

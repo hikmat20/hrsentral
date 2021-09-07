@@ -151,13 +151,20 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 
 
     $(document).on('change', '#from_date,#until_date', function() {
-        let from_date = ($('#from_date').val());
-        let until_date = ($('#until_date').val());
+        let from_date = new Date($('#from_date').val());
+        let until_date = new Date($('#until_date').val());
 
-        // calc = parseInt(until_date.getTime() || 0) - parseInt(from_date.getTime() || 0);
-        // days = parseInt(calc) / parseInt(1000 * 3600 * 24);
+        calc = parseInt(until_date.getTime() || 0) - parseInt(from_date.getTime() || 0);
+        days = parseInt(calc) / parseInt(1000 * 3600 * 24) + 1;
         // days = dateDifference(from_date, until_date);
-
+        // alert(days)
+        if (days > 0) {
+            $('#total_days').val(days)
+            // remainingLeave()
+        } else {
+            $('#total_days').val('0')
+        }
+        return false;
         if (from_date != '' || until_date != '') {
             $.ajax({
                 url: '<?= base_url('leavesapps/getDateRange'); ?>',
@@ -186,7 +193,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 }
             })
             // return false
-
         }
     })
 
