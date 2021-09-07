@@ -170,7 +170,7 @@ class Leavesapps extends CI_Controller
     {
         $session        = $this->session->userdata;
         $data           = $this->input->post();
-        $emp            = $this->db->get_where('leave_applications', ['id' => $data->id])->row();
+        $emp            = $this->db->get_where('leave_applications', ['id' => $data['id']])->row();
         $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
 
         $dataEmpLeave   = [
