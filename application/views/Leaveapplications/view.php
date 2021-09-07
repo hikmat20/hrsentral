@@ -114,13 +114,13 @@ $flag_leave_type = [
                             <tr height="100px">
                                 <td colspan="">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
-                                    <img src="/assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? $employee->doc_sick_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                                 <td colspan="">
-                                    <img src="/assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? $employee->doc_special_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                                 <td colspan="">
-                                    <img src="/assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
+                                    <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? $employee->doc_notpay_leave : '-'; ?>" alt="" height="200px">
                                 </td>
                             </tr>
                             <tr>

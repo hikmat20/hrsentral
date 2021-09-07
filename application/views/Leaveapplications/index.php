@@ -89,7 +89,7 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php if ($access['read'] == '1') : ?>
                                                 <a href="<?= base_url(); ?>leavesapps/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>
                                             <?php endif ?>
-                                            <?php if ($access['delete'] == '1') : ?>
+                                            <?php if ($access['delete'] == '1' && $data->approved_hr == 'N') : ?>
                                                 <a href="javascript:void(0)" class=' btn btn-sm btn-danger' id="cancel" data-id="<?= $data->id; ?>" title='Cancel Application' data-role='qtip'><i class='fa fa-stop'></i></a>
                                             <?php endif ?>
                                             <?php if ($this->session->userdata('Group')['id'] == 40) : ?>

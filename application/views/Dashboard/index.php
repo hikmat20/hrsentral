@@ -9,24 +9,33 @@ $this->load->view('include/side_menu');
         <h2 class="box-body"><?= $title; ?></h2>
     </div>
     <!-- /.box-header -->
-
     <?php $session = $this->session->userdata('Group');
-
     if ($session['id'] != '1' && $session['id'] != '40') : ?>
         <section class="content">
-            <?php if ($dataApproval) : ?>
-                <div class="alert bg-yellow">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $dataApproval; ?> Pengajuan cuti karyawan diperlukan Approval Anda! <a class="btn btn-info btn-sm" href="<?= base_url('leavesapps/approval'); ?>">Lihat</a>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <?php if ($approvalCT) : ?>
+                        <div class="alert bg-yellow">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $approvalCT; ?> Pengajuan Cuti karyawan diperlukan Approval Anda! <a class="btn btn-primary btn-sm" href="<?= base_url('leavesapps/approval'); ?>">Lihat</a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($approvalCP) : ?>
+                        <div class="alert bg-aqua">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $approvalCP; ?> Pengajuan Cuti Pengganti karyawan diperlukan Approval Anda! <a class="btn btn-primary btn-sm" href="<?= base_url('pengganti/approval'); ?>">Lihat</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
             <div class="row">
                 <div class="col-lg-6">
                     <h3 for="" style="margin-top:0px">Absensi Karyawan
-					  <div class="pull-right">						
-						<a href="<?=base_url('absensi/form_absen')?>" class="btn btn-primary"><i class="fa fa-user"></i> Form Absen</a>
-					  </div>
-					</h3>
+                        <div class="pull-right">
+                            <a href="<?= base_url('absensi/form_absen') ?>" class="btn btn-primary"><i class="fa fa-user"></i> Form Absen</a>
+                        </div>
+                    </h3>
                     <div>
                         <table id="list-absensi" class="table table-bordered table-hover">
                             <thead class="bg-info">
@@ -754,9 +763,9 @@ $this->load->view('include/side_menu');
     });
 
     $('#list-absensi').DataTable({
-		dom: 't',
+        dom: 't',
         "searching": false,
         "lengthChange": false,
-		"ordering": false
+        "ordering": false
     })
 </script>

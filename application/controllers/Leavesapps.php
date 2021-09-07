@@ -26,17 +26,13 @@ class Leavesapps extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data          = $this->leavesModel->getFind(['status' => 'OPN', 'employee_id' => $employee_id]);
+        $get_Data          = $this->leavesModel->getFind(['flag_leave_type' => 'CT', 'status' => 'OPN', 'employee_id' => $employee_id]);
         $employees         = $this->employees_model->getData('employees');
         $phone = [];
         foreach ($employees as $emp) {
             $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
         }
 
-        // echo '<pre>';
-        // print_r($phone);
-        // echo '<pre>';
-        // exit;
         $data = array(
             'title'            => 'Index Leave Applications',
             'action'        => 'index',
