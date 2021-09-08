@@ -41,7 +41,7 @@ $flag_leave_type = [
                                 <td colspan="4"><?= $employee->periode_year; ?></td>
                             </tr>
                             <tr>
-                                <td>Hak Cuti Tahunan</td>
+                                <td>Cuti Tahunan</td>
                                 <td class="text-center">:</td>
                                 <td colspan=""><?= $employee->unused_leave; ?> hari</td>
                                 <td colspan="">Diambil : <?= $employee->get_year_leave; ?></td>
@@ -49,7 +49,7 @@ $flag_leave_type = [
 
                             </tr>
                             <tr>
-                                <td>Hak Cuti Sakit</td>
+                                <td>Sakit</td>
                                 <td class="text-center">:</td>
                                 <td colspan="3"><?= $employee->sick_leave; ?> hari</td>
                             </tr>
@@ -121,7 +121,6 @@ $flag_leave_type = [
                                 <td colspan="">
                                     <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>">
                                         <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
-
                                     </a>
                                 </td>
                                 <td colspan="">
