@@ -25,10 +25,14 @@ class Pengganti extends CI_Controller
             'CNL' => '<label class="label font-light bg-default">Cancel</label>',
             'REJ' => '<label class="label font-light bg-danger">Reject</label>',
         ];
+
+        $this->company = $this->session->Company->company_id;
+        $this->branch = $this->session->Company->branch_id;
     }
 
     public function index()
     {
+
 
         $Arr_Akses            = getAcccesmenu($this->controller);
         $employee_id          = $this->session->User['employee_id'];
@@ -38,7 +42,7 @@ class Pengganti extends CI_Controller
             redirect(site_url('dashboard'));
         }
 
-        $get_Data          = $this->db->where(['approved_hr' => 'N', 'employee_id' => $employee_id])->get('view_pengganti')->result();
+        $get_Data          = $this->db->where(['approved_hr' => 'N', 'employee_id' => $employee_id, 'company_id' => $this->company, 'branch_id' => $this->branch])->get('view_pengganti')->result();
         $employees         = $this->employees_model->getData('employees');
         $phone = [];
         foreach ($employees as $emp) {
@@ -61,7 +65,7 @@ class Pengganti extends CI_Controller
     public function autoNumber($table = '', $code = '')
     {
 
-        $sql = "SELECT MAX(RIGHT(id,4)) maxId FROM pengganti WHERE SUBSTR(id,3, 2) = '" . date('y') . "' ORDER by id DESC";
+        $sql = "SELECT MAX(RIGHT(id,4)) maxId FROM $table WHERE SUBSTR(id,1,2) = '$code' AND SUBSTR(id,3, 2) = '" . date('y') . "' ORDER by id DESC";
         $idMax = $this->db->query($sql)->row();
         if ($idMax->maxId == '') {
             $count = '1';
@@ -104,11 +108,13 @@ class Pengganti extends CI_Controller
         }
 
         $employee           = $this->db->get_where('leave_applications', ['id' => $id])->row();
+        $works              = $this->db->get_where('works', ['leave_id' => $id])->result();
 
         $data = array(
             'title'         => 'Edit Cuti Pengganti',
             'action'        => 'edit',
             'employee'      => $employee,
+            'works'         => $works,
             'access'        => $Arr_Akses
         );
         $this->load->view('Pengganti/edit', $data);
@@ -132,6 +138,37 @@ class Pengganti extends CI_Controller
             'access'        => $Arr_Akses
         );
         $this->load->view('Pengganti/view', $data);
+    }
+
+    public function delete_work()
+    {
+        $id = $this->input->post('id');
+
+        if ($id) {
+            $this->db->trans_begin();
+            $this->db->where('id', $id)->delete('works');
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $return = [
+                    'status' => 0,
+                    'msg'   => 'Data gagal dihapus. Mohon coba beberapsa saat lagi.'
+                ];
+            } else {
+                $this->db->trans_commit();
+                $return = [
+                    'status' => 1,
+                    'msg'   => 'Data berhasil dihapus.'
+                ];
+            }
+        } else {
+            $return = [
+                'status' => 0,
+                'msg'   => 'Data tidak terkirim. Mohon coba beberapsa saat lagi.'
+            ];
+        }
+
+        echo json_encode($return);
     }
 
     public function approval($id = '')
@@ -209,50 +246,72 @@ class Pengganti extends CI_Controller
         $data                           = $this->input->post();
         $id                             = $this->input->post('id');
 
-        $data['id']                     = ($id) ? $id : $this->autoNumber();
+        $data['id']                     = ($id) ? $id : $this->autoNumber('leave_applications', 'CP');
         $data['flag_leave_type']        = 'CP';
+        $data['company_id']             = $data_session['Company']->company_id;
+        $data['branch_id']              = $data_session['Company']->branch_id;
 
-        $config['upload_path']          = './assets/dokumen_pengajuan';
-        $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
-        $config['max_size']             = 2000;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 1224;
-        $config['encrypt_name']         = TRUE;
+        // $config['upload_path']          = './assets/dokumen_pengajuan';
+        // $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
+        // $config['max_size']             = 2000;
+        // $config['max_width']            = 1024;
+        // $config['max_height']           = 1224;
+        // $config['encrypt_name']         = TRUE;
 
-        $this->upload->initialize($config);
-        if ($_FILES['doc']['name']) {
-            if (!$this->upload->do_upload('doc')) {
-                $error = $this->upload->display_errors('', '');
-                $ArrCollback = [
-                    'msg' => $error,
-                    'status' => '0'
-                ];
-                echo json_encode($ArrCollback);
-                return false;
-            } else {
-                $upload = $this->upload->data();
-                $ArrCollback = [
-                    'msg' => 'Upload Berhasil',
-                    'status' => '1'
-                ];
-                $this->load->helper('file');
-                if ($data['doc_old']) {
-                    unlink($upload['file_path'] . $data['doc_old']);
-                }
-                $data['doc'] =  $upload['file_name'];
-            }
-        }
-        unset($data['doc_old']);
+        // $this->upload->initialize($config);
+        // if ($_FILES['doc']['name']) {
+        //     if (!$this->upload->do_upload('doc')) {
+        //         $error = $this->upload->display_errors('', '');
+        //         $ArrCollback = [
+        //             'msg' => $error,
+        //             'status' => '0'
+        //         ];
+        //         echo json_encode($ArrCollback);
+        //         return false;
+        //     } else {
+        //         $upload = $this->upload->data();
+        //         $ArrCollback = [
+        //             'msg' => 'Upload Berhasil',
+        //             'status' => '1'
+        //         ];
+        //         $this->load->helper('file');
+        //         if ($data['doc_old']) {
+        //             unlink($upload['file_path'] . $data['doc_old']);
+        //         }
+        //         $data['doc'] =  $upload['file_name'];
+        //     }
+        // }
+        // unset($data['doc_old']);
 
         $this->db->trans_begin();
-
         if ($id) {
             $data['modified_by']             = $data_session['User']['username'];
             $data['modified_at']             = date('Y-m-d H:i:s');
+            if ($data['works']) {
+                foreach ($data['works'] as $key => $works) {
+                    $data['works'][$key]['employee_id']   = $data['employee_id'];
+                    $data['works'][$key]['leave_id']      = $data['id'];
+                }
+                $this->db->delete('works', ['leave_id' => $data['id']]);
+                $this->db->insert_batch('works', $data['works']);
+            }
+            unset($data['works']);
             $this->db->where('id', $id)->update('leave_applications', $data);
         } else {
             $data['created_by']             = $data_session['User']['username'];
             $data['created_at']             = date('Y-m-d H:i:s');
+            if ($data['works']) {
+                foreach ($data['works'] as $key => $works) {
+                    $data['works'][$key]['employee_id']   = $data['employee_id'];
+                    $data['works'][$key]['leave_id']      = $data['id'];
+                }
+                $this->db->insert_batch('works', $data['works']);
+            }
+            unset($data['works']);
+            // echo '<pre>';
+            // print_r($data);
+            // echo '<pre>';
+            // exit;
             $this->db->insert('leave_applications', $data);
         }
 

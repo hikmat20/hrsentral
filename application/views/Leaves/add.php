@@ -79,21 +79,14 @@ $this->load->view('include/side_menu');
 			e.preventDefault();
 			var id = $('#id').val();
 			var nama = $('#name').val();
-
-
 			if (nama == '' || nama == null) {
 				swal({
 					title: "Error Message!",
 					text: 'Empty Position Name, please input Position name first.....',
 					type: "warning"
 				});
-
 				return false;
-
 			}
-
-
-
 			swal({
 					title: "Are you sure?",
 					text: "You will not be able to process again this data!",

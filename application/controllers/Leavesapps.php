@@ -476,6 +476,8 @@ class Leavesapps extends CI_Controller
         $data['name']                   = $data_session['Employee']['name'];
         $data['employee_id']            = $data_session['Employee']['id'];
         $data['division_id']            = $data_session['Employee']['division_id'];
+        $data['company_id']             = $data_session['Company']->company_id;
+        $data['branch_id']              = $data_session['Company']->branch_id;
         $data['created_by']             = $data_session['User']['username'];
         $data['created_at']             = date('Y-m-d H:i:s');
         $data['modified_by']            = $data_session['User']['username'];
