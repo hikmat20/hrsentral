@@ -35,16 +35,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     </div>
 
                     <!-- ! -->
-                    <!-- <div class="form-group">
-                        <label for="have_leave" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
-                        <div class="col-sm-9">
-                            <select name="type" class="form-control">
-                                <option value=""></option>
-                                <option value="HALF_DAY">Half Day</option>
-                                <option value="FULL_DAY">Full Day</option>
-                            </select>
-                        </div>
-                    </div> -->
 
                     <div class="form-group">
                         <label for="from_date" class="col-sm-3 control-label">Dari Tgl. <span class="text-red">*</span></label>
@@ -65,6 +55,17 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             </div>
                         </div>
                     </div>
+
+                    <!-- <div class="form-group">
+                        <label for="have_leave" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
+                        <div class="col-sm-9">
+                            <select name="type" id="days_value" class="form-control">
+                                <option value=""></option>
+                                <option value="HALF_DAY">Half Day</option>
+                                <option value="FULL_DAY">Full Day</option>
+                            </select>
+                        </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="total_days" class="col-sm-3 control-label">Jumlah Hari </label>
@@ -87,7 +88,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                                 <option value="CLIENT">Client</option>
                                 <option value="OTHER">Lainnya</option>
                             </select>
-                            <input style="margin-top:10px" disabled name="reason_request" id="reason_request" class="form-control" required="required" placeholder="Asal Permintaan Lainnya">
+                            <input style="margin-top:10px" disabled name="reason_request" id="reason_request" class="form-control" required="required" placeholder="Kegiatan">
                         </div>
                     </div>
 
@@ -106,27 +107,54 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     </div>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group text-center doc">
-                        <!-- <label for="sick_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
-                        <div class="col-sm-12">
-                            <button type="button" id="btn-doc" onclick="$('#doc').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung</button>
-                            <input type="file" class="hidden" name="doc" id="doc">
-                            <input type="text" class="hidden" name="doc_old">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev" class="img-responsive img-thumbnail" style="max-height: 250px;">
-                                </a>
+            <br>
+            <!-- <hr> -->
+            <!-- <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group text-center doc">
+                            <label for="sick_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label>
+                            <div class="col-sm-12">
+                                <button type="button" id="btn-doc" onclick="$('#doc').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung</button>
+                                <input type="file" class="hidden" name="doc" id="doc">
+                                <input type="text" class="hidden" name="doc_old">
+                                <div class="">
+                                    <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                        <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev" class="img-responsive img-thumbnail" style="max-height: 250px;">
+                                    </a>
+                                </div>
                             </div>
                         </div>
+                </div>
+            </div> -->
+            <div class="">
+                <h4>Data Kegiatan</h4>
+                <table id="table_planning" class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="20px">No</th>
+                            <th class="text-center">Rencana Kerja</th>
+                            <th class="text-center" width="8%">QTY</th>
+                            <th class="text-center">Aktual Hasil</th>
+                            <th class="text-center" width="8%">QTY</th>
+                            <th class="text-center" width="5%">Opsi</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button type="button" id="add_planning" class="btn btn-primary"><i class="fa fa-plus"></i> Rencana Kerja</button>
+            </div>
+            <hr>
+            <div class="" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label class="col-md-2" for="">Permasalahan</label>
+                    <div class="col-md-10">
+                        <textarea name="problems" placeholder="Permasalahan" rows="5" id="problems" class="form-control"></textarea>
                     </div>
+
                 </div>
             </div>
         </form>
     </div>
-
     <div class="box-footer rounded-1">
         <div class="row">
             <div class="col-md-6 text-center">
@@ -149,7 +177,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         // document.getElementById('until_date-').max = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split("T")[0];
     });
 
-
     $(document).on('change', '#from_date,#until_date', function() {
         let from_date = new Date($('#from_date').val());
         let until_date = new Date($('#until_date').val());
@@ -160,7 +187,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         // alert(days)
         if (days > 0) {
             $('#total_days').val(days)
-            // remainingLeave()
+            if (days == 1) {
+                $('#total_days').prop('readonly', '');
+            } else {
+                $('#total_days').prop('readonly', 'readonly');
+            }
         } else {
             $('#total_days').val('0')
         }
@@ -192,7 +223,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     swal("Internal Error", 'error');
                 }
             })
-            // return false
         }
     })
 
@@ -207,7 +237,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             $('#reason_request').val('')
         }
     })
-
 
     $(document).on('click', '#save', function() {
         // console.log(formdata);
@@ -307,7 +336,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         })
     }
 
-
     $(document).on('change', '#doc', function(event) {
         var reader = new FileReader();
         reader.onload = function() {
@@ -316,6 +344,41 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             // dataUpload = new FormData($('#dataUpload')[0]);
         }
         reader.readAsDataURL(event.target.files[0]);
+    })
 
+    $(document).on('change', '#total_days', function() {
+        let days = $(this).val() || 0;
+        if (days > 1) {
+            swal({
+                title: "Perhatian!!",
+                text: 'Jumlah hari tidak bisa melebihi dari 1 hari',
+                type: 'warning',
+            })
+            $(this).val('');
+            return false;
+        }
+    })
+
+    $(document).on('click', '#add_planning', function() {
+        let row = $('#table_planning tbody tr').length || 0
+        row = parseInt(row) + parseInt(1);
+        let html = `
+        <tr>
+            <td>` + row + `</td>
+            <td><textarea name="works[` + row + `][work_planning]" class="form-control" placeholder="Rencana kerja"></textarea></td>
+            <td><input type="text" name="works[` + row + `][qty_planning]" class="form-control" placeholder="0"></td>
+            <td><textarea name="works[` + row + `][work_actual]" class="form-control" placeholder="Aktual pekerjaan"></textarea></td>
+            <td><input type="text" name="works[` + row + `][qty_actual]" class="form-control" placeholder="0"></td>
+            <td><button type="button" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
+        </tr>
+        `;
+
+        $('#table_planning tbody').append(html);
+        console.log(html);
+
+    })
+
+    $(document).on('click', '.delete', function() {
+        $(this).parents('tr').remove();
     })
 </script>

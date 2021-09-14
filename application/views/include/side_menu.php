@@ -1,3 +1,14 @@
+<?php $Data_Session		= $this->session->userdata; ?>
+<?php
+$id_comp = $Data_Session['Company']->company_id;
+$comp = $this->db->get_where('companies', ['id' => $id_comp])->row();
+$listComp = $this->db->get_where('view_assign_company', ['user_id' => $Data_Session['User']['id']])->result();
+// echo '<pre>';
+// print_r($listComp);
+// echo '<pre>';
+// exit;
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -42,23 +53,65 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<li class="dropdown tasks-menu">
-							<a href="<?php echo base_url(); ?>index.php/dashboard/logout" data-role="qtip" title="Sign Out">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+								<i class="fa fa-building"> </i> &nbsp
+								<?= $comp->name; ?>
+							</a>
+							<?php
+							if (count($listComp) > 0) : ?>
+								<ul class="dropdown-menu">
+									<li>
+										<ul class="menu">
+											<?php foreach ($listComp as $lComp) : ?>
+												<li>
+													<!-- Task item -->
+													<a href="#">
+														<h3><?= $lComp->name; ?></h3>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									</li>
+								</ul>
+							<?php endif; ?>
+						</li>
+						<!-- <li class="dropdown tasks-menu">
+							<a href="<?php echo base_url(); ?>dashboard/logout" data-role="qtip" title="Sign Out">
 								<i class="fa fa-sign-out"></i>
 
 							</a>
-						</li>
+						</li> -->
 						<li class="dropdown user user-menu">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 								<img src="<?php echo base_url('assets/img/avatar.png') ?>" class="img-circle" alt="User Image" height="20px" width="20px">
-
 								<span class="hidden-xs">
 									<?php
-									$Data_Session		= $this->session->userdata;
-
-									echo $Data_Session['User']['username'];
+									echo ucfirst($Data_Session['User']['username']);
 									?>
 								</span>
 							</a>
+							<ul class="dropdown-menu">
+								<!-- User image -->
+								<li class="user-header">
+									<img src="<?php echo base_url('assets/img/avatar.png') ?>" class="img-circle" alt="User Image">
+									<p>
+										<?php echo ucfirst($Data_Session['User']['username']); ?>
+										<!-- <small>Member since <?php $tgl = strtotime($Data_Session['User']['created']);
+																	$tgl2 = date("F Y ", $tgl);
+																	echo $tgl2; ?></small> -->
+									</p>
+								</li>
+								<!-- Menu Body -->
+								<!-- Menu Footer-->
+								<li class="user-footer">
+									<div class="pull-left">
+										<a href="#" class="btn btn-primary btn-block">Profile</a>
+									</div>
+									<div class="pull-right">
+										<a href="<?= base_url() ?>dashboard/logout" class="btn btn-danger btn-block">Sign out</a>
+									</div>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</div>
