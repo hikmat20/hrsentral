@@ -3,78 +3,66 @@ $this->load->view('include/side_menu');
 //echo"<pre>";print_r($data_companies);
 ?> 
 <form action="#" method="POST" id="form_proses_bro">   
-	<div class="box box-primary">
-		<div class="box-header">
-			<h3 class="box-title"><?=$title;?></h3>		
-		</div>
-		<!-- /.box-header -->
-		<div class="box-body">
-		<div class='form-group row'>			
-				<label class='label-control col-sm-2'><b>Id <span class='text-red'>*</span></b></label> 
-				<div class='col-sm-4'>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-file"></i></span>              
+
+<div class="box box-primary">
+	<div class="box-header">
+		<h3 class="box-title">Input Allowances</h3>
+	</div>
+	<div class="box-body">
+		<table class="table" width='100%'>
+			<tr>
+				
+				<th width='20%'>Category</th>
+				<th width='30%'>Allowances Name</th>
+				
+			</tr>
+			<tr valign="top"  class='baris_1'>
+				<td rowspan='1' class='id_1'>
+				
 						<?php
-							echo form_input(array('readonly'=>'readonly','id'=>'id','name'=>'id','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Automatic'));											
+							$data_category[0]	= 'Select An Option';
+                            $data_category[1]	= 'Harian';				
+                            $data_category[2]	= 'Bulanan';											
+							echo form_dropdown('kategori',$data_category, 0, array('id'=>'kategori','class'=>'form-control input-sm'));											
 						?>
-					</div>
-							
-				</div>
-			</div>
-		<div class='form-group row'>			
-				<label class='label-control col-sm-2'><b>Employee Category<span class='text-red'>*</span></b></label> 
-				<div class='col-sm-4'>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>   
-						
-						<?php
-							$data_position[0]	= 'Select An Option';						
-							echo form_dropdown('employee_category',$data_position, 0, array('id'=>'employee_category','class'=>'form-control input-sm'));											
-						?>
-					</div>
-							
-				</div>
-		</div>
-		<div class='form-group row'>
-			    <label class='label-control col-sm-2'><b>Allowance Name<span class='text-red'>*</span></b></label>
-					<div class='col-sm-4'>
-						<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-file"></i></span>              
-						<?php
+				</td>
+				<td>
+					<?php
 							echo form_input(array('id'=>'name','name'=>'name','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Allowance Name'));											
 						?>
-					</div>
-					</div>
-		</div>		
-		<div class='form-group row'>			
-				<label class='label-control col-sm-2'><b>Jumlah <span class='text-red'>*</span></b></label> 
-				<div class='col-sm-4'>
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-file"></i></span>              
-						<?php
-							echo form_input(array('id'=>'jumlah','name'=>'jumlah','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Jumlah'));											
-						?>
-					</div>
-							
-				</div>
-		</div>
-								
-		</div>
-		
-		<div class='box-footer'>
-			<?php
+				</td>
+				
+			</tr>
+		</table>
+	</div>
+	<div class="box-footer">
+		<?php
 			echo form_button(array('type'=>'button','class'=>'btn btn-md btn-primary','value'=>'save','content'=>'Save','id'=>'simpan-bro')).' ';
 			echo form_button(array('type'=>'button','class'=>'btn btn-md btn-danger','value'=>'back','content'=>'Back','onClick'=>'javascript:back()'));
-			?>
-		</div>
-		<!-- /.box-body -->
-	 </div>
-  <!-- /.box -->
+		?>
+	</div>
+</div>
+
+
 </form>
+
+    <div class="box box-primary">
+		<div class="box-header">
+			<h3 class="box-title"></h3>
+		</div>
+		<div class="box-body">
+			<div id="data"></div>
+		</div>
+	</div>
 
 <?php $this->load->view('include/footer'); ?>
 <script>
 	$(document).ready(function(){
+		
+		DataDetail();
+		
+		
+		
 		$('#simpan-bro').click(function(e){
 			e.preventDefault();
 			
@@ -113,7 +101,8 @@ $this->load->view('include/side_menu');
 										  showConfirmButton	: false,
 										  allowOutsideClick	: false
 										});
-									window.location.href = base_url + active_controller;
+									window.location.href = base_url + active_controller+'/add';
+						            DataDetail();
 								}else{
 									
 									if(data.status == 2){
@@ -171,4 +160,28 @@ $this->load->view('include/side_menu');
 			    
 		});
 	});
+	
+	function DataDetail(){
+			
+		var	cari		= '';		
+		 
+		$.ajax({
+			type	: "POST",
+			url		: base_url + active_controller +'/load_detail',
+			data	: "cari="+cari,
+			success	: function(data){
+				$("#data").html(data);
+				$("#loading").fadeOut(100);	
+		   		$("#data").fadeIn(500);	
+				$('.select2').select2();
+				$('.tanggal').datepicker({
+					format: 'dd-M-yyyy',
+					startDate: '0',
+					autoclose: true,
+					todayHighlight: true
+				});
+               					
+			}
+		});
+	}
 </script>
