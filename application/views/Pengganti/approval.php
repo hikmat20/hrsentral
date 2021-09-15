@@ -54,17 +54,45 @@ $this->load->view('include/side_menu');
                                 <td height="20px" class="text-center">:</td>
                                 <td colspan="2"> <?= $sts[$employee->approved_hr]; ?></td>
                             </tr>
-                            <tr height="100px">
-                                <td rowspan="">Dokumen Pendukung</td>
-                                <td rowspan="" class="text-center">:</td>
-                                <td class="text-center">
-                                    <img src="/assets/dokumen_pengajuan/<?= ($employee->doc) ? $employee->doc : '-'; ?>" alt="" height="200px">
-
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
+                <label>Data Kegiatan</label>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-responsive">
+                        <thead>
+                            <tr>
+                                <td class="text-center" width="20px">No</td>
+                                <td class="text-center">Rencana Kerja</td>
+                                <td class="text-center" width="8%">QTY</td>
+                                <td class="text-center">Aktual</td>
+                                <td class="text-center" width="8%">QTY</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $n = 0;
+                            foreach ($works as $wr) : $n++ ?>
+                                <tr>
+                                    <td><?= $n; ?></td>
+                                    <td><?= $wr->work_planning; ?></td>
+                                    <td><?= $wr->qty_planning; ?></td>
+                                    <td><?= $wr->work_actual; ?></td>
+                                    <td><?= $wr->qty_actual; ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <label>Permasalahan</label>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td style="height: 100px;"><?= $employee->problems; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
