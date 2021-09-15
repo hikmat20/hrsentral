@@ -32,8 +32,6 @@ class Pengganti extends CI_Controller
 
     public function index()
     {
-
-
         $Arr_Akses            = getAcccesmenu($this->controller);
         $employee_id          = $this->session->User['employee_id'];
 
@@ -129,12 +127,14 @@ class Pengganti extends CI_Controller
         }
 
         $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
+        $works              = $this->db->get_where('works', ['leave_id' => $id])->result();
 
         $data = array(
             'title'         => 'View Cuti Pengganti',
             'action'        => 'edit',
             'sts'           => $this->sts,
             'employee'      => $employee,
+            'works'         => $works,
             'access'        => $Arr_Akses
         );
         $this->load->view('Pengganti/view', $data);
@@ -189,6 +189,7 @@ class Pengganti extends CI_Controller
             }
 
             $employees         = $this->employees_model->getData('employees');
+
             $phone = [];
             foreach ($employees as $emp) {
                 $phone[$emp->id] = preg_replace('/0/', '62', $emp->hp, 1);
@@ -207,12 +208,14 @@ class Pengganti extends CI_Controller
             $this->load->view('Pengganti/index_approval', $data);
         } else {
             $employee           = $this->db->get_where('view_pengganti', ['id' => $id])->row();
+            $works              = $this->db->get_where('works', ['leave_id' => $id])->result();
 
             $data = array(
                 'title'         => 'View Cuti Pengganti',
                 'action'        => 'edit',
                 'sts'           => $this->sts,
                 'employee'      => $employee,
+                'works'         => $works,
                 'access'        => $Arr_Akses
             );
             history('View Cuti Pengganti');
