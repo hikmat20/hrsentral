@@ -2081,4 +2081,17 @@ class Employees_model extends CI_Model
 
 		return $query->result();
 	}
+	
+	public function getDataBpjs()
+	{
+		$this->db->select('a.*');
+		$this->db->from('ms_bpjs a');
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 }
