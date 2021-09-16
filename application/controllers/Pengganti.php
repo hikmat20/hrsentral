@@ -248,6 +248,10 @@ class Pengganti extends CI_Controller
         $data_session                   = $this->session->userdata;
         $data                           = $this->input->post();
         $id                             = $this->input->post('id');
+        // echo '<pre>';
+        // print_r($data);
+        // echo '<pre>';
+        // exit;
 
         $data['id']                     = ($id) ? $id : $this->autoNumber('leave_applications', 'CP');
         $data['flag_leave_type']        = 'CP';
