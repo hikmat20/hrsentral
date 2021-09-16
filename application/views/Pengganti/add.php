@@ -56,16 +56,16 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         </div>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label for="have_leave" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
+                    <div class="form-group" id="input-type-leave" style="display: none;">
+                        <label for="days_value" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
                         <div class="col-sm-9">
-                            <select name="type" id="days_value" class="form-control">
+                            <select name="type_day_leave" id="type_day_leave" class="form-control">
                                 <option value=""></option>
                                 <option value="HALF_DAY">Half Day</option>
                                 <option value="FULL_DAY">Full Day</option>
                             </select>
                         </div>
-                    </div> -->
+                    </div>
 
                     <div class="form-group">
                         <label for="total_days" class="col-sm-3 control-label">Jumlah Hari </label>
@@ -188,13 +188,19 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         if (days > 0) {
             $('#total_days').val(days)
             if (days == 1) {
-                $('#total_days').prop('readonly', '');
+                $('#type_day_leave_chosen').css({
+                    width: '100%'
+                });
+                $('#input-type-leave').show('ease')
+                // $('#type_day_leave').prop('readonly', true).trigger("chosen:updated");;
             } else {
-                $('#total_days').prop('readonly', 'readonly');
+                $('#input-type-leave').hide('ease')
+                $('#type_day_leave').val('');
             }
         } else {
             $('#total_days').val('0')
         }
+
         return false;
         if (from_date != '' || until_date != '') {
             $.ajax({
@@ -223,6 +229,16 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                     swal("Internal Error", 'error');
                 }
             })
+        }
+    })
+
+    $(document).on('change', '#type_day_leave', function() {
+        let val = $(this).val()
+
+        if (val == 'HALF_DAY') {
+            $('#total_days').val('0.5')
+        } else {
+            $('#total_days').val('1')
         }
     })
 
@@ -287,7 +303,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             swal({
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
-                text: 'Data persetujuan atasan belum diatur. Mohon menhubungi HRD terlebih dahulu.'
+                text: 'Data persetujuan atasan belum diatur. Mohon mengubungi HRD terlebih dahulu.'
+            })
+            return false;
+        } else if ($('#table_planning tbody tr').length == 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Data Rencana Kerja belum diisi. Mohon mengisi Rencana Kerja terlebih dahulu.'
             })
             return false;
         } else {

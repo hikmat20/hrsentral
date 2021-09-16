@@ -34,18 +34,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         </div>
                     </div>
 
-                    <!-- ! -->
-                    <!-- <div class="form-group">
-                        <label for="have_leave" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
-                        <div class="col-sm-9">
-                            <select name="type" class="form-control">
-                                <option value=""></option>
-                                <option value="HALF_DAY">Half Day</option>
-                                <option value="FULL_DAY">Full Day</option>
-                            </select>
-                        </div>
-                    </div> -->
-
                     <div class="form-group">
                         <label for="from_date" class="col-sm-3 control-label">Dari Tgl. <span class="text-red">*</span></label>
                         <div class="col-sm-9">
@@ -63,6 +51,17 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                                 <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
                                 <input type="date" name="until_date" min="<?= date('Y-m-d', strtotime(date('Y-m-d') . "-1 Month")); ?>" value="<?= $employee->until_date; ?>" class="form-control" id="until_date">
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="input-type-leave" style="display: <?= ($employee->type_day_leave == 'HALF_DAY') ? '' : 'none'; ?>;">
+                        <label for="days_value" class="col-sm-3 control-label">Tipe Pengganti <span class="text-red">*</span></label>
+                        <div class="col-sm-9">
+                            <select name="type_day_leave" id="type_day_leave" class="form-control">
+                                <option value=""></option>
+                                <option value="HALF_DAY" <?= ($employee->type_day_leave == 'HALF_DAY') ? 'selected' : ''; ?>>Half Day</option>
+                                <option value="FULL_DAY" <?= ($employee->type_day_leave == 'FULL_DAY') ? 'seleted' : ''; ?>>Full Day</option>
+                            </select>
                         </div>
                     </div>
 
@@ -183,9 +182,14 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         if (days > 0) {
             $('#total_days').val(days)
             if (days == 1) {
-                $('#total_days').prop('readonly', '');
+                $('#type_day_leave_chosen').css({
+                    width: '100%'
+                });
+                $('#input-type-leave').show('ease')
+                // $('#type_day_leave').prop('readonly', true).trigger("chosen:updated");;
             } else {
-                $('#total_days').prop('readonly', 'readonly');
+                $('#input-type-leave').hide('ease')
+                $('#type_day_leave').val('');
             }
         } else {
             $('#total_days').val('0')
@@ -206,13 +210,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         "July", "August", "September", "October", "November", "December"
                     ];
                     if (days > 0) {
-
                         $('#total_days').val(days)
-                        if (days == 1) {
-                            $('#total_days').prop('readonly', '');
-                        } else {
-                            $('#total_days').prop('readonly', 'readonly');
-                        }
                     } else {
                         $('#total_days').val('0')
                     }
@@ -224,6 +222,16 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             })
             // return false
 
+        }
+    })
+
+    $(document).on('change', '#type_day_leave', function() {
+        let val = $(this).val()
+
+        if (val == 'HALF_DAY') {
+            $('#total_days').val('0.5')
+        } else {
+            $('#total_days').val('1')
         }
     })
 
@@ -290,6 +298,13 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 title: 'Terjadi Kesalahan!',
                 type: 'warning',
                 text: 'Data persetujuan atasan belum diatur. Mohon menhubungi HRD terlebih dahulu.'
+            })
+            return false;
+        } else if ($('#table_planning tbody tr').length == 0) {
+            swal({
+                title: 'Terjadi Kesalahan!',
+                type: 'warning',
+                text: 'Data Rencana Kerja belum diisi. Mohon mengisi Rencana Kerja terlebih dahulu.'
             })
             return false;
         } else {
