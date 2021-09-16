@@ -5,7 +5,7 @@ $this->load->view('include/side_menu');
 <?php echo form_open('salarycount/search') ?>
 	<div class="box box-primary">
 		<div class="box-header">
-			<h3 class="box-title"><?php=$title;?></h3>		
+			<h3 class="box-title"><?=$title;?></h3>		
 		</div>
 		<!-- /.box-header -->
 		

@@ -23,7 +23,8 @@ $this->load->view('include/side_menu');
 				<tr class='bg-blue'>
 					<th class="text-center">Id</th>
 					<th class="text-center">Name</th>
-					<th class="text-center">Jumlah</th>
+					<th class="text-center">Pot Company</th>
+					<th class="text-center">Pot Employee</th>
 					<th class="text-center">Option</th>								
 				</tr>
 			</thead>
@@ -37,7 +38,8 @@ $this->load->view('include/side_menu');
 							//echo"<td align='left'><img  src='".site_url('./assets/img/'.$datas->image)."'></td>";							
 							echo"<td align='left'>".$datas->id."</td>";
 							echo"<td align='left'>".$datas->name."</td>";
-							echo"<td align='left'>".$datas->jumlah."</td>";
+							echo"<td align='left'>".$datas->tunjangan."</td>";
+							echo"<td align='left'>".$datas->potongan."</td>";
 							echo"<td align='center'>";
 							    if($akses_menu['update']=='1'){
 									echo"<a href='".site_url('bpjs/edit/'.$datas->id)."' class='btn btn-sm btn-primary' title='Edit BPJS' data-role='qtip'><i class='fa fa-edit'></i></a>";
@@ -57,10 +59,11 @@ $this->load->view('include/side_menu');
 			 </tbody>
 			 <tfoot>
 				<tr class='bg-blue'>
-					<th class="text-center">Id</th>
+				    <th class="text-center">Id</th>
 					<th class="text-center">Name</th>
-					<th class="text-center">Jumlah</th>
-					<th class="text-center">Option</th>				
+					<th class="text-center">Pot Company</th>
+					<th class="text-center">Pot Employee</th>
+					<th class="text-center">Option</th>							
 				</tr>
 			</tfoot>
 		</table>

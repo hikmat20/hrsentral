@@ -83,9 +83,9 @@ class Salary extends CI_Controller {
 			$detail_family		= $this->master_model->getArray('family',array('employee_id'=>$id));
 			$detail_education	= $this->master_model->getArray('educational',array('employee_id'=>$id));
 			$data = array(
-				'title'			=> 'Add Employee leave',
+				'title'			=> 'Add Employee Salary',
 				'action'		=> 'add',
-				'data_Salary'=> $get_Data,
+				'data_employee' => $get_Data,
 				'data_leaves'	=> $get_Data7,
 				'row'			=> $detail
 				
@@ -175,4 +175,154 @@ class Salary extends CI_Controller {
 		$Data_Array		= $this->employees_model->getArray('titles',array('department_id'=>$kode),'id','name');
 		echo json_encode($Data_Array);
 	}
+	
+	
+	function get_tunjangan()
+    {
+     
+		$kategori   = $this->input->post('kategori');
+		$subsubject	= $this->db->query("SELECT * FROM ms_allowance WHERE kategori='$kategori' ")->result();
+		
+		echo "<select id='id_tunjangan' name='id_tunjangan' class='form-control'>
+				<option value=''>Select An Option</option>";
+		foreach($subsubject as $sbj){
+		echo "<option value='$sbj->id'>".$sbj->name."</option>";
+				}
+		echo "</select>";
+	}
+	
+	
+	public function add_komponen(){
+	
+	    // print_r($this->input->post());
+		// exit();
+		if($this->input->post()){
+			
+			$Arr_Kembali			= array();			
+			$data					= $this->input->post();
+			$data_session			= $this->session->userdata;
+			$data['id']				= $this->employees_model->code_otomatis('ms_salary_komponen','KOMP');
+			$data['created_by']		= $data_session['User']['username']; 
+			$data['created']		= date('Y-m-d H:i:s');
+			
+			if($this->employees_model->simpan('ms_salary_komponen',$data)){
+				
+				$Arr_Kembali		= array(
+					'status'		=> 1,
+					'pesan'			=> 'Add Allowance Success. Thank you & have a nice day.......'
+				);
+				history('Add Data Employees leave'.$data['id']);
+			}else{
+				$Arr_Kembali		= array(
+					'status'		=> 2,
+					'pesan'			=> 'Add Allowance failed. Please try again later......'
+				);
+				
+			}
+			echo json_encode($Arr_Kembali);
+		}
+	}
+
+public function load_detail()
+    {
+		
+		
+		$employee	= $_POST['cari'];
+        // $session = $this->session->userdata('app_session');
+        // $divisi  = $session['id_div']; 
+        // $where   =array('kd_meeting'=> $kd_meeting, 'id_perusahaan'=>$prsh, 'id_cabang'=>$cbg );
+        $numb = 1;
+        // $data = $this->employees_model->getData('ms_salary_komponen'); 
+		
+		$data = $this->db->query("SELECT a.*, b.name as nama_tunjangan, b.kategori FROM ms_salary_komponen a
+                                  inner join ms_allowance b ON b.id = a.id_tunjangan
+							      WHERE employee_id='$employee' ")->result();
+		
+		// print_r ($data);
+		// exit;
+        if($data != ''){
+		
+		echo "	<table id='example1' class='table table-bordered table-striped'>
+					<tr>
+						<td align='center' width='4%'><b>No</td>
+						<td align='left' width='25%'><b>Allowances</td>
+						<td align='left' width='25%'><b>Category</td>
+						<td align='right' width='25%'><b>Total</td>
+						
+					</tr>";	
+	    $n=0;
+		foreach ($data as $d){     
+		$n++;
+		
+         if ($d->kategori==1){
+        $kategori ='Harian';
+        }	
+		elseif ($d->kategori==2){
+        $kategori ='Bulanan';
+        }	
+      		
+		
+    	echo "<tr class='view$n'>
+				<td align='center'>$n</td>
+				<td align='left'>".$d->nama_tunjangan."</td>
+				<td align='left'>".$kategori."</td>
+				<td align='right'>".$d->jumlah."</td>";
+				
+						
+		  echo "</td>
+				</tr>";
+		 
+		
+		 		   
+		}
+		
+		echo "</table>";
+		
+        }
+        else
+        {
+        echo"Belum Ada Data";
+        }
+		
+	}	
+	
+	
+	public function cariGapok()
+    {
+		
+		
+		$employee	= $_POST['cari'];
+        // $session = $this->session->userdata('app_session');
+        // $divisi  = $session['id_div']; 
+        // $where   =array('kd_meeting'=> $kd_meeting, 'id_perusahaan'=>$prsh, 'id_cabang'=>$cbg );
+        $numb = 1;
+        // $data = $this->employees_model->getData('ms_salary_komponen'); 
+		
+		$data = $this->db->query("SELECT a.pokok FROM salary a
+                                 
+							      WHERE employee_id='$employee' ")->result();
+		
+		// print_r ($data);
+		// exit;
+        if($data != ''){	
+		
+	    $n=0;
+		foreach ($data as $d){ 
+		$n++;
+			
+		
+    	echo "$d->pokok";
+		
+		 		   
+		}
+		
+		
+		
+        }
+        else
+        {
+        echo"0";
+        }
+		
+	}	
 }

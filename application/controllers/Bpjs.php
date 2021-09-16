@@ -128,7 +128,7 @@ class Bpjs extends CI_Controller {
 			$get_Data5			= $this->employees_model->getPositions($arr_Where);
 			$detail				= $this->master_model->getData('ms_bpjs','id',$id); 
 			$data = array(
-				'title'			=> 'Edit Allowance',
+				'title'			=> 'Edit BPJS',
 				'action'		=> 'edit',
 				'data_position'  => $get_Data5,
 				'data_companies'=> $get_Data,
@@ -195,25 +195,22 @@ class Bpjs extends CI_Controller {
 					<tr>
 						<td align='center' width='4%'><b>No</td>
 						<td align='left' width='25%'><b>Name</td>
-						<td align='left' width='25%'><b>Category</td>
+						<td align='left' width='25%'><b>Pot Company</td>
+						<td align='left' width='25%'><b>Pot Employee</td>
 						
 					</tr>";	
 	    $n=0;
 		foreach ($data as $d){     
 		$n++;
-		
-        if ($d->kategori==1){
-        $kategori ='Harian';
-        }	
-		elseif ($d->kategori==2){
-        $kategori ='Bulanan';
-        }	
+
       		
 		
     	echo "<tr class='view$n'>
 				<td align='center'>$n</td>
 				<td align='left'>".$d->name."</td>
-				<td align='left'>".$kategori."</td>";
+				<td align='left'>".$d->tunjangan."</td>
+				<td align='left'>".$d->potongan."</td>";
+				
 				
 						
 		  echo "</td>

@@ -12,23 +12,25 @@ $this->load->view('include/side_menu');
 		<table class="table" width='100%'>
 			<tr>
 				
-				<th width='20%'>Category</th>
-				<th width='30%'>Bpjs Name</th>
+				<th width='20%'>Name</th>
+				<th width='30%'>Company</th>
+				<th width='30%'>Employee</th>
 				
 			</tr>
 			<tr valign="top"  class='baris_1'>
-				<td rowspan='1' class='id_1'>
-				
-						<?php
-							$data_category[0]	= 'Select An Option';
-                            $data_category[1]	= 'Harian';				
-                            $data_category[2]	= 'Bulanan';											
-							echo form_dropdown('kategori',$data_category, 0, array('id'=>'kategori','class'=>'form-control input-sm'));											
+				<td>
+					<?php
+							echo form_input(array('id'=>'name','name'=>'name','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'BPJS Name'));											
 						?>
 				</td>
 				<td>
 					<?php
-							echo form_input(array('id'=>'name','name'=>'name','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Allowance Name'));											
+							echo form_input(array('id'=>'tunjangan','name'=>'tunjangan','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Potongan Perusahaan'));											
+						?>
+				</td>
+				<td>
+					<?php
+							echo form_input(array('id'=>'potongan','name'=>'potongan','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Potongan Karyawan'));											
 						?>
 				</td>
 				

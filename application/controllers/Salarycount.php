@@ -25,7 +25,7 @@ class Salarycount extends CI_Controller {
 		$get_Data2			= $this->employees_model->getEmpfamily();
 		
 		$data = array(
-			'title'			=> 'Count Salary',
+			'title'			=> 'Salary Count',
 			'action'		=> 'Count',
 			'religi'		=> '0',
 			'row'			=> $get_Data,
@@ -61,11 +61,11 @@ class Salarycount extends CI_Controller {
 		$get_Data3			= $this->employees_model->getSalarycount($tgl1,$tgl2);
 		
 		$data = array(
-			'title2'		=> 'Count Salary',
+			'title2'		=> 'Salary Count',
 			'tgl1'          => $tgl1indo,
 			'tgl2'          => $tgl2indo,
 			'action'		=> 'Count',
-			'action'		=> 'Count Salary',
+			'title'		    => 'Salary Count ',
 			'religi'		=> '0',
 			'row'			=> $get_Data,
 			'row2'			=> $get_Data3,
