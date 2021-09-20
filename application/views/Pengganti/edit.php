@@ -77,7 +77,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                 </div>
 
                 <div class="col-md-6">
-
                     <div class="form-group">
                         <label for="" class="col-md-3 control-label">Permintaan <span class="text-red">*</span></label>
                         <div class="col-md-9">
@@ -124,16 +123,16 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         foreach ($works as $wr) : $n++ ?>
                             <tr>
                                 <td><?= $n; ?></td>
-                                <td><textarea name="works[<?= $n; ?>][work_planning]" class="form-control" placeholder="Rencana kerja"><?= $wr->work_planning; ?></textarea></td>
-                                <td><input type="text" name="works[<?= $n; ?>][qty_planning]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_planning; ?>"></td>
+                                <td><textarea <?= (isset($update)) ? 'readonly' : ''; ?> name="works[<?= $n; ?>][work_planning]" class="form-control" placeholder="Rencana kerja"><?= $wr->work_planning; ?></textarea></td>
+                                <td><input <?= (isset($update)) ? 'readonly' : ''; ?> type="text" name="works[<?= $n; ?>][qty_planning]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_planning; ?>"></td>
                                 <td><textarea name="works[<?= $n; ?>][work_actual]" class="form-control" placeholder="Aktual pekerjaan"><?= $wr->work_actual; ?></textarea></td>
                                 <td><input type="text" name="works[<?= $n; ?>][qty_actual]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_actual; ?>"></td>
-                                <td><button type="button" data-id="<?= $wr->id; ?>" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
+                                <td><button type="button" data-id="<?= $wr->id; ?>" class="<?= (isset($update)) ? 'hidden' : ''; ?> btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-                <button type="button" id="add_planning" class="btn btn-primary"><i class="fa fa-plus"></i> Rencana Kerja</button>
+                <button type="button" id="add_planning" class="btn btn-primary <?= (isset($update)) ? 'hidden' : ''; ?>"><i class="fa fa-plus"></i> Rencana Kerja</button>
             </div>
             <hr>
             <div class="" style="margin-top: 20px;">
