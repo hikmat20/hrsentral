@@ -11,105 +11,84 @@ $this->load->view('include/side_menu');
 		<?php
 		$group = $this->session->userdata['Group']['id'];
 		if ($group != '1' && $group != '40') : ?>
-			<h4 for=""><strong>Rekap Cuti Tahunan</strong></h4>
-			<table class="table table-condensed table-bordered">
-				<thead class="bg-info">
-					<tr>
-						<th width="50px">No.</th>
-						<th>Tgl.</th>
-						<th class="text-center">Jml. Cuti</th>
-						<th>Deskripsi</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php $n = 0;
-					$total = 0;
-					foreach ($empLeave as $row) : $n++;
-						$total += $row->leave;
-					?>
-						<tr>
-							<td><?= $n; ?></td>
-							<td><?= date("D, m d Y", strtotime($row->date)); ?></td>
-							<td class="text-center">
-								<span class="badge bg-aqua"><?= $row->leave; ?> hari</span>
-							</td>
-							<td><?= $row->description; ?></td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-				<tfoot>
-					<tr>
-						<th colspan="2" class="text-right">Total Cuti Tahunan</th>
-						<th class="text-center"><?= $total; ?> Hari</th>
-					</tr>
-				</tfoot>
-			</table>
-			<br>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="small-box text-center text-black rounded-1 box-shadow" style="background-color:#fff;">
+						<div class="inner" style="padding: 20px;">
+							<h4 class="text-success">Sisa Cuti Tahunan</h4>
+							<h3 class="font-nunito text-green" style="font-size: 6rem;"><?= $empLeave[0]->leave; ?></h3>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<h4><strong>Rekap Pengambilan Cuti</strong></h4>
-			<table class="table table-condensed table-bordered">
-				<thead class="bg-success">
-					<tr>
-						<th rowspan="2" width="50px"><small>No.</small></th>
-						<th rowspan="2" width="200px"><small>Tgl.</small></th>
-						<th colspan="4" class="text-center"><small>Cuti Tahunan</small></th>
-						<th rowspan="3" class="text-center"><small>Sakit</small></th>
-						<th colspan="2" class="text-center"><small>Cuti Pemerintah</small></th>
-						<th colspan="2" class="text-center"><small>Cuti Tdk. Dibayar</small></th>
-						<th rowspan="2" class="text-center"><small>Alpha</small></th>
-						<th rowspan="2" class="text-center"><small>Keterangan</small></th>
-						<th rowspan="2" class="text-center"><small>Catatan</small></th>
-					</tr>
-					<tr>
-						<th width="100px" class="text-center"><small>Hak Cuti</small></th>
-						<th width="100px" class="text-center"><small>Ambil Cuti</small></th>
-						<th width="100px" class="text-center"><small>Cuti Pengganti</small></th>
-						<th width="100px" class="text-center"><small>Sisa Cuti</small></th>
-						<th width="100px" class="text-center"><small>Jml. Hari</small></th>
-						<th width="" class="text-center"><small>Keterangan</small></th>
-						<th width="100px" class="text-center"><small>Jml. Hari</small></th>
-						<th width="" class="text-center"><small>Keterangan</small></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php $n = 0;
-					$flag_leave_type = [
-						'CP' => 'Cuti Pegganti',
-						'CT' => 'Ambil Cuti',
-						'CBS' => 'Cuti Bersama',
-						'TMC' => 'Tambah Cuti',
-					];
-					foreach ($empLeaveApps as $la) : $n++; ?>
+			<div class="table-responsive">
+				<table class="table table-condensed table-bordered">
+					<thead class="bg-success">
 						<tr>
-							<td><?= $n; ?></td>
-							<td><?= date("D, m d Y", strtotime($la->created_at)); ?></td>
-							<td class="text-center">
-								<span class="badge bg-aqua"><?= ($la->unused_leave) ? $la->unused_leave : '-'; ?></span>
-							</td>
-							<td class="text-center">
-								<span class="badge bg-blue"><?= ($la->get_year_leave) ? $la->get_year_leave : '-'; ?></span>
-							</td>
-							<td class="text-center">
-								<span class="badge bg-purple"><?= ($la->substitute_leave) ? $la->substitute_leave : '-'; ?></span>
-							</td>
-							<td class="text-center">
-								<span class="badge bg-green"><?= ($la->remaining_leave) ? $la->remaining_leave : '-'; ?></span>
-							</td>
-							<td class="text-center">
-								<span class="badge bg-maroon"><?= ($la->sick_leave) ? $la->sick_leave : '-'; ?></span>
-							</td>
-							<td class="text-center">
-								<span class="badge bg-yellow"><?= ($la->special_leave) ? $la->special_leave : '-'; ?></span>
-							</td>
-							<td><?= ($la->category_name) ? $la->category_name : '-'; ?></td>
-							<td class="text-center"><span class="badge bg-red"><?= ($la->notpay_leave) ? $la->notpay_leave : '-'; ?></span></td>
-							<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : '-'; ?></td>
-							<td><span class="badge bg-default"><?= ($la->alpha_value) ? $la->alpha_value : '-'; ?></span></td>
-							<td><?= ($la->descriptions) ? $la->descriptions : '-'; ?></td>
-							<td><?= ($la->note) ? $la->note : '-'; ?></td>
+							<th rowspan="2" width="50px"><small>No.</small></th>
+							<th rowspan="2" width="200px"><small>Tgl.</small></th>
+							<th colspan="4" class="text-center"><small>Cuti Tahunan</small></th>
+							<th rowspan="3" class="text-center"><small>Sakit</small></th>
+							<th colspan="2" class="text-center"><small>Cuti Pemerintah</small></th>
+							<th colspan="2" class="text-center"><small>Cuti Tdk. Dibayar</small></th>
+							<th rowspan="2" class="text-center"><small>Alpha</small></th>
+							<th rowspan="2" class="text-center"><small>Keterangan</small></th>
+							<th rowspan="2" class="text-center"><small>Catatan</small></th>
 						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
+						<tr>
+							<th width="100px" class="text-center"><small>Hak Cuti</small></th>
+							<th width="100px" class="text-center"><small>Ambil Cuti</small></th>
+							<th width="100px" class="text-center"><small>Cuti Pengganti</small></th>
+							<th width="100px" class="text-center"><small>Sisa Cuti</small></th>
+							<th width="100px" class="text-center"><small>Jml. Hari</small></th>
+							<th width="" class="text-center"><small>Keterangan</small></th>
+							<th width="100px" class="text-center"><small>Jml. Hari</small></th>
+							<th width="" class="text-center"><small>Keterangan</small></th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php $n = 0;
+						$flag_leave_type = [
+							'CP' => 'Cuti Pegganti',
+							'CT' => 'Ambil Cuti',
+							'CBS' => 'Cuti Bersama',
+							'TMC' => 'Tambah Cuti',
+						];
+						foreach ($empLeaveApps as $la) : $n++; ?>
+							<tr>
+								<td><?= $n; ?></td>
+								<td><?= date("D, m d Y", strtotime($la->created_at)); ?></td>
+								<td class="text-center">
+									<span class="badge bg-aqua"><?= ($la->unused_leave) ? $la->unused_leave : '-'; ?></span>
+								</td>
+								<td class="text-center">
+									<span class="badge bg-blue"><?= ($la->get_year_leave) ? $la->get_year_leave : '-'; ?></span>
+								</td>
+								<td class="text-center">
+									<span class="badge bg-purple"><?= ($la->substitute_leave) ? $la->substitute_leave : '-'; ?></span>
+								</td>
+								<td class="text-center">
+									<span class="badge bg-green"><?= ($la->remaining_leave) ? $la->remaining_leave : '-'; ?></span>
+								</td>
+								<td class="text-center">
+									<span class="badge bg-maroon"><?= ($la->sick_leave) ? $la->sick_leave : '-'; ?></span>
+								</td>
+								<td class="text-center">
+									<span class="badge bg-yellow"><?= ($la->special_leave) ? $la->special_leave : '-'; ?></span>
+								</td>
+								<td><?= ($la->category_name) ? $la->category_name : '-'; ?></td>
+								<td class="text-center"><span class="badge bg-red"><?= ($la->notpay_leave) ? $la->notpay_leave : '-'; ?></span></td>
+								<td><?= ($la->notpay_leave_desc) ? $la->notpay_leave_desc : '-'; ?></td>
+								<td><span class="badge bg-default"><?= ($la->alpha_value) ? $la->alpha_value : '-'; ?></span></td>
+								<td><?= ($la->descriptions) ? $la->descriptions : '-'; ?></td>
+								<td><?= ($la->note) ? $la->note : '-'; ?></td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
+			</div>
 			<br>
 			<!-- <h4><strong>Rekap Alpha</strong></h4>
 			<table class="table table-condensed table-bordered">

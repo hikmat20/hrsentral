@@ -118,6 +118,28 @@ class Pengganti extends CI_Controller
         $this->load->view('Pengganti/edit', $data);
     }
 
+    public function update($id)
+    {
+        $Arr_Akses            = getAcccesmenu($this->controller);
+        if (!$Arr_Akses) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
+            redirect(site_url($this->controller));
+        }
+
+        $employee           = $this->db->get_where('leave_applications', ['id' => $id])->row();
+        $works              = $this->db->get_where('works', ['leave_id' => $id])->result();
+
+        $data = array(
+            'title'         => 'Edit Cuti Pengganti',
+            'action'        => 'edit',
+            'employee'      => $employee,
+            'works'         => $works,
+            'update'        => true,
+            'access'        => $Arr_Akses
+        );
+        $this->load->view('Pengganti/edit', $data);
+    }
+
     public function view($id)
     {
         $Arr_Akses            = getAcccesmenu($this->controller);

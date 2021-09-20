@@ -180,6 +180,8 @@ class Leavesapps extends CI_Controller
             'created'       => date('Y-m-d H:i:s')
         ];
 
+
+
         if ($data) {
             $ArrData = [
                 'approved_hr'        => 'Y',
@@ -196,7 +198,7 @@ class Leavesapps extends CI_Controller
             $this->db->update('leave_applications', $ArrData, array('id' => $data['id']));
             if ($axis_data) {
                 unset($dataEmpLeave['id']);
-                $dataEmpLeave['leave'] = $axis_data->leave - $emp->actual_leave;
+                $dataEmpLeave['leave'] = $axis_data->leave - $data['actual_leave'];
                 $this->db->where('employee_id', $emp->employee_id)->update('employees_leave', $dataEmpLeave);
             } else {
                 $this->db->insert('employees_leave', $dataEmpLeave);
@@ -687,19 +689,24 @@ class Leavesapps extends CI_Controller
             );
         } else {
             $this->db->trans_commit();
-            $sendEmail = $this->_sendToEmail($leave, $fromUser, $toUser);
-            if ($sendEmail == true) {
-                $ArrCollback        = array(
-                    'status'        => 1,
-                    'msg'           => $msg_stat . ' Application leave Success and Send Email Success.'
-                );
-            } else {
-                $ArrCollback        = array(
-                    'status'        => 1,
-                    'msg'           => $msg_stat . ' Application leave Success but Send Email Failed.',
-                    'email_error'   =>  $this->email->print_debugger()
-                );
-            }
+            // $sendEmail = $this->_sendToEmail($leave, $fromUser, $toUser);
+            $ArrCollback        = array(
+                'status'        => 1,
+                'msg'           => $msg_stat . ' Application leave Success.'
+            );
+
+            // if ($sendEmail == true) {
+            //     $ArrCollback        = array(
+            //         'status'        => 1,
+            //         'msg'           => $msg_stat . ' Application leave Success and Send Email Success.'
+            //     );
+            // } else {
+            //     $ArrCollback        = array(
+            //         'status'        => 1,
+            //         'msg'           => $msg_stat . ' Application leave Success but Send Email Failed.',
+            //         'email_error'   =>  $this->email->print_debugger()
+            //     );
+            // }
             history($msg_stat . ' Leave Applications');
         }
         echo json_encode($ArrCollback);
