@@ -42,7 +42,8 @@ class Salary extends CI_Controller {
 			$Arr_Kembali			= array();
 
 				
-			$data					= $this->input->post();
+			$data['employee_id']	= $this->input->post('employee_id');
+			$data['pokok']			= $this->input->post('pokok');
 			$data_session			= $this->session->userdata;
 			$data['id']				= $this->employees_model->code_otomatis('salary','SLR');
 			$data['created_by']		= $data_session['User']['username']; 

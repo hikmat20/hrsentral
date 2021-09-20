@@ -19,7 +19,7 @@ $this->load->view('include/side_menu');
 				<div class="clearfix box-body">
 					<div class='form-group row'>			
 						<label class='label-control col-sm-2'><b>Periode <span class='text-red'>*</span></b></label> 
-						<div class='col-sm-4'>
+						<div class='col-sm-8'>
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>              
 								<?php
@@ -32,11 +32,52 @@ $this->load->view('include/side_menu');
 								<?php
 									echo form_input(array('id'=>'second_date','name'=>'second_date','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Second Date'));											
 								?>
+								
 							</div>
 								
 						</div>
 					</div>
+					
+					<div class='form-group row'>			
+						<label class='label-control col-sm-2'><b>Employee <span class='text-red'>*</span></b></label> 
+						<div class='col-sm-8'>
+							<div class="input-group">
+								<span class="input-group-addon"><i class="fa fa-users"></i></span>  
+								<select type="text" name="select_karyawan" id="select_karyawan" class="form-control input-sm">
+									<?php
+	
+			  
+									$data1 = $this->db->query("SELECT a.employee_id, b.* FROM salary a  
+											  INNER JOIN employees b on b.id=a.employee_id
+											  ")->result();
+										
+											
+											if($data1 != ''){	
+											
+											$n=0;
+											foreach ($data1 as $d1){ 
+											
+											$idkaryawan =$d1->employee_id;
+											$namakaryawan =$d1->name;
+																				
+											echo "<option selected value='$idkaryawan'>" . $namakaryawan . "</option>";
+											
+											$n++;
+
+											}
+													
+											}	
+										
+									
+									?>
+								</select>
+							</div>
+								
+						</div>
+					</div>
+					
 				</div>
+				
 			</div>
 			<div class='box-footer'>
 				<?php

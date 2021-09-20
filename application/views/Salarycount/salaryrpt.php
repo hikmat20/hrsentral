@@ -13,6 +13,7 @@ $this->load->view('include/side_menu');
 				
 	
 	</div>
+</div>
 	
 	<style type="text/css">
 	@page {
@@ -71,10 +72,11 @@ $this->load->view('include/side_menu');
 	}
 </style>
 	<?php
-	
+	         $karyawan =$data_karyawan;
 			  
 			  $data = $this->db->query("SELECT a.employee_id, b.* FROM salary a  
 			  INNER JOIN employees b on b.id=a.employee_id
+			  WHERE a.employee_id ='$karyawan'
 			  ")->result();
 		
 			
@@ -82,12 +84,12 @@ $this->load->view('include/side_menu');
 			
 			$n=0;
 			foreach ($data as $d){ 
-			$n++;
-	
+			
+	       
 	?>
 	
-
-	<table border="0">
+    <div class="box box-primary">
+	<table border="0" class="bg-grey">
 
 		<tbody>
 
@@ -98,154 +100,273 @@ $this->load->view('include/side_menu');
 				</td>
 				
 				<td width="5%"><?php echo $d->nik ?></td>
-				<td width="1%">	</td>				
-				<td width="5%"></td>
+				<td  align="left" width="1%">
+				BANK
+				</td>			
+				<td width="5%"><?php echo $d->bank_id ?></td>
 			</tr>
             <tr>
 			    <td width="1%"></td>
 				<td align="left" width="1%">
-				NAME
+				NAMA
 				</td>
 				<td width="5%"><?php echo $d->name ?></td>
+				<td  align="left" width="1%">
+				NO. REKENING
+				</td>				
+				<td width="5%"></td>
+			</tr>
+			<tr>
+			    <td width="1%"></td>
+				<td align="left" width="1%">
+				JBT
+				</td>
+				<td width="5%"><?php echo"" ?></td>
+				<td  align="left" width="1%">
+				PERIODE GAJI
+				</td>				
+				<td width="5%"></td>
+			</tr>
+			<tr>
+			    <td width="1%"></td>
+				<td align="left" width="1%">
+				STATUS 
+				</td>
+				<td width="5%"><?php echo $d->marital_status ?></td>
 				<td width="1%"></td>				
 				<td width="5%"></td>
 			</tr>
+			<tr>
+			    <td width="1%"></td>
+				<td align="left" width="1%">
+				TERTANGGUNG 
+				</td>
+				<td width="5%"><?php echo $d->childs ?></td>
+				<td width="1%"></td>				
+				<td width="5%"></td>
+			</tr>
+			
 
 		</tbody>
-	</table>
-	<br></br>
-	
-<div id="kiri">
-
-	<table class="gridtable2">
-
-		<tbody>
-
-			<tr>
-				<td colspan="3" width="10%">
-					<center>PENDAPATAN</center>
-				</td>
-			
-			</tr>
-
-			
-			<?php
-			$row1 = $this->db->query("SELECT a.* FROM salary a WHERE a.employee_id = '$d->employee_id'")->result();
-			
-					
-					echo"<tr>";	
-					
-					 if($row1){
-						
-							foreach($row1 as $datas1){ 
-                                 $pokok = $datas1->pokok;							
-							
-							     ?> 					
-								<td align="right">Gaji Pokok</td>
-								<td></td>
-								<td align="right"><?=number_format($pokok, 0, ',', '.'); ?></td>
-								
-					<?php			
-							}
-					        }
-					?>
-							
-					
-				
-					</tr>
-					
 		
-			<?php
-			 $row2 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
-            LEFT JOIN ms_allowance b ON b.id=a.id_tunjangan
-			WHERE a.employee_id = '$d->employee_id'")->result();
-			  
-			         if($row2){
-							
-							foreach($row2 as $datas2){
-								echo"<tr>";	
-					?>
-								<td align="right"><?= $datas2->name; ?></td>
-								<td></td>
-								<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?></td>
-								<tr>
-								
-					<?php			
-							}
-					        }
-					?>
-					
-			<?php $pot1 = $this->db->query("SELECT a.* FROM ms_bpjs a")->result();
-			
-			echo"<tr>";	
-					
-					if($pot1){
-					foreach($pot1 as $datap1){
-						         $tjbpjs=$datap1->tunjangan*$pokok/100;
-							     ?> 					
-								<td  align="right"><?=$datap1->name?></td>
-								<td align="right"><?=number_format($datap1->tunjangan, 2, ',', '.'); ?></td>
-								<td align="right"><?=number_format($tjbpjs, 0, ',', '.'); ?></td>
-								
-								</tr>
-								
-					<?php			
-							}
-					        }
-			
-			?>
-
-		</tbody>
 	</table>
-</div>
+	
+	
 
-<div id="kanan">
 
-	<table class="gridtable2">
+						 <div class="box box-primary">
+						 
+						<div id="kiri">
 
-		<tbody>
+							<table class="gridtable2">
 
-			<tr>
-				<td colspan="3" width="10%">
-					<center>POTONGAN</center>
-				</td>
-			</tr>
+								<tbody>
 
-			
-			<?php
-			$pot2 = $this->db->query("SELECT a.* FROM ms_bpjs a")->result();
-					
-					echo"<tr>";	
-					
-					if($pot2){
-					foreach($pot2 as $datap2){
-						         $potbpjs=$datap2->potongan*$pokok/100;
-						
-							     ?> 					
-								<td  align="right"><?=$datap2->name?></td>
-								<td align="right"><?=number_format($datap2->potongan, 2, ',', '.'); ?></td>
-								<td align="right"><?=number_format($potbpjs, 0, ',', '.'); ?></td>
+									<tr>
+										<td colspan="3" width="10%"><b>
+											<center>PENDAPATAN</center></b>
+										</td>
+									
+									</tr>
+									
+	
+
+									
+									<?php
+									$row1 = $this->db->query("SELECT a.* FROM salary a WHERE a.employee_id = '$karyawan'")->result();
+									
+											
+											echo"<tr>";	
+											
+											 if($row1){
+												
+													foreach($row1 as $datas1){ 
+														 $pokok = $datas1->pokok;							
+													
+														 ?> 					
+														<td align="right">Gaji Pokok</td>
+														<td></td>
+														<td align="right"><?=number_format($pokok, 0, ',', '.'); ?></td>
+														
+											<?php			
+													}
+													}
+											?>
+													
+											
+										
+											</tr>
+											
 								
-								</tr>
+									<?php
+									 $row2 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
+									LEFT JOIN ms_allowance b ON b.id=a.id_tunjangan
+									WHERE a.employee_id = '$d->employee_id' AND a.kategori='1'")->result();
+									  
+											 if($row2){
+													
+														$tottjhr=0;
+													foreach($row2 as $datas2){
+														$tottjhr += $datas2->total;
+														echo"<tr>";	
+											?>
+														<td align="right"><?= $datas2->name; ?></td>
+														<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?></td>
+														<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?></td>
+														<tr>
+														
+											<?php			
+													}
+													}
+											?>
+											
+									<?php
+									 $row3 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
+									LEFT JOIN ms_allowance b ON b.id=a.id_tunjangan
+									WHERE a.employee_id = '$d->employee_id' AND a.kategori='2'")->result();
+									  
+											 if($row3){
+													$tottjbl=0;
+													foreach($row3 as $datas3){
+														
+														$tottjbl += $datas3->total;
+														echo"<tr>";	
+											?>
+														<td align="right"><?= $datas3->name; ?></td>
+														<td></td>
+														<td align="right"><?=number_format($datas3->total, 0, ',', '.'); ?></td>
+														<tr>
+														
+											<?php			
+													}
+													}
+											?>
+											
+											
+									<?php $pot1 = $this->db->query("SELECT a.* FROM ms_bpjs a")->result();
+									
+									echo"<tr>";	
+											
+											if($pot1){
+												$thpbpjs=0;  
+												$totbpjs=0;
+											foreach($pot1 as $datap1){
+														 $tjbpjs=$datap1->tunjangan*$pokok/100;
+														 $totbpjs+=$tjbpjs;
+														 $thpbpjs+=$datap1->potongan*$pokok/100; 
+														 ?> 					
+														<td  align="right"><?=$datap1->name?></td>
+														<td align="right"><?=number_format($datap1->tunjangan, 2, ',', '.'); ?></td>
+														<td align="right"><?=number_format($tjbpjs, 0, ',', '.'); ?></td>
+														
+														</tr>
+														
+											<?php			
+													}
+													}
+									
+									?>
+
+								</tbody>
+								<tfoot>
+														<tr>
+														<td align="right"><b>TOTAL PENDAPATAN</b></td>
+														<td></td>
+														<td align="right"><b><?=number_format($pokok+$tottjhr+$tottjbl+$totbpjs, 0, ',', '.'); ?></b></td>
+														</tr>
 								
-					<?php			
-							}
-					        }
-					?>
-							
-					
-				
-					
+														<tr>
+														<td align="right"><b>TAKE HOME PAY</b></td>
+														<td></td>
+														<td align="right"><b><?=number_format($pokok+$tottjhr+$tottjbl+$totbpjs-$thpbpjs, 0, ',', '.'); ?></b></td>
+														</tr>
+								</tfoot>
+							</table>
+						</div>
+	<?php
 
-		</tbody>
-	</table>
-</div>
+	$n++;
 
-<?php
-}
+	}
 			
-}
-?>
+	}	
+
+
+	?> 
+
+						<div id="kanan">
+
+							<table class="gridtable2">
+
+								<tbody>
+
+									<tr>
+										<td colspan="3" width="10%"><b>
+											<center>POTONGAN</center></b>
+										</td>
+									</tr>
+
+									
+									<?php
+									$pot2 = $this->db->query("SELECT a.* FROM ms_bpjs a")->result();
+											
+											echo"<tr>";	
+											
+											if($pot2){
+														 $tpot=0;
+											foreach($pot2 as $datap2){
+														 $potbpjs=$datap2->potongan*$pokok/100;
+														 $tpot   += $potbpjs;
+												
+														 ?> 					
+														<td  align="right"><?=$datap2->name?></td>
+														<td align="right"><?=number_format($datap2->potongan, 2, ',', '.'); ?></td>
+														<td align="right"><?=number_format($potbpjs, 0, ',', '.'); ?></td>
+														
+														</tr>
+														
+											<?php			
+													}
+													}
+											?>
+											
+                                            <tr>
+														<td align="right">PPH</td>
+														<td></td>
+														<td align="right"></td>
+														</tr>
+
+                                             <tr>
+														<td align="right">ABSEN</td>
+														<td></td>
+														<td align="right"></td>
+														</tr>	
+                                            <tr>
+														<td align="right">PINJAMAN</td>
+														<td></td>
+														<td align="right"></td>
+														</tr>															
+											
+										
+											
+
+								</tbody>
+								<tfoot>
+														<tr>
+														<td align="right"><b>TOTAL POTONGAN</b></td>
+														<td></td>
+														<td align="right"><b><?=number_format($tpot, 0, ',', '.'); ?></b></td>
+														</tr>
+								</tfoot>
+							</table>
+						</div>
+
+
+
+ 
+
+</div>
+</div>
 
 <?php $this->load->view('include/footer'); ?>
 <script>

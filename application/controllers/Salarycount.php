@@ -44,7 +44,7 @@ class Salarycount extends CI_Controller {
 			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
 			redirect(site_url('dashboard'));
 		}
-				
+		$employee	            = $this->input->post('select_karyawan');
 		$data					= $this->input->post();
 		$tgl1					= $this->input->post('first_date');
 		$tgl2					= $this->input->post('second_date');
@@ -70,10 +70,11 @@ class Salarycount extends CI_Controller {
 			'row'			=> $get_Data,
 			'row2'			=> $get_Data3,
 			'data_menu'		=> $Employees,
-			'akses_menu'	=> $Arr_Akses
+			'akses_menu'	=> $Arr_Akses,
+			'data_karyawan'	=> $employee	
 		);
 		history('View Data Employees');
-		$this->load->view('Salarycount/salaryrpt',$data);
+		$this->load->view('Salarycount/check_salary',$data);
 	}
 	public function excel(){
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));
