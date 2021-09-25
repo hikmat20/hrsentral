@@ -168,19 +168,21 @@ class Leavesapps extends CI_Controller
         $data           = $this->input->post();
         $emp            = $this->db->get_where('leave_applications', ['id' => $data['id']])->row();
         $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
-
+        $leave          = ($emp->get_year_leave) ? $emp->total_days : $emp->remaining_leave;
+        // echo '<pre>';
+        // print_r($leave);
+        // echo '<pre>';
+        // exit;
         $dataEmpLeave   = [
             'id'            => $this->employees_model->code_otomatis('employees_leave', 'EL'),
             'date'          => date('Y-m-d'),
             'employee_id'   => $emp->employee_id,
             'year'          => date('Y'),
-            'leave'         => $emp->total_days,
+            'leave'         => $leave,
             'description'   => 'Updated by system ##Abil Cuti@' . $emp->from_date,
             'created_by'    => $session['User']['username'],
             'created'       => date('Y-m-d H:i:s')
         ];
-
-
 
         if ($data) {
             $ArrData = [
@@ -196,12 +198,14 @@ class Leavesapps extends CI_Controller
 
             $this->db->trans_begin();
             $this->db->update('leave_applications', $ArrData, array('id' => $data['id']));
-            if ($axis_data) {
-                unset($dataEmpLeave['id']);
-                $dataEmpLeave['leave'] = $axis_data->leave - $data['actual_leave'];
-                $this->db->where('employee_id', $emp->employee_id)->update('employees_leave', $dataEmpLeave);
-            } else {
-                $this->db->insert('employees_leave', $dataEmpLeave);
+            if ($emp->get_year_leave > 0) {
+                if ($axis_data) {
+                    unset($dataEmpLeave['id']);
+                    $dataEmpLeave['leave']      = $axis_data->leave - $data['actual_leave'];
+                    $this->db->where('employee_id', $emp->employee_id)->update('employees_leave', $dataEmpLeave);
+                } else {
+                    $this->db->insert('employees_leave', $dataEmpLeave);
+                }
             }
 
             if ($this->db->trans_status() === FALSE) {
