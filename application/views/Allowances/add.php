@@ -28,7 +28,7 @@ $this->load->view('include/side_menu');
 				</td>
 				<td>
 					<?php
-							echo form_input(array('id'=>'name','name'=>'name','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Allowance Name'));											
+							echo form_input(array('id'=>'name','name'=>'name','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Potongan Name'));											
 						?>
 				</td>
 				

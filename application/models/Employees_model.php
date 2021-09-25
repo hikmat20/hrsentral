@@ -2060,6 +2060,19 @@ class Employees_model extends CI_Model
 			return false;
 		}
 	}
+	
+	public function getDataPotongan()
+	{
+		$this->db->select('a.*');
+		$this->db->from('ms_potongan a');
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 
 
 	public function getdataPolicy()

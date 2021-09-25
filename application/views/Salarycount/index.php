@@ -38,7 +38,7 @@ $this->load->view('include/side_menu');
 						</div>
 					</div>
 					
-					<div class='form-group row'>			
+					<!--<div class='form-group row'>			
 						<label class='label-control col-sm-2'><b>Employee <span class='text-red'>*</span></b></label> 
 						<div class='col-sm-8'>
 							<div class="input-group">
@@ -74,7 +74,7 @@ $this->load->view('include/side_menu');
 							</div>
 								
 						</div>
-					</div>
+					</div>-->
 					
 				</div>
 				

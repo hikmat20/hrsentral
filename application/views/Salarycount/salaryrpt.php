@@ -1,19 +1,17 @@
-<?php
-$this->load->view('include/side_menu'); 
-?>    
-<div class="box box-primary">
+   
+<!--<div class="box box-primary">
 	<div class="box-header">
 		
 			 
 		
 					<h3 class="box-title">
-					 <?php echo $title2; echo '&nbsp';    echo 'Periode :';  echo '&nbsp'; echo $tgl1; echo '&nbsp'; echo 's/d'; echo '&nbsp';echo $tgl2;?>
+					 <?php //echo $title2; echo '&nbsp';    echo 'Periode :';  echo '&nbsp'; echo $tgl1; echo '&nbsp'; echo 's/d'; echo '&nbsp';echo $tgl2;?>
 					</h3>
 		
 				
 	
 	</div>
-</div>
+</div>-->
 	
 	<style type="text/css">
 	@page {
@@ -73,6 +71,11 @@ $this->load->view('include/side_menu');
 </style>
 	<?php
 	         $karyawan =$data_karyawan;
+			 $periode  = date('M');
+			 
+			 if($periode=='Sep'){
+				$v_periode='September';
+			 }
 			  
 			  $data = $this->db->query("SELECT a.employee_id, b.* FROM salary a  
 			  INNER JOIN employees b on b.id=a.employee_id
@@ -99,40 +102,40 @@ $this->load->view('include/side_menu');
 				NIK
 				</td>
 				
-				<td width="5%"><?php echo $d->nik ?></td>
+				<td width="5%">:&nbsp<?php echo $d->nik ?></td>
 				<td  align="left" width="1%">
 				BANK
 				</td>			
-				<td width="5%"><?php echo $d->bank_id ?></td>
+				<td width="5%">:&nbsp<?php echo $d->bank_id ?></td>
 			</tr>
             <tr>
 			    <td width="1%"></td>
 				<td align="left" width="1%">
 				NAMA
 				</td>
-				<td width="5%"><?php echo $d->name ?></td>
+				<td width="5%">:&nbsp<?php echo $d->name ?></td>
 				<td  align="left" width="1%">
 				NO. REKENING
 				</td>				
-				<td width="5%"></td>
+				<td width="5%">:&nbsp</td>
 			</tr>
 			<tr>
 			    <td width="1%"></td>
 				<td align="left" width="1%">
 				JBT
 				</td>
-				<td width="5%"><?php echo"" ?></td>
+				<td width="5%">:&nbsp<?php echo"" ?></td>
 				<td  align="left" width="1%">
 				PERIODE GAJI
 				</td>				
-				<td width="5%"></td>
+				<td width="5%">:&nbsp<?=$v_periode?></td>
 			</tr>
 			<tr>
 			    <td width="1%"></td>
 				<td align="left" width="1%">
 				STATUS 
 				</td>
-				<td width="5%"><?php echo $d->marital_status ?></td>
+				<td width="5%">:&nbsp<?php echo $d->marital_status ?></td>
 				<td width="1%"></td>				
 				<td width="5%"></td>
 			</tr>
@@ -141,7 +144,7 @@ $this->load->view('include/side_menu');
 				<td align="left" width="1%">
 				TERTANGGUNG 
 				</td>
-				<td width="5%"><?php echo $d->childs ?></td>
+				<td width="5%">:&nbsp<?php echo $d->childs ?></td>
 				<td width="1%"></td>				
 				<td width="5%"></td>
 			</tr>
@@ -201,7 +204,7 @@ $this->load->view('include/side_menu');
 									<?php
 									 $row2 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
 									LEFT JOIN ms_allowance b ON b.id=a.id_tunjangan
-									WHERE a.employee_id = '$d->employee_id' AND a.kategori='1'")->result();
+									WHERE a.employee_id = '$karyawan' AND a.kategori='1' AND a.id_tunjangan!=''")->result();
 									  
 											 if($row2){
 													
@@ -211,7 +214,7 @@ $this->load->view('include/side_menu');
 														echo"<tr>";	
 											?>
 														<td align="right"><?= $datas2->name; ?></td>
-														<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?></td>
+														<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?>X<?=number_format($datas2->total, 0, ',', '.'); ?></td>
 														<td align="right"><?=number_format($datas2->total, 0, ',', '.'); ?></td>
 														<tr>
 														
@@ -223,7 +226,7 @@ $this->load->view('include/side_menu');
 									<?php
 									 $row3 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
 									LEFT JOIN ms_allowance b ON b.id=a.id_tunjangan
-									WHERE a.employee_id = '$d->employee_id' AND a.kategori='2'")->result();
+									WHERE a.employee_id = '$karyawan' AND a.kategori='2' AND a.id_tunjangan!=''")->result();
 									  
 											 if($row3){
 													$tottjbl=0;
@@ -266,6 +269,19 @@ $this->load->view('include/side_menu');
 													}
 									
 									?>
+									<?php
+									$pot3 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
+									LEFT JOIN ms_potongan b ON b.id=a.id_potongan
+									WHERE a.employee_id = '$karyawan' AND a.id_potongan!=''")->result();
+									  
+											 if($pot3){
+													$totpotlain=0;
+													foreach($pot3 as $pt3){													
+														$totpotlain += $pt3->total;
+													}
+											 }
+														
+									?>
 
 								</tbody>
 								<tfoot>
@@ -278,7 +294,7 @@ $this->load->view('include/side_menu');
 														<tr>
 														<td align="right"><b>TAKE HOME PAY</b></td>
 														<td></td>
-														<td align="right"><b><?=number_format($pokok+$tottjhr+$tottjbl+$totbpjs-$thpbpjs, 0, ',', '.'); ?></b></td>
+														<td align="right"><b><?=number_format($pokok+$tottjhr+$tottjbl+$totbpjs-$thpbpjs-$totpotlain, 0, ',', '.'); ?></b></td>
 														</tr>
 								</tfoot>
 							</table>
@@ -330,22 +346,60 @@ $this->load->view('include/side_menu');
 													}
 											?>
 											
-                                            <tr>
-														<td align="right">PPH</td>
-														<td></td>
+											<?php
+											
+											echo"<tr>";	
+											
+											$pot4 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
+											LEFT JOIN ms_potongan b ON b.id=a.id_potongan
+											WHERE a.employee_id = '$karyawan' AND a.kategori='1' AND a.id_potongan !='' ")->result();
+									  
+											 if($pot4){
+													$totpotlain1=0;
+													foreach($pot4 as $pt4){													
+														$totpotlain1 += $pt4->total;
+														
+														?>
+														
+														<td  align="right"><?=$pt4->name?></td>
 														<td align="right"></td>
+														<td align="right"><?=number_format($pt4->total, 0, ',', '.'); ?></td>
+														
 														</tr>
-
-                                             <tr>
-														<td align="right">ABSEN</td>
-														<td></td>
+											<?php			
+													}
+											 }
+														
+											?>
+											<?php
+											
+											echo"<tr>";	
+											
+											$pot5 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
+											INNER JOIN ms_potongan b ON b.id=a.id_potongan
+											WHERE a.employee_id = '$karyawan' AND a.kategori='2' AND a.id_potongan !='' ")->result();
+									  
+											 if($pot4){
+													$totpotlain2=0;
+													foreach($pot5 as $pt5){													
+														$totpotlain2 += $pt5->total;
+														
+														?>
+														
+														<td  align="right"><?=$pt5->name?></td>
 														<td align="right"></td>
-														</tr>	
-                                            <tr>
-														<td align="right">PINJAMAN</td>
-														<td></td>
-														<td align="right"></td>
-														</tr>															
+														<td align="right"><?=number_format($pt5->total, 0, ',', '.'); ?></td>
+														
+														</tr>
+											<?php			
+													}
+											 }
+											 
+											 $totalpotongan = $tpot+$totpotlain1+$totpotlain2;
+														
+											?>
+											
+                                            														
 											
 										
 											
@@ -355,7 +409,7 @@ $this->load->view('include/side_menu');
 														<tr>
 														<td align="right"><b>TOTAL POTONGAN</b></td>
 														<td></td>
-														<td align="right"><b><?=number_format($tpot, 0, ',', '.'); ?></b></td>
+														<td align="right"><b><?=number_format($totalpotongan, 0, ',', '.'); ?></b></td>
 														</tr>
 								</tfoot>
 							</table>
