@@ -11,7 +11,8 @@ $this->load->view('include/side_menu');
 		
 			
 	
-	    <table id="index" class="table table-bordered table-striped">
+	  <table id="example1" class="table table-bordered table-striped">
+	  
 			<thead>
 				<tr class='bg-blue'>
                     <th class="text-center">No</th>				
@@ -22,6 +23,9 @@ $this->load->view('include/side_menu');
 					<th class="text-center">Tunjangan BPJS</th>
 					<th class="text-center">Potongan BPJS</th>
 					<th class="text-center">Potongan Lain-lain</th>
+					<th class="text-center">Potongan Absensi</th>
+					<th class="text-center">Potongan Pinjaman</th>
+					<th class="text-center">Potongan PPH</th>
 					<th class="text-center">Total</th>
 					<th class="text-center">Option</th>						
 				</tr>
@@ -55,6 +59,10 @@ $this->load->view('include/side_menu');
 							echo"<td align='right'>".number_format($tr->pot_bpjs,0, ',', '.')."</td>";
 							echo"<td align='right'>".number_format($tr->pot_lain,0, ',', '.')."</td>";
 							echo"<td align='center'>".number_format($tr->total,0, ',', '.')."</td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm absensi' id='pot_absensi$nomor' data-absensi='$tr->id_trsalary' data-nomor='$nomor' value=".number_format($tr->pot_absensi,0, ',', '.')."></input></td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm pinjaman' id='pot_pinjaman$nomor' data-pinjaman='$tr->id_trsalary' data-nomor1='$nomor' value=".number_format($tr->pot_pinjaman,0, ',', '.')."></input></td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm pph' id='pot_pph$nomor' data-pph='$tr->id_trsalary' data-nomor2='$nomor' value=".number_format($tr->pot_pph,0, ',', '.')."></input></td>";
+							
 							echo"<td align='center'>"; 
 								echo"<button type='button' class='btn btn-primary add' id='add' data-karyawan='$tr->id_trsalary'>
 										<i class='fa fa-plus'></i></button>";					
@@ -83,6 +91,9 @@ $this->load->view('include/side_menu');
 					<th class="text-center">Tunjangan BPJS</th>
 					<th class="text-center">Potongan BPJS</th>
 					<th class="text-center">Potongan Lain-lain</th>
+					<th class="text-center">Potongan Absensi</th>
+					<th class="text-center">Potongan Pinjaman</th>
+					<th class="text-center">Potongan PPH</th>
 					<th class="text-center">Total</th>
 					<th class="text-center">Option</th>						
 				</tr>
@@ -200,6 +211,57 @@ $this->load->view('include/side_menu');
 	
 	$('#dialog-popup').on('hidden.bs.modal', function () {
 	  document.location.reload();
+	})
+	
+	$(document).on('blur', '.absensi', function(e){
+		
+		 var	id		= $(this).data('absensi');
+		 var	nomor		= $(this).data('nomor');
+         var	harga	= $("#pot_absensi"+nomor).val();
+		 
+		$.ajax({
+			type:'POST',
+			url:base_url+'salarycount/update_absensi/',
+			data	: "id="+id+"&harga="+harga,
+			success:function(data){
+				 document.location.reload();
+			}
+		})
+		
+	})
+	
+	$(document).on('blur', '.pinjaman', function(e){
+		
+		 var	id		= $(this).data('pinjaman');
+		 var	nomor		= $(this).data('nomor1');
+         var	harga	= $("#pot_pinjaman"+nomor).val();
+		 
+		$.ajax({
+			type:'POST',
+			url:base_url+'salarycount/update_pinjaman/',
+			data	: "id="+id+"&harga="+harga,
+			success:function(data){
+				 document.location.reload();
+			}
+		})
+		
+	})
+	
+	$(document).on('blur', '.pph', function(e){
+		
+		 var	id		= $(this).data('pph');
+		 var	nomor		= $(this).data('nomor2');
+         var	harga	= $("#pot_pph"+nomor).val();
+		 
+		$.ajax({
+			type:'POST',
+			url:base_url+'salarycount/update_pph/',
+			data	: "id="+id+"&harga="+harga,
+			success:function(data){
+				 document.location.reload();
+			}
+		})
+		
 	})
 	
 	

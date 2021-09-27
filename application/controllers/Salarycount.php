@@ -541,4 +541,229 @@ class Salarycount extends CI_Controller {
         }
 		
 	}	
+	
+	
+	##UPDATE TR SALARY##
+	
+	public function update_absensi(){
+		
+		$post = $this->input->post();
+		// print_r($post);
+		// exit;
+		$session = $this->session->userdata('app_session');
+      
+		$bulan=date('M');
+		$tahun=date('Y');
+			
+        $this->db->trans_begin();		
+		## INSERT DT TRANSAKSI RJ ##
+		
+		    //$data					= $this->input->post();
+			$data_session			= $this->session->userdata;
+					
+		    $id = $this->input->post('id');
+		    $trsalary				= $this->employees_model->getData('tr_salary', 'id', $id);
+			
+			foreach($trsalary as $tr){
+			$pokok 		= $tr->pokok;
+			$tjharian 	= $tr->tj_harian;
+			$tjbulanan 	= $tr->tj_bulanan;
+			$tjbpjs		= $tr->tj_bpjs;
+			$potbpjs	= $tr->pot_bpjs;
+			$potpinjaman  	= $tr->pot_pinjaman;
+			$potpph  	= $tr->pot_pph;
+			$potabsensi  	= $tr->pot_absensi + $this->input->post('harga');
+				$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
+			
+			
+			// print_r($pokok);
+			// exit;
+			
+			
+			$data_session					= $this->session->userdata;	
+			// $dataUpdate['pokok']				= $pokok;
+            // $dataUpdate['tj_harian']			= $tjharian;
+            // $dataUpdate['tj_bulanan']			= $tjbulanan;
+            // $dataUpdate['tj_bpjs']				= $tjbpjs;  
+            // $dataUpdate['pot_bpjs']				= $potbpjs; 
+            $dataUpdate['pot_absensi']				= $potabsensi;
+            $dataUpdate['total']			    = $total;   			
+			$dataUpdate['modified_by']	= $data_session['User']['username'];  
+			$dataUpdate['modified']		= date('Y-m-d H:i:s');
+			
+			$update = $this->master_model->getUpdate('tr_salary',$dataUpdate,'id',$id);
+			
+			
+			
+		    }
+		
+		
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$status	= array(
+			  'pesan'		=>'Gagal Save Item. Thanks ...',
+			  'status'	=> 0
+			);
+		} else {
+			$this->db->trans_commit();			
+			
+			
+			$status	= array(
+			  'pesan'		=>'Success Save Item. Thanks ...',
+			  'status'	=> 1
+			);			
+		}
+		
+  		echo json_encode($status);
+	
+	}
+	
+	##UPDATE TR SALARY##
+	
+	public function update_pinjaman(){
+		
+		$post = $this->input->post();
+		// print_r($post);
+		// exit;
+		$session = $this->session->userdata('app_session');
+      
+		$bulan=date('M');
+		$tahun=date('Y');
+			
+        $this->db->trans_begin();		
+		## INSERT DT TRANSAKSI RJ ##
+		
+		    //$data					= $this->input->post();
+			$data_session			= $this->session->userdata;
+					
+		    $id = $this->input->post('id');
+		    $trsalary				= $this->employees_model->getData('tr_salary', 'id', $id);
+			
+			foreach($trsalary as $tr){
+			$pokok 		= $tr->pokok;
+			$tjharian 	= $tr->tj_harian;
+			$tjbulanan 	= $tr->tj_bulanan;
+			$tjbpjs		= $tr->tj_bpjs;
+			$potbpjs	= $tr->pot_bpjs;
+			$potabsensi	= $tr->pot_absensi;
+			$potpph  	= $tr->pot_pph;
+			$potpinjaman  	= $tr->pot_pinjaman + $this->input->post('harga');
+			$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
+			
+			// print_r($pokok);
+			// exit;
+			
+			
+			$data_session					= $this->session->userdata;	
+			// $dataUpdate['pokok']				= $pokok;
+            // $dataUpdate['tj_harian']			= $tjharian;
+            // $dataUpdate['tj_bulanan']			= $tjbulanan;
+            // $dataUpdate['tj_bpjs']				= $tjbpjs;  
+            // $dataUpdate['pot_bpjs']				= $potbpjs; 
+            $dataUpdate['pot_pinjaman']				= $potpinjaman;
+            $dataUpdate['total']			    = $total;   			
+			$dataUpdate['modified_by']	= $data_session['User']['username'];  
+			$dataUpdate['modified']		= date('Y-m-d H:i:s');
+			
+			$update = $this->master_model->getUpdate('tr_salary',$dataUpdate,'id',$id);
+			
+			
+			
+		    }
+		
+		
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$status	= array(
+			  'pesan'		=>'Gagal Save Item. Thanks ...',
+			  'status'	=> 0
+			);
+		} else {
+			$this->db->trans_commit();			
+			
+			
+			$status	= array(
+			  'pesan'		=>'Success Save Item. Thanks ...',
+			  'status'	=> 1
+			);			
+		}
+		
+  		echo json_encode($status);
+	
+	}
+	
+	
+	##UPDATE TR SALARY##
+	
+	public function update_pph(){
+		
+		$post = $this->input->post();
+		// print_r($post);
+		// exit;
+		$session = $this->session->userdata('app_session');
+      
+		$bulan=date('M');
+		$tahun=date('Y');
+			
+        $this->db->trans_begin();		
+		## INSERT DT TRANSAKSI RJ ##
+		
+		    //$data					= $this->input->post();
+			$data_session			= $this->session->userdata;
+					
+		    $id = $this->input->post('id');
+		    $trsalary				= $this->employees_model->getData('tr_salary', 'id', $id);
+			
+			foreach($trsalary as $tr){
+			$pokok 		= $tr->pokok;
+			$tjharian 	= $tr->tj_harian;
+			$tjbulanan 	= $tr->tj_bulanan;
+			$tjbpjs		= $tr->tj_bpjs;
+			$potbpjs	= $tr->pot_bpjs;
+			$potabsensi	= $tr->pot_absensi;
+			$potpinjaman	= $tr->pot_pinjaman;
+			$potpph  	= $tr->pot_pph + $this->input->post('harga');
+			$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
+			
+			// print_r($pokok);
+			// exit;
+			
+			
+			$data_session					= $this->session->userdata;	
+			// $dataUpdate['pokok']				= $pokok;
+            // $dataUpdate['tj_harian']			= $tjharian;
+            // $dataUpdate['tj_bulanan']			= $tjbulanan;
+            // $dataUpdate['tj_bpjs']				= $tjbpjs;  
+            // $dataUpdate['pot_bpjs']				= $potbpjs; 
+            $dataUpdate['pot_pph']				= $potpph;
+            $dataUpdate['total']			    = $total;   			
+			$dataUpdate['modified_by']	= $data_session['User']['username'];  
+			$dataUpdate['modified']		= date('Y-m-d H:i:s');
+			
+			$update = $this->master_model->getUpdate('tr_salary',$dataUpdate,'id',$id);
+			
+			
+			
+		    }
+		
+		
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
+			$status	= array(
+			  'pesan'		=>'Gagal Save Item. Thanks ...',
+			  'status'	=> 0
+			);
+		} else {
+			$this->db->trans_commit();			
+			
+			
+			$status	= array(
+			  'pesan'		=>'Success Save Item. Thanks ...',
+			  'status'	=> 1
+			);			
+		}
+		
+  		echo json_encode($status);
+	
+	}
 }
