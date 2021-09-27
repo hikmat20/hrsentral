@@ -397,7 +397,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
         `;
 
         $('#table_planning tbody').append(html);
-        console.log(html);
+        // console.log(html);
 
     })
 
