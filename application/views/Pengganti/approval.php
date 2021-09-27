@@ -80,9 +80,27 @@ $this->load->view('include/side_menu');
                                     <td><?= $wr->qty_actual; ?></td>
                                 </tr>
                             <?php endforeach; ?>
-
                         </tbody>
                     </table>
+                    <br>
+                    <?php if ($employee->status == 'OPN') : ?>
+                        <form id="form-add-work">
+                            <input type="hidden" name="id" id="id" value="<?= $employee->id; ?>">
+                            <input type="hidden" name="employee_id" id="employee_id" value="<?= $employee->employee_id; ?>">
+                            <table id="table_planning" class="table table-bordered table-responsive">
+                                <thead>
+                                    <tr>
+                                        <td class="text-center" width="20px">No</td>
+                                        <td class="text-center">Rencana Kerja</td>
+                                        <td class="text-center" width="8%">QTY</td>
+                                        <td class="text-center" width="8%">Opsi</td>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </form>
+                        <button class="btn btn-success" id="add_work"><i class="fa fa-plus"></i> Rencana Kerja</button>
+                    <?php endif; ?>
                 </div>
 
                 <label>Permasalahan</label>
@@ -149,7 +167,9 @@ $this->load->view('include/side_menu');
     })
 
     $(document).on('click', '#approve_dh', function() {
-        let id = $(this).data('id');
+        // let id = $(this).data('id');
+        let formdata = new FormData($('#form-add-work')[0]);
+
         swal({
             title: 'Perhatian!',
             text: 'Apakah Anda yakin data Pengajuan Cuti Pengganti akan di Disetujui?',
@@ -162,11 +182,12 @@ $this->load->view('include/side_menu');
             if (value) {
                 $.ajax({
                     url: base_url + active_controller + '/save_approve',
-                    data: {
-                        id
-                    },
+                    data: formdata,
                     type: 'POST',
                     dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
                     success: function(result) {
                         if (result.status == 1) {
                             swal({
@@ -250,5 +271,25 @@ $this->load->view('include/side_menu');
                 })
             }
         });
+    })
+
+    $(document).on('click', '#add_work', function() {
+        let row = $('#table_planning tbody tr').length || 0
+        row = parseInt(row) + parseInt(1);
+        let html = `
+        <tr>
+            <td>` + row + `</td>
+            <td><textarea name="works[` + row + `][work_planning]" class="form-control" placeholder="Rencana kerja"></textarea></td>
+            <td><input type="text" name="works[` + row + `][qty_planning]" class="form-control" placeholder="0"></td>
+            <td><button type="button" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
+        </tr>
+        `;
+
+        $('#table_planning tbody').append(html);
+        // console.log(html);
+    })
+
+    $(document).on('click', '.delete', function() {
+        $(this).parents('tr').remove();
     })
 </script>

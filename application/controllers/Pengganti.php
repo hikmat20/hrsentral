@@ -270,10 +270,6 @@ class Pengganti extends CI_Controller
         $data_session                   = $this->session->userdata;
         $data                           = $this->input->post();
         $id                             = $this->input->post('id');
-        // echo '<pre>';
-        // print_r($data);
-        // echo '<pre>';
-        // exit;
 
         $data['id']                     = ($id) ? $id : $this->autoNumber('leave_applications', 'CP');
         $data['flag_leave_type']        = 'CP';
@@ -316,6 +312,7 @@ class Pengganti extends CI_Controller
         if ($id) {
             $data['modified_by']             = $data_session['User']['username'];
             $data['modified_at']             = date('Y-m-d H:i:s');
+            $data['status']                  = 'OPN';
             if ($data['works']) {
                 foreach ($data['works'] as $key => $works) {
                     $data['works'][$key]['employee_id']   = $data['employee_id'];
@@ -323,7 +320,7 @@ class Pengganti extends CI_Controller
                 }
                 $this->db->delete('works', ['leave_id' => $data['id']]);
                 $this->db->insert_batch('works', $data['works']);
-            }
+            };
             unset($data['works']);
             $this->db->where('id', $id)->update('leave_applications', $data);
         } else {
@@ -367,6 +364,7 @@ class Pengganti extends CI_Controller
         $data_session                   = $this->session->userdata;
         $id                             = $this->input->post('id');
 
+
         $this->db->trans_begin();
 
         if ($id) {
@@ -396,8 +394,10 @@ class Pengganti extends CI_Controller
 
     public function save_approve()
     {
-        $session   = $this->session->userdata;
-        $id        = $this->input->post('id');
+        $session        = $this->session->userdata;
+        $id             = $this->input->post('id');
+        $employee_id    = $this->input->post('employee_id');
+        $works          = $this->input->post('works');
 
         $this->db->trans_begin();
 
@@ -407,6 +407,16 @@ class Pengganti extends CI_Controller
             $data['approved_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'APV';
             $this->db->where('id', $id)->update('leave_applications', $data);
+            if ($works) {
+                foreach ($works as $key => $wr) {
+                    $data['works'][$key]['employee_id']     = $employee_id;
+                    $data['works'][$key]['leave_id']        = $id;
+                    $data['works'][$key]['work_planning']   = $wr['work_planning'];
+                    $data['works'][$key]['qty_planning']    = $wr['qty_planning'];
+                }
+                // $this->db->delete('works', ['leave_id' => $id]);
+                $this->db->insert_batch('works', $data['works']);
+            };
         }
 
         if ($this->db->trans_status() === FALSE) {
