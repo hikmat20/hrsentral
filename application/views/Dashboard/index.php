@@ -34,6 +34,13 @@ $this->load->view('include/side_menu');
                             <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $approvalWFH; ?> Pengajuan WFH karyawan diperlukan Approval Anda! <a class="btn btn-primary btn-sm" href="<?= base_url('wfh/approval'); ?>">Lihat</a>
                         </div>
                     <?php endif; ?>
+
+                    <?php if ($approvalOT) : ?>
+                        <div class="alert bg-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="fa fa-info-circle"></i> Perhatian!!</h4> <?= $approvalWFH; ?> Pengajuan Lembur karyawan diperlukan Approval Anda! <a class="btn btn-primary btn-sm" href="<?= base_url('lembur/approval'); ?>">Lihat</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="row">
