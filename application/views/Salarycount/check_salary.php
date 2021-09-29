@@ -4,14 +4,24 @@ $this->load->view('include/side_menu');
 <div class="box box-primary">
 	<div class="box-header">
 		<h3 class="box-title"><?=$title;?></h3>
+		<div class="box-tool pull-right">
+		<?php
+		if($akses_menu['download']=='1'){
+		?>
+		  <a href="<?php echo site_url('salarycount/excel') ?>" class="btn btn-sm btn-success" id='btn-excel'>
+			<i class="fa fa-download">&nbsp Download Excel</i>
+		  </a>
+		  <?php
+			}
+		  ?>
+		</div>
+		<div class="box-tool pull-right">
 		
 	</div>
 	<!-- /.box-header -->
 	<div class="box-body">
 		
-			
-	
-	  <table id="example1" class="table table-bordered table-striped">
+	  <table id="grid-data" class="table table-bordered table-striped">
 	  
 			<thead>
 				<tr class='bg-blue'>
@@ -20,9 +30,6 @@ $this->load->view('include/side_menu');
 					<th class="text-center">Basic Salary</th>
 					<th class="text-center">Tunjangan Harian</th>
 					<th class="text-center">Tunjangan Bulanan</th>
-					<th class="text-center">Tunjangan BPJS</th>
-					<th class="text-center">Potongan BPJS</th>
-					<th class="text-center">Potongan Lain-lain</th>
 					<th class="text-center">Potongan Absensi</th>
 					<th class="text-center">Potongan Pinjaman</th>
 					<th class="text-center">Potongan PPH</th>
@@ -55,17 +62,12 @@ $this->load->view('include/side_menu');
 							echo"<td align='right'>".number_format($tr->pokok,0, ',', '.')."</td>";
 							echo"<td align='right'>".number_format($tr->tj_harian,0, ',', '.')."</td>";
 							echo"<td align='right'>".number_format($tr->tj_bulanan,0, ',', '.')."</td>";
-							echo"<td align='right'>".number_format($tr->tj_bpjs,0, ',', '.')."</td>";
-							echo"<td align='right'>".number_format($tr->pot_bpjs,0, ',', '.')."</td>";
-							echo"<td align='right'>".number_format($tr->pot_lain,0, ',', '.')."</td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm absensi uang' id='pot_absensi$nomor' data-absensi='$tr->id_trsalary' data-nomor='$nomor' value=".number_format($tr->pot_absensi,0, ',', '.')."></input></td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm pinjaman uang' id='pot_pinjaman$nomor' data-pinjaman='$tr->id_trsalary' data-nomor1='$nomor' value=".number_format($tr->pot_pinjaman,0, ',', '.')."></input></td>";
+							echo"<td align='center'><input type='text' class='form-control input-sm pph uang' id='pot_pph$nomor' data-pph='$tr->id_trsalary' data-nomor2='$nomor' value=".number_format($tr->pot_pph,0, ',', '.')."></input></td>";
 							echo"<td align='center'>".number_format($tr->total,0, ',', '.')."</td>";
-							echo"<td align='center'><input type='text' class='form-control input-sm absensi' id='pot_absensi$nomor' data-absensi='$tr->id_trsalary' data-nomor='$nomor' value=".number_format($tr->pot_absensi,0, ',', '.')."></input></td>";
-							echo"<td align='center'><input type='text' class='form-control input-sm pinjaman' id='pot_pinjaman$nomor' data-pinjaman='$tr->id_trsalary' data-nomor1='$nomor' value=".number_format($tr->pot_pinjaman,0, ',', '.')."></input></td>";
-							echo"<td align='center'><input type='text' class='form-control input-sm pph' id='pot_pph$nomor' data-pph='$tr->id_trsalary' data-nomor2='$nomor' value=".number_format($tr->pot_pph,0, ',', '.')."></input></td>";
-							
 							echo"<td align='center'>"; 
-								echo"<button type='button' class='btn btn-primary add' id='add' data-karyawan='$tr->id_trsalary'>
-										<i class='fa fa-plus'></i></button>";					
+													
 							    if($akses_menu['update']=='1'){
 									echo"<button type='button' class='btn btn-success view' id='view' data-id='$tr->employee_id'>
 										<i class='fa fa-eye'></i></button>";
@@ -88,9 +90,6 @@ $this->load->view('include/side_menu');
 					<th class="text-center">Basic Salary</th>
 					<th class="text-center">Tunjangan Harian</th>
 					<th class="text-center">Tunjangan Bulanan</th>
-					<th class="text-center">Tunjangan BPJS</th>
-					<th class="text-center">Potongan BPJS</th>
-					<th class="text-center">Potongan Lain-lain</th>
 					<th class="text-center">Potongan Absensi</th>
 					<th class="text-center">Potongan Pinjaman</th>
 					<th class="text-center">Potongan PPH</th>
@@ -122,13 +121,27 @@ $this->load->view('include/side_menu');
   </div>
 </div>
 
+
+
 <?php $this->load->view('include/footer'); ?>
 <script>
+  
+
 	$(document).ready(function(){
 		$('#btn-add').click(function(){
 			loading_spinner();
 		});		
+		
+		
+		 $('#grid-data').DataTable({
+          
+        });
+		
+		
+		
 	});
+	
+	
 	function deleteData(id){
 		swal({
 			  title: "Are you sure?",
@@ -213,18 +226,72 @@ $this->load->view('include/side_menu');
 	  document.location.reload();
 	})
 	
-	$(document).on('blur', '.absensi', function(e){
+	$(document).on('keyup', '.absensi', function(e){
+		
 		
 		 var	id		= $(this).data('absensi');
 		 var	nomor		= $(this).data('nomor');
          var	harga	= $("#pot_absensi"+nomor).val();
+		 var	hargarp	= formatRupiah(harga)
+		 
+		 
+		 
+		 $("#pot_absensi"+nomor).val(hargarp);
+		 
+		
+		
+	})
+	
+	$(document).on('keyup', '.pinjaman', function(e){
+		
+		
+		 var	id		= $(this).data('pinjaman');
+		 var	nomor		= $(this).data('nomor1');
+         var	harga	= $("#pot_pinjaman"+nomor).val();
+		 var	hargarp	= formatRupiah(harga)
+		 
+		 
+		 
+		 $("#pot_pinjaman"+nomor).val(hargarp);
+		 
+		
+		
+	})
+	
+	$(document).on('keyup', '.pph', function(e){
+		
+		
+		 var	id		= $(this).data('pph');
+		 var	nomor		= $(this).data('nomor2');
+         var	harga	= $("#pot_pph"+nomor).val();
+		 var	hargarp	= formatRupiah(harga)
+		 
+		 
+		 
+		 $("#pot_pph"+nomor).val(hargarp);
+		 
+		
+		
+	})
+	
+	
+	
+	$(document).on('blur', '.absensi', function(e){
+		
+		
+		 var	id		= $(this).data('absensi');
+		 var	nomor		= $(this).data('nomor');
+         var	harga	= $("#pot_absensi"+nomor).val();
+		 
+		 
 		 
 		$.ajax({
 			type:'POST',
 			url:base_url+'salarycount/update_absensi/',
 			data	: "id="+id+"&harga="+harga,
 			success:function(data){
-				 document.location.reload();
+				 //document.location.reload();
+				 window.location.href=base_url+'salarycount/search2';
 			}
 		})
 		
@@ -241,7 +308,7 @@ $this->load->view('include/side_menu');
 			url:base_url+'salarycount/update_pinjaman/',
 			data	: "id="+id+"&harga="+harga,
 			success:function(data){
-				 document.location.reload();
+				window.location.href=base_url+'salarycount/search2';
 			}
 		})
 		
@@ -258,11 +325,30 @@ $this->load->view('include/side_menu');
 			url:base_url+'salarycount/update_pph/',
 			data	: "id="+id+"&harga="+harga,
 			success:function(data){
-				 document.location.reload();
+				window.location.href=base_url+'salarycount/search2';
 			}
 		})
 		
 	})
+	
+	
+	/* Fungsi formatRupiah */
+function formatRupiah(angka, prefix){
+	var number_string = angka.replace(/[^,\d]/g, '').toString(),
+	split   		= number_string.split(','),
+	sisa     		= split[0].length % 3,
+	rupiah     		= split[0].substr(0, sisa),
+	ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+ 
+	// tambahkan titik jika yang di input sudah menjadi angka ribuan
+	if(ribuan){
+		separator = sisa ? '.' : '';
+		rupiah += separator + ribuan.join('.');
+	}
+ 
+	rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+	return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+}
 	
 	
 </script>

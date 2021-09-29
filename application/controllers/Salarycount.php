@@ -268,7 +268,54 @@ class Salarycount extends CI_Controller {
 		$this->load->view('Salarycount/check_salary',$data);
 	    }
 	}
-	public function excel(){
+	
+	
+	
+	
+	public function search2(){
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		if($Arr_Akses['read'] !='1'){
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+			redirect(site_url('dashboard'));
+		}
+		
+		
+		$employee	            = $this->input->post('select_karyawan');
+		$data					= $this->input->post();
+		$tgl1					= $this->input->post('first_date');
+		$tgl2					= $this->input->post('second_date');
+		$tgl1indo				= tgl_indo($this->input->post('first_date'));
+		$tgl2indo				= tgl_indo($this->input->post('second_date'));
+		
+		$data_session			= $this->session->userdata;
+		$data['created_by']		= $data_session['User']['username']; 
+		$data['created']		= date('Y-m-d H:i:s');
+		
+		$get_Data			= $this->employees_model->getDataEmpl();
+		$Employees			= $this->employees_model->getEmployees();
+		$get_Data2			= $this->employees_model->getEmpfamily();
+		$get_Data3			= $this->employees_model->getSalarycount($tgl1,$tgl2);
+		
+		$data = array(
+			'title2'		=> 'Salary Count',
+			'tgl1'          => $tgl1indo,
+			'tgl2'          => $tgl2indo,
+			'action'		=> 'Count',
+			'title'		    => 'Salary Count ',
+			'religi'		=> '0',
+			'row'			=> $get_Data,
+			'row2'			=> $get_Data3,
+			'data_menu'		=> $Employees,
+			'akses_menu'	=> $Arr_Akses,
+			'data_karyawan'	=> $employee	
+		);
+		history('View Data Employees');
+		$this->load->view('Salarycount/check_salary',$data);
+	    
+	}
+
+	public function excel_lama(){
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));
 		$Arr_Akses			= getAcccesmenu($controller);
 		if($Arr_Akses['read'] !='1'){
@@ -572,7 +619,7 @@ class Salarycount extends CI_Controller {
 			$potbpjs	= $tr->pot_bpjs;
 			$potpinjaman  	= $tr->pot_pinjaman;
 			$potpph  	= $tr->pot_pph;
-			$potabsensi  	= $tr->pot_absensi + $this->input->post('harga');
+			$potabsensi  	= $tr->pot_absensi + str_replace(".", "", $this->input->post('harga'));
 				$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
 			
 			
@@ -647,7 +694,7 @@ class Salarycount extends CI_Controller {
 			$potbpjs	= $tr->pot_bpjs;
 			$potabsensi	= $tr->pot_absensi;
 			$potpph  	= $tr->pot_pph;
-			$potpinjaman  	= $tr->pot_pinjaman + $this->input->post('harga');
+			$potpinjaman  	= $tr->pot_pinjaman + str_replace(".", "", $this->input->post('harga'));
 			$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
 			
 			// print_r($pokok);
@@ -722,7 +769,7 @@ class Salarycount extends CI_Controller {
 			$potbpjs	= $tr->pot_bpjs;
 			$potabsensi	= $tr->pot_absensi;
 			$potpinjaman	= $tr->pot_pinjaman;
-			$potpph  	= $tr->pot_pph + $this->input->post('harga');
+			$potpph  	= $tr->pot_pph + str_replace(".", "", $this->input->post('harga'));
 			$total      = $pokok+$tjharian+$tjbulanan+$tjbpjs-$potbpjs-$potpph-$potpinjaman-$potabsensi;
 			
 			// print_r($pokok);
@@ -765,5 +812,31 @@ class Salarycount extends CI_Controller {
 		
   		echo json_encode($status);
 	
+	}
+	
+	public function excel(){
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		if($Arr_Akses['read'] !='1'){
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+			redirect(site_url('dashboard'));
+		}
+		
+		$get_Data			= $this->employees_model->getDataCompEmpl('COM003');
+		$Employees			= $this->employees_model->getEmployees();
+		
+		$data = array(
+			'title'			=> 'Indeks Of Salarycount',
+			'action'		=> 'index',
+			'status'		=> 'Belum Kontrak',
+			'religi'		=> '0',
+			'sisakontrakbln'=> '',
+			'sisakontrakth'	=> '',
+			'row'			=> $get_Data,
+			'data_menu'		=> $Employees,
+			'akses_menu'	=> $Arr_Akses
+		);
+		history('View Data Salarycount');
+		$this->load->view('Salarycount/salary_excel',$data);
 	}
 }

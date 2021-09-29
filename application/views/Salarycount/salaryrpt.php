@@ -270,14 +270,22 @@
 									
 									?>
 									<?php
-									$pot3 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
-									LEFT JOIN ms_potongan b ON b.id=a.id_potongan
-									WHERE a.employee_id = '$karyawan' AND a.id_potongan!=''")->result();
+																		
+											//echo"<tr>";	
+											
+											$periode1 = date('M');	
+                                            $tahun1 = date('Y');	
+											
+											$pot3 = $this->db->query("SELECT a.* FROM tr_salary a
+											
+											WHERE a.employee_id = '$karyawan' AND a.periode_gaji='$periode1' AND a.tahun='$tahun1'")->result();
 									  
 											 if($pot3){
-													$totpotlain=0;
+													//$totpotlain1=0;
 													foreach($pot3 as $pt3){													
-														$totpotlain += $pt3->total;
+														$totpotlain = $pt3->pot_absensi+$pt3->pot_pinjaman+$pt3->pot_pph;
+														
+
 													}
 											 }
 														
@@ -348,56 +356,47 @@
 											
 											<?php
 											
-											echo"<tr>";	
+											//echo"<tr>";
+                                            $periode = date('M');	
+                                            $tahun = date('Y');												
 											
-											$pot4 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
-											LEFT JOIN ms_potongan b ON b.id=a.id_potongan
-											WHERE a.employee_id = '$karyawan' AND a.kategori='1' AND a.id_potongan !='' ")->result();
+											$pot4 = $this->db->query("SELECT a.* FROM tr_salary a
+											
+											WHERE a.employee_id = '$karyawan' AND a.periode_gaji='$periode' AND a.tahun='$tahun'")->result();
 									  
 											 if($pot4){
-													$totpotlain1=0;
+													//$totpotlain1=0;
 													foreach($pot4 as $pt4){													
-														$totpotlain1 += $pt4->total;
+														$totpotlain1 = $pt4->pot_absensi+$pt4->pot_pinjaman+$pt4->pot_pph;
 														
 														?>
-														
-														<td  align="right"><?=$pt4->name?></td>
+														<tr>
+														<td  align="right"><b>POTONGAN ABSENSI</b></td>
 														<td align="right"></td>
-														<td align="right"><?=number_format($pt4->total, 0, ',', '.'); ?></td>
+														<td align="right"><?=number_format($pt4->pot_absensi, 0, ',', '.'); ?></td>
+														
+														</tr>
+														
+														<tr>
+														<td  align="right"><b>POTONGAN PINJAMAN</b></td>
+														<td align="right"></td>
+														<td align="right"><?=number_format($pt4->pot_pinjaman, 0, ',', '.'); ?></td>
+														
+														</tr>
+														<tr>
+														<td  align="right"><b>POTONGAN PPH</b></td>
+														<td align="right"></td>
+														<td align="right"><?=number_format($pt4->pot_pph, 0, ',', '.'); ?></td>
 														
 														</tr>
 											<?php			
 													}
 											 }
 														
-											?>
-											<?php
-											
-											echo"<tr>";	
-											
-											$pot5 = $this->db->query("SELECT a.jumlah as total, b.* FROM ms_salary_komponen a
-											INNER JOIN ms_potongan b ON b.id=a.id_potongan
-											WHERE a.employee_id = '$karyawan' AND a.kategori='2' AND a.id_potongan !='' ")->result();
-									  
-											 if($pot4){
-													$totpotlain2=0;
-													foreach($pot5 as $pt5){													
-														$totpotlain2 += $pt5->total;
+																			
+											 $totalpotongan = $tpot+$totpotlain1;
 														
-														?>
-														
-														<td  align="right"><?=$pt5->name?></td>
-														<td align="right"></td>
-														<td align="right"><?=number_format($pt5->total, 0, ',', '.'); ?></td>
-														
-														</tr>
-											<?php			
-													}
-											 }
-											 
-											 $totalpotongan = $tpot+$totpotlain1+$totpotlain2;
-														
-											?>
+											 ?>
 											
                                             														
 											
