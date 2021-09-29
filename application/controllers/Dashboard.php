@@ -66,33 +66,34 @@ class Dashboard extends CI_Controller
 		$REJ = (isset($leaveCount['REJ'])) ? $leaveCount['REJ'] : 0;
 		$REV = (isset($leaveCount['REV'])) ? $leaveCount['REV'] : 0;
 
-		$absensi = $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
-		$approvalCT  = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CT'])->row();
-		$approvalCP  = $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CP'])->row();
-		$approvalWFH = $this->db->select('count(*) as num')->get_where('view_wfh', ['approval_employee_id' => $userLogin, 'status' => 'OPN'])->row();
+		$absensi 		= $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $userLogin, "STR_TO_DATE(`waktu`, '%Y-%m-%d') =" => date('Y-m-d')])->result();
+		$approvalCT  	= $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CT'])->row();
+		$approvalCP  	= $this->db->select('count(*) as num')->get_where('view_leave_applications', ['approval_employee_id' => $userLogin, 'status' => 'OPN', 'flag_leave_type' => 'CP'])->row();
+		$approvalWFH 	= $this->db->select('count(*) as num')->get_where('view_wfh', ['approval_employee_id' => $userLogin, 'status' => 'OPN'])->row();
+		$approvalOT 	= $this->db->select('count(*) as num')->get_where('view_overtime', ['approval_employee_id' => $userLogin, 'status' => 'OPN'])->row();
 
 		$data = array(
-			'title'			=> 'Dashboard',
-			'action'		=> 'index',
-			'row'			=> $get_Data,
-			'jumlah'		=> $jumlah,
-			'jumlahtetap'	=> $jumlahtetap,
-			'jumlahkontrak1' => $jumlahkontrak1,
-			'jumlahkontrak2' => $jumlahkontrak2,
-			'jumlahkontrak3' => $jumlahkontrak3,
-			'danest'		=> $danest,
-			'danesttetap'	=> $danesttetap,
-			'danestkontrak1' => $danestkontrak1,
-			'danestkontrak2' => $danestkontrak2,
-			'danestkontrak3' => $danestkontrak3,
-			'prismalatest1' => $prismalatest1,
-			'prismalatest2' => $prismalatest2,
-			'prismalatest3' => $prismalatest3,
-			'danestlatest1' => $danestlatest1,
-			'danestlatest2' => $danestlatest2,
-			'danestlatest3' => $danestlatest3,
-			'absensi' 		=> $absensi,
-			'semua'			=> $all,
+			'title'				=> 'Dashboard',
+			'action'			=> 'index',
+			'row'				=> $get_Data,
+			'jumlah'			=> $jumlah,
+			'jumlahtetap'		=> $jumlahtetap,
+			'jumlahkontrak1'	=> $jumlahkontrak1,
+			'jumlahkontrak2'	=> $jumlahkontrak2,
+			'jumlahkontrak3'	=> $jumlahkontrak3,
+			'danest'			=> $danest,
+			'danesttetap'		=> $danesttetap,
+			'danestkontrak1'	=> $danestkontrak1,
+			'danestkontrak2'	=> $danestkontrak2,
+			'danestkontrak3'	=> $danestkontrak3,
+			'prismalatest1' 	=> $prismalatest1,
+			'prismalatest2' 	=> $prismalatest2,
+			'prismalatest3' 	=> $prismalatest3,
+			'danestlatest1' 	=> $danestlatest1,
+			'danestlatest2' 	=> $danestlatest2,
+			'danestlatest3' 	=> $danestlatest3,
+			'absensi' 			=> $absensi,
+			'semua'				=> $all,
 			'leaveApp'			=> $App,
 			'leaveOPN'			=> (isset($leaveCount['OPN'])) ? $leaveCount['OPN'] : 0,
 			'leaveAPV'			=> (isset($leaveCount['APV'])) ? $leaveCount['APV'] : 0,
@@ -102,8 +103,9 @@ class Dashboard extends CI_Controller
 			'approvalCT'		=> ($approvalCT->num) ? $approvalCT->num : '',
 			'approvalCP'		=> ($approvalCP->num) ? $approvalCP->num : '',
 			'approvalWFH'		=> ($approvalWFH->num) ? $approvalWFH->num : '',
-			'data_menu'		=> $Employees,
-			'akses_menu'	=> $Arr_Akses
+			'approvalOT'		=> ($approvalOT->num) ? $approvalOT->num : '',
+			'data_menu'			=> $Employees,
+			'akses_menu'		=> $Arr_Akses
 		);
 		history('View Data Employees');
 		$this->load->view('Dashboard/index', $data);

@@ -160,4 +160,40 @@ class Reports extends CI_Controller
 			$this->load->view('Reports/view_wfh', $data);
 		}
 	}
+
+	public function lembur()
+	{
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller . '/lembur');
+		if ($Arr_Akses['read'] != '1') {
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+			redirect(site_url('dashboard'));
+		}
+		$data = [
+			'action' 	=> 'wfh',
+			'title' 	=> 'View Data Lembur'
+		];
+
+		history('View Data Lembur');
+		$this->load->view('Reports/lembur', $data);
+	}
+
+	public function report_lembur()
+	{
+		$sDate 		= $this->input->post('sDate');
+		$eDate 		= $this->input->post('eDate');
+		$detail		= $this->input->post('detail');
+
+		$lembur 	= $this->db->get_where('view_overtime', ['date >=' => $sDate, 'date <=' => $eDate, 'company_id' => $this->company, 'branch_id' => $this->branch])->result();
+
+		$data = [
+			'data' 		=> $lembur,
+			'sts' 		=> $this->sts,
+			'detail' 	=> $detail,
+		];
+
+		if ($data) {
+			$this->load->view('Reports/view_lembur', $data);
+		}
+	}
 }
