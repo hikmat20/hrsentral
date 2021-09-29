@@ -90,7 +90,7 @@ class Lembur extends CI_Controller
             'division'      => $division[0],
             'access'        => $Arr_Akses,
         );
-        $this->load->view('lembur/add', $data);
+        $this->load->view('Lembur/add', $data);
     }
 
     public function edit($id)
