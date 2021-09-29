@@ -157,7 +157,7 @@ class Reports extends CI_Controller
 		];
 
 		if ($data) {
-			$this->load->view('reports/view_wfh', $data);
+			$this->load->view('Reports/view_wfh', $data);
 		}
 	}
 }
