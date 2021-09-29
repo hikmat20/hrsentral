@@ -334,10 +334,6 @@ class Pengganti extends CI_Controller
                 $this->db->insert_batch('works', $data['works']);
             }
             unset($data['works']);
-            // echo '<pre>';
-            // print_r($data);
-            // echo '<pre>';
-            // exit;
             $this->db->insert('leave_applications', $data);
         }
 

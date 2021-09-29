@@ -14,6 +14,18 @@ class Reports extends CI_Controller
 
 		$this->company 	= $this->session->Company->company_id;
 		$this->branch 	= $this->session->Company->branch_id;
+		$this->sts =
+			[
+				'OPN' => '<span class="label font-light label-warning">Waiting Approval</span>',
+				'APV' => '<span class="label font-light label-success">Approved</span>',
+				'REJ' => '<span class="label font-light label-danger">Reject</span>',
+				'CNL' => '<span class="label font-light label-default">Cancel</span>n>',
+				'HIS' => '<span class="label font-light bg-purple">History</span>',
+				'REV' => '<span class="label font-light label-info">Revision</span>',
+				'N'   => '<span class="label font-light label-warning">Waiting Approval</span>',
+				'Y'   => '<span class="label font-light label-success">Approved</span>',
+				'' => '<span class="label label-default">Unknow Status</span>',
+			];
 	}
 
 	public function index()
@@ -112,5 +124,40 @@ class Reports extends CI_Controller
 
 		history('View Data Employees');
 		$this->load->view('Reports/kehadiran', $data);
+	}
+
+	public function wfh()
+	{
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller . '/wfh');
+		if ($Arr_Akses['read'] != '1') {
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+			redirect(site_url('dashboard'));
+		}
+		$data = [
+			'action' 	=> 'wfh',
+			'title' 	=> 'View Data WFH'
+		];
+		history('View Data WFH');
+		$this->load->view('Reports/wfh', $data);
+	}
+
+	public function report_wfh()
+	{
+		$sDate 		= $this->input->post('sDate');
+		$eDate 		= $this->input->post('eDate');
+		$detail		= $this->input->post('detail');
+
+		$wfh 		= $this->db->get_where('view_wfh', ['from_date >=' => $sDate, 'from_date <=' => $eDate, 'company_id' => $this->company, 'branch_id' => $this->branch])->result();
+
+		$data = [
+			'data' 		=> $wfh,
+			'sts' 		=> $this->sts,
+			'detail' 	=> $detail,
+		];
+
+		if ($data) {
+			$this->load->view('reports/view_wfh', $data);
+		}
 	}
 }
