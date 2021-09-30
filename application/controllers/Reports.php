@@ -170,7 +170,7 @@ class Reports extends CI_Controller
 			redirect(site_url('dashboard'));
 		}
 		$data = [
-			'action' 	=> 'wfh',
+			'action' 	=> 'Lembur',
 			'title' 	=> 'View Data Lembur'
 		];
 
