@@ -105,9 +105,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <th class="text-center" width="20px">No</th>
                             <th class="text-center">Rencana Kerja</th>
                             <th class="text-center" width="8%">QTY</th>
-                            <th class="text-center">Aktual Hasil</th>
-                            <th class="text-center" width="8%">QTY</th>
-                            <th class="text-center" width="5%">Opsi</th>
+                            <?php if ($wfh->status == 'APV') : ?>
+                                <th class="text-center">Aktual Hasil</th>
+                                <th class="text-center" width="8%">QTY</th>
+                                <th class="text-center" width="5%">Opsi</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,8 +119,10 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                                 <td><?= $n; ?></td>
                                 <td><textarea <?= (isset($update)) ? 'readonly' : ''; ?> name="works[<?= $n; ?>][work_planning]" class="form-control" placeholder="Rencana kerja"><?= $wr->work_planning; ?></textarea></td>
                                 <td><input <?= (isset($update)) ? 'readonly' : ''; ?> type="text" name="works[<?= $n; ?>][qty_planning]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_planning; ?>"></td>
-                                <td><textarea name="works[<?= $n; ?>][work_actual]" class="form-control" placeholder="Aktual pekerjaan"><?= $wr->work_actual; ?></textarea></td>
-                                <td><input type="text" name="works[<?= $n; ?>][qty_actual]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_actual; ?>"></td>
+                                <?php if ($wfh->status == 'APV') : ?>
+                                    <td><textarea name="works[<?= $n; ?>][work_actual]" class="form-control" placeholder="Aktual pekerjaan"><?= $wr->work_actual; ?></textarea></td>
+                                    <td><input type="text" name="works[<?= $n; ?>][qty_actual]" class="form-control text-center" placeholder="0" value="<?= $wr->qty_actual; ?>"></td>
+                                <?php endif; ?>
                                 <td><button type="button" data-id="<?= $wr->id; ?>" class="<?= (isset($update)) ? 'hidden' : ''; ?> btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
                             </tr>
                         <?php endforeach; ?>
@@ -129,10 +133,10 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             <hr>
             <div class="" style="margin-top: 20px;">
                 <div class="form-group">
-                    <label class="col-md-2" for="">Permasalahan</label>
+                    <!-- <label class="col-md-2" for="">Permasalahan</label>
                     <div class="col-md-10">
                         <textarea name="problems" placeholder="Permasalahan" rows="5" id="problems" class="form-control"><?= $wfh->problems; ?></textarea>
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
@@ -332,11 +336,11 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             <td>` + row + `</td>
             <td><textarea name="works[` + row + `][work_planning]" class="form-control" placeholder="Rencana kerja"></textarea></td>
             <td><input type="text" name="works[` + row + `][qty_planning]" class="form-control" placeholder="0"></td>
-            <td><textarea name="works[` + row + `][work_actual]" class="form-control" placeholder="Aktual pekerjaan"></textarea></td>
-            <td><input type="text" name="works[` + row + `][qty_actual]" class="form-control" placeholder="0"></td>
             <td><button type="button" data-id="" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
-        </tr>
-        `;
+            </tr>
+            `;
+        // <td><textarea name="works[` + row + `][work_actual]" class="form-control" placeholder="Aktual pekerjaan"></textarea></td>
+        // <td><input type="text" name="works[` + row + `][qty_actual]" class="form-control" placeholder="0"></td>
 
         $('#table_planning tbody').append(html);
         console.log(html);

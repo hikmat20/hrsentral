@@ -121,7 +121,6 @@ class Wfh extends CI_Controller
 
     public function save()
     {
-
         $id                             = $this->input->post('id');
         $flag_revision                  = $this->input->post('flag_revision');
         $no_rev                         = $this->input->post('no_revision');
@@ -352,6 +351,7 @@ class Wfh extends CI_Controller
         $session        = $this->session->userdata;
         $id             = $this->input->post('id');
         $employee_id    = $this->input->post('employee_id');
+        $notes          = $this->input->post('notes');
         $works          = $this->input->post('works');
 
         $this->db->trans_begin();
@@ -360,6 +360,7 @@ class Wfh extends CI_Controller
             $data['modified_at']             = date('Y-m-d H:i:s');
             $data['approved_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'APV';
+            $data['note']                   = $notes;
             $this->db->where('id', $id)->update('work_from_home', $data);
             if ($works) {
                 foreach ($works as $key => $wr) {

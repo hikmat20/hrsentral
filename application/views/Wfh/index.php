@@ -74,7 +74,7 @@ $ses_userId = $this->session->User['employee_id'];
                                             <?php if ($access['read'] == '1') : ?>
                                                 <a href="<?= base_url(); ?>wfh/view/<?= $data->id; ?>" data-action="view" class=' btn btn-sm btn-primary' title='View Application' data-role='qtip'><i class='fa fa-eye'></i></a>
                                             <?php endif ?>
-                                            <?php if ($data->status == 'APV' && $data->approved_hr == 'N' && 'employee_id' == $data->employee_id) : ?>
+                                            <?php if (($data->status == 'APV') && ($data->approved_hr == 'N') && $ses_userId == $data->employee_id) : ?>
                                                 <a href="<?= base_url('wfh/update/') . $data->id; ?>" class="btn btn-warning btn-sm edit" title="Update Rencana Kerja" tooltip="qtip"><i class="fa fa-pencil"></i></a>
                                             <?php endif; ?>
                                             <?php if ($access['delete'] == '1' && $data->approved_hr == 'N') : ?>

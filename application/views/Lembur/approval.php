@@ -114,10 +114,24 @@ $this->load->view('include/side_menu');
                 </div>
 
                 <label>Permasalahan</label>
-                <table class="table table-bordered">
+                <table class="table">
                     <tbody>
                         <tr>
-                            <td style="height: 100px;"><?= $data->problems; ?></td>
+                            <td>
+                                <textarea disabled class="form-control" rows="5"><?= $data->problems; ?>
+                                </textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <label>Catatan</label>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <textarea name="note" class="form-control" id="note" <?= ($data->status == 'APV') ? 'disabled' : ''; ?> rows="5"><?= $data->note; ?></textarea>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
