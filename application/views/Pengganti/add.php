@@ -134,8 +134,8 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <th class="text-center" width="20px">No</th>
                             <th class="text-center">Rencana Kerja</th>
                             <th class="text-center" width="8%">QTY</th>
-                            <th class="text-center">Aktual Hasil</th>
-                            <th class="text-center" width="8%">QTY</th>
+                            <!-- <th class="text-center">Aktual Hasil</th>
+                            <th class="text-center" width="8%">QTY</th> -->
                             <th class="text-center" width="5%">Opsi</th>
                         </tr>
                     </thead>
@@ -390,12 +390,12 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             <td>` + row + `</td>
             <td><textarea name="works[` + row + `][work_planning]" class="form-control" placeholder="Rencana kerja"></textarea></td>
             <td><input type="text" name="works[` + row + `][qty_planning]" class="form-control" placeholder="0"></td>
-            <td><textarea name="works[` + row + `][work_actual]" class="form-control" placeholder="Aktual pekerjaan"></textarea></td>
-            <td><input type="text" name="works[` + row + `][qty_actual]" class="form-control" placeholder="0"></td>
             <td><button type="button" class="btn btn-danger btn-sm delete"><i class="fa fa-trash"></i></button></td>
-        </tr>
-        `;
+            </tr>
+            `;
 
+        // <td><textarea name="works[` + row + `][work_actual]" class="form-control" placeholder="Aktual pekerjaan"></textarea></td>
+        // <td><input type="text" name="works[` + row + `][qty_actual]" class="form-control" placeholder="0"></td>
         $('#table_planning tbody').append(html);
         // console.log(html);
 
