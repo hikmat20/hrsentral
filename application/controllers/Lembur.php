@@ -343,6 +343,7 @@ class Lembur extends CI_Controller
         $session        = $this->session->userdata;
         $id             = $this->input->post('id');
         $employee_id    = $this->input->post('employee_id');
+        $note             = $this->input->post('note');
         $works          = $this->input->post('works');
 
         $this->db->trans_begin();
@@ -351,6 +352,7 @@ class Lembur extends CI_Controller
             $data['modified_at']             = date('Y-m-d H:i:s');
             $data['approved_at']             = date('Y-m-d H:i:s');
             $data['status']                  = 'APV';
+            $data['note']                    = $note;
             $this->db->where('id', $id)->update('overtime', $data);
             if ($works) {
                 foreach ($works as $key => $wr) {

@@ -6,9 +6,11 @@
 				<th class="text-center">Employee </th>
 				<th class="text-center">Division </th>
 				<th class="text-center">Date </th>
-				<th class="text-center">Start Time </th>
-				<th class="text-center">End Time </th>
-				<th class="text-center">Total Time </th>
+				<th class="text-center">Plan Start </th>
+				<th class="text-center">Actual Start </th>
+				<th class="text-center">Plan End </th>
+				<th class="text-center">Actual End </th>
+				<th class="text-center">Actual Time </th>
 				<th class="text-center">No. SO/SPK </th>
 				<th class="text-center">Reason </th>
 				<th class="text-center">Apv. D.Head </th>
@@ -18,15 +20,26 @@
 		</thead>
 		<tbody>
 			<?php $n = 0;
-			foreach ($data as $ovt) : $n++ ?>
+			foreach ($data as $ovt) : $n++;
+				$act_start 	= $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $ovt->employee_id, 'tipe' => '5', 'date(waktu)' => ($ovt->date)])->row();
+				$act_end 	= $this->db->order_by('waktu', 'DESC')->get_where('absensi_log', ['employee_id' => $ovt->employee_id, 'tipe' => '6', 'date(waktu)' => ($ovt->date)])->row();
+				// echo '<pre>';
+				// print_r($act_start[0]->waktu);
+				// echo '<pre>';
+				// // exit;
+
+				$total_time = $act_start;
+			?>
 				<tr>
 					<td><?= $n; ?></td>
 					<td><?= $ovt->name; ?></td>
 					<td><?= $ovt->divisions_name; ?></td>
 					<td><?= $ovt->date; ?></td>
 					<td><?= $ovt->start_time; ?></td>
+					<td><?= ($act_start) ? date('H:i:s', strtotime($act_start->waktu)) : '-'; ?></td>
 					<td><?= $ovt->end_time; ?></td>
-					<td><?= $ovt->total_time; ?></td>
+					<td><?= ($act_end) ? date('H:i:s', strtotime($act_end->waktu)) : '-'; ?></td>
+					<td><?= ($act_start && $act_end) ? (strtotime($act_end->waktu) - strtotime($act_start->waktu)) / (60) : '-'; ?> jam</td>
 					<td><?= $ovt->no_so; ?></td>
 					<td><?= $ovt->reason; ?></td>
 					<td><?= $sts[$ovt->status]; ?></td>

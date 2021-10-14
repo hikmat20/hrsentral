@@ -19,7 +19,7 @@ class Reports extends CI_Controller
 				'OPN' => '<span class="label font-light label-warning">Waiting Approval</span>',
 				'APV' => '<span class="label font-light label-success">Approved</span>',
 				'REJ' => '<span class="label font-light label-danger">Reject</span>',
-				'CNL' => '<span class="label font-light label-default">Cancel</span>n>',
+				'CNL' => '<span class="label font-light label-default">Cancel</span>',
 				'HIS' => '<span class="label font-light bg-purple">History</span>',
 				'REV' => '<span class="label font-light label-info">Revision</span>',
 				'N'   => '<span class="label font-light label-warning">Waiting Approval</span>',

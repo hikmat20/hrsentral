@@ -101,6 +101,15 @@ $flag_leave_type = [
                     </tbody>
                 </table>
 
+                <label>Catatan</label>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td style="height: 100px;"><?= $wfh->note; ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-responsive">
                         <tbody>
