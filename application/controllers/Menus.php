@@ -39,6 +39,7 @@ class Menus extends CI_Controller {
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $data_session['User']['username']; 
 			$data['created_date']	= date('Y-m-d H:i:s');
+			$data['flag_active']	= '1';
 			if($this->master_model->simpan('menus',$data)){
 				$Arr_Kembali		= array(
 					'status'		=> 1,

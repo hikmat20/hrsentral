@@ -76,7 +76,40 @@
 			 if($periode=='Sep'){
 				$v_periode='September';
 			 }
-			  
+			 else if($periode=='Oct'){
+				$v_periode='Oktober';
+			 }
+			 else if($periode=='Nov'){
+				$v_periode='November';
+			 }
+			 else if($periode=='Dec'){
+				$v_periode='Desember';
+			 }
+			  else if($periode=='Jan'){
+				$v_periode='Januari';
+			 }
+			  else if($periode=='Feb'){
+				$v_periode='Februari';
+			 }
+			  else if($periode=='Mar'){
+				$v_periode='Maret';
+			 }
+			  else if($periode=='Apr'){
+				$v_periode='April';
+			 }
+			  else if($periode=='May'){
+				$v_periode='Mei';
+			 }
+			  else if($periode=='Jun'){
+				$v_periode='Juni';
+			 }
+			  else if($periode=='Jul'){
+				$v_periode='Juli';
+			 }
+			  else if($periode=='Aug'){
+				$v_periode='Agustus';
+			 }
+			 
 			  $data = $this->db->query("SELECT a.employee_id, b.* FROM salary a  
 			  INNER JOIN employees b on b.id=a.employee_id
 			  WHERE a.employee_id ='$karyawan'

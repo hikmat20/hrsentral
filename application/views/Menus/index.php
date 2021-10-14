@@ -37,11 +37,11 @@ $this->load->view('include/side_menu');
 					foreach($row as $datas){
 						$int++;
 						$path	= (isset($datas->path) && $datas->path)?$datas->path:'#';
-						$class	= 'bg-green';
-						$status	= 'Active';
-						if($datas->flag_active ==null){
-							$class	= 'bg-red';
-							$status	= 'Not Active';
+						$class	= 'bg-red';
+						$status	= 'Not Active';
+						if($datas->flag_active =='1'){
+							$class	= 'bg-green';
+							$status	= 'Active';
 						}
 						$parent_id	= (isset($data_menu[$datas->parent_id]) && $data_menu[$datas->parent_id])?$data_menu[$datas->parent_id]:'';
 						

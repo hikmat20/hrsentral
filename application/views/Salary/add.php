@@ -12,6 +12,8 @@ $this->load->view('include/side_menu');
 				
 				<th width='20%'>Employee</th>
 				<th width='30%'>Basic Salary</th>
+				<th width='30%'>PTKP</th>
+				
 				
 			</tr>
 			<tr valign="top"  class='baris_1'>
@@ -26,6 +28,12 @@ $this->load->view('include/side_menu');
 				<td>
 					<?php
 							echo form_input(array('id'=>'pokok','name'=>'pokok','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'Basic Salary'));											
+						?>
+				</td>
+				
+				<td>
+					<?php
+							echo form_input(array('id'=>'ptkp','name'=>'ptkp','class'=>'form-control input-sm','autocomplete'=>'off','placeholder'=>'PTKP', 'readonly'=>'readonly'));											
 						?>
 				</td>
 				
@@ -274,6 +282,23 @@ $this->load->view('include/side_menu');
 			data	: "cari="+cari,
 			success	: function(data){
 				$('#pokok').val(data);
+				             					
+			}
+		});
+		
+		});
+		
+		$('#employee_id').change(function(e){
+			e.preventDefault();
+			
+		var	cari		= $('#employee_id').val();		
+		 
+		$.ajax({
+			type	: "POST",
+			url		: base_url + active_controller +'/cariPTKP',
+			data	: "cari="+cari,
+			success	: function(data){
+				$('#ptkp').val(data);
 				             					
 			}
 		});

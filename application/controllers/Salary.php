@@ -301,7 +301,7 @@ public function load_detail()
 		
 		$data = $this->db->query("SELECT a.pokok FROM salary a
                                  
-							      WHERE employee_id='$employee' ")->result();
+							      WHERE a.employee_id='$employee' ")->result();
 		
 		// print_r ($data);
 		// exit;
@@ -313,6 +313,49 @@ public function load_detail()
 			
 		
     	echo "$d->pokok";
+		
+		 		   
+		}
+		
+		
+		
+        }
+        else
+        {
+        echo"0";
+        }
+		
+	}	
+	
+	public function cariPTKP()
+    {
+		
+		
+		$employee	= $_POST['cari'];
+        // $session = $this->session->userdata('app_session');
+        // $divisi  = $session['id_div']; 
+        // $where   =array('kd_meeting'=> $kd_meeting, 'id_perusahaan'=>$prsh, 'id_cabang'=>$cbg );
+        $numb = 1;
+        // $data = $this->employees_model->getData('ms_salary_komponen'); 
+		
+		$empl = $this->db->query("SELECT a.marital_status FROM employees a
+                                 
+							      WHERE a.id='$employee' ")->row();
+								  
+		
+		$data = $this->db->query("SELECT a.ptkp FROM marital_status a
+                                 
+							      WHERE a.code='$empl->marital_status' ")->result();
+		// print_r ($data);
+		// exit;
+        if($data != ''){	
+		
+	    $n=0;
+		foreach ($data as $d){ 
+		$n++;
+			
+		
+    	echo "$d->ptkp";
 		
 		 		   
 		}

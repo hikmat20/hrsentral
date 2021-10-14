@@ -71,10 +71,9 @@ $this->load->view('include/side_menu');
 						<span class="input-group-addon"><i class="fa fa-user"></i></span>
 						<?php
 						$data_employees[0]	= 'Select An Option';
-						echo form_dropdown('employee_id', $data_employees, $rows_data[0]->employee_id, array('id' => 'employee_id', 'class' => 'form-control input-sm'));
+						echo form_dropdown('employee_id', $data_employees, ($rows_data[0]->employee_id==''?'0':$rows_data[0]->employee_id), array('id' => 'employee_id', 'class' => 'form-control input-sm'));
 						?>
 					</div>
-
 				</div>
 			</div>
 

@@ -94,6 +94,7 @@
 <!-- page script -->
 <script type="text/javascript">
 	var base_url = '<?php echo base_url(); ?>';
+	var siteurl=base_url;
 	var active_controller = '<?php echo ($this->uri->segment(1)); ?>';
 	var active_action = '<?php echo ($this->uri->segment(2)); ?>';
 

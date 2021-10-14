@@ -72,10 +72,10 @@ class Users extends CI_Controller
 			),
 		);
 		$sql_details = array(
-			'user' => 'root',
-			'pass' => 'Annabell2018',
-			'db'   => 'hr_sentral',
-			'host' => '103.228.117.98'
+			'user' => $this->db->username,
+			'pass' => $this->db->password,
+			'db'   => $this->db->database,
+			'host' => $this->db->hostname
 		);
 		require('ssp.class.php');
 
@@ -148,8 +148,12 @@ class Users extends CI_Controller
 			$data					= $this->input->post();
 			unset($data['id']);
 			$UserCek				= $this->input->post('username');
-			$Password				= cryptSHA1($this->input->post('password'));
-			$data['password']		= $Password;
+			if($this->input->post('password')!=''){
+				$Password				= cryptSHA1($this->input->post('password'));
+				$data['password']		= $Password;
+			}else{
+				unset($data['password']);
+			}
 			$data_session			= $this->session->userdata;
 			$data['modified_by']	= $data_session['User']['username'];
 			$data['modified']		= date('Y-m-d H:i:s');
@@ -178,7 +182,7 @@ class Users extends CI_Controller
 
 			$data_Group			= $this->master_model->getArray('groups', array(), 'id', 'name');
 			$rows_data			= $this->master_model->getData('users', 'id', $id);
-			$data_employees			= $this->employees_model->getEmployees();
+			$data_employees		= $this->employees_model->getEmployees();
 			$data = array(
 				'title'			=> 'Edit Users',
 				'action'		=> 'edit_user',
@@ -216,10 +220,12 @@ class Users extends CI_Controller
 	{
 		$data_Group			= $this->master_model->getArray('groups', array(), 'id', 'name');
 		$rows_data			= $this->master_model->getData('users', 'id', $id);
+		$data_employees		= $this->employees_model->getEmployees();
 		$data = array(
 			'title'			=> 'View Users',
 			'action'		=> 'view_user',
 			'data_group'	=> $data_Group,
+			'data_employees'=> $data_employees,
 			'rows_data'		=> $rows_data
 		);
 		$this->load->view('Users/view', $data);

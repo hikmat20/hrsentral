@@ -65,8 +65,8 @@ if (mysqli_connect_errno()) die('Error Connection');
 								if ($result = mysqli_query($con, $sql)) {
 									while ($row = mysqli_fetch_row($result)) {
 										if($row[0]=='KERJA10'){
-											echo "<div>Kalibrasi  &nbsp; : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label></div>
-											<div>Konsultan : ";
+											echo "<div>Lab Cikarang  &nbsp; : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label></div>
+											<div>Kantor Cawang : ";
 										}else{
 											echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
 										}
@@ -137,9 +137,12 @@ if (mysqli_connect_errno()) die('Error Connection');
 					alert("Pilihan harus diisi.");
 					return false;
 				}
-				if ($('#cjam input:radio:checked').size() < 1) {
-					alert("Pilihan jam kerja harus diisi.");
-					return false;
+				var tipeabsen=$('input[name=tipe]:checked', '#form_proses').val();
+				if(tipeabsen== '1' || tipeabsen=='4') {
+					if ($('#cjam input:radio:checked').size() < 1) {
+						alert("Pilihan jam kerja harus diisi.");
+						return false;
+					}
 				}
 				$('#simpan').val('Proses .....');
 				$('#simpan').prop('disabled', true);
