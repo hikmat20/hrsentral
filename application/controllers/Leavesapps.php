@@ -492,8 +492,8 @@ class Leavesapps extends CI_Controller
         $config['upload_path']          = './assets/documents';
         $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
         $config['max_size']             = 2000;
-        $config['max_width']            = 1024;
-        $config['max_height']           = 1224;
+        $config['max_width']            = 2024;
+        $config['max_height']           = 2224;
         $config['encrypt_name']         = TRUE;
 
         $this->upload->initialize($config);

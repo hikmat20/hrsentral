@@ -413,7 +413,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                         }
                         $('#total_days').val(days)
                         // remainingLeave()
-                        let leave = $('#get_year_leave').val() || 0;
+                        let leave = $('#applied_leave').val() || 0;
                         if (days == 1 && leave == 0.5) {
                             $('#total_days').prop('readonly', '').val(leave)
                         } else {
@@ -737,7 +737,7 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
 
         totalLeave = parseFloat(getYearLeave) + parseFloat(specialLeave) + parseFloat(otherLeave) + parseFloat(sickLeave);
         $('#applied_leave').val(totalLeave);
-        console.log(getYearLeave + ", " + specialLeave + ", " + otherLeave + ", " + totalLeave);
+        // console.log(getYearLeave + ", " + specialLeave + ", " + otherLeave + ", " + totalLeave);
         return false
     }
 
