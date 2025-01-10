@@ -99,28 +99,47 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
                             <tr>
-                                <td rowspan="2">Dokumen Pendukung</td>
-                                <td rowspan="2" class="text-center">:</td>
-                                <td class="text-center">Dok. Surat Sakit/Surat Dokter</td>
-                                <td class="text-center">Dok. Cuti Pemerintah</td>
-                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+                                <td rowspan="4">Dokumen Pendukung</td>
+                                <td rowspan="4" class="text-center">:</td>
+                                <td class="text-center">Dok. Surat Sakit</td>
+                                <td class="text-center">Dok. Kwitansi / Perincian Biaya Berobat</td>
+                                <td class="text-center">Dok. Copy Resep</td>
+
                             </tr>
                             <tr height="100px">
-                                <td colspan="">
+                                <td>
                                     <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>">
-                                        <img src=" <?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>" alt="" height="200px">
+                                        <img src=" <?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>" alt="" width="200px">
                                     </a>
                                 </td>
-                                <td colspan="">
+                                <td>
+                                    <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave_2) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_2") ? $employee->doc_sick_leave_2 : "No file uploded") : '-'; ?>">
+                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave_2) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_2") ? $employee->doc_sick_leave_2 : "No file uploded") : '-'; ?>" alt="" width="200px">
+                                    </a>
+                                </td>
+                                <td>
+                                    <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave_3) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_3") ? $employee->doc_sick_leave_3 : "No file uploded") : '-'; ?>">
+                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave_3) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_3") ? $employee->doc_sick_leave_3 : "No file uploded") : '-'; ?>" alt="" width="200px">
+                                    </a>
+                                </td>								
+                            </tr>
+                            <tr>
+                                <td class="text-center">Dok. Cuti Pemerintah</td>
+                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+								<td></td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>">
-                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
+                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>" alt="" width="200px">
                                     </a>
                                 </td>
-                                <td colspan="">
+                                <td>
                                     <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? $employee->doc_notpay_leave : "No file uploded") : '-'; ?>">
-                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? $employee->doc_notpay_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
+                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? $employee->doc_notpay_leave : "No file uploded") : '-'; ?>" alt="" width="200px">
                                     </a>
                                 </td>
+								<td></td>
                             </tr>
                             <tr>
                                 <th>Catatan</th>
