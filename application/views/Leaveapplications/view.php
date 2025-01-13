@@ -105,11 +105,11 @@ $flag_leave_type = [
                                 <td colspan="3"><?= $employee->descriptions; ?></td>
                             </tr>
                             <tr>
-                                <td rowspan="2">Dokumen Pendukung</td>
-                                <td rowspan="2" class="text-center">:</td>
-                                <td class="text-center">Dok. Cuti Sakit/Surat Dokter</td>
-                                <td class="text-center">Dok. Cuti Pemerintah</td>
-                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+                                <td rowspan="4">Dokumen Pendukung</td>
+                                <td rowspan="4" class="text-center">:</td>
+                                <td class="text-center">Dok. Surat Sakit</td>
+                                <td class="text-center">Dok. Kwitansi / Perincian Biaya Berobat</td>
+                                <td class="text-center">Dok. Copy Resep</td>
                             </tr>
                             <tr height="100px">
                                 <td class="text-center">
@@ -150,6 +150,7 @@ $flag_leave_type = [
                                         endif; ?>
                                     </a>
                                 </td>
+								<td></td>
                             </tr>
                             <tr>
                                 <th>Catatan</th>

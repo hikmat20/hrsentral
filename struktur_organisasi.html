@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title> Diagram Requirements</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="utf-8" />
+	<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+	<link href="node_modules/@angular/material/prebuilt-themes/indigo-pink.css" rel="stylesheet" type="text/css">
+	<link href="https://cdn.syncfusion.com/ej2/16.3.21/ej2-diagrams/styles/material.css" rel="stylesheet" >
+	<link href="https://cdn.syncfusion.com/ej2/16.3.21/ej2-circulargauge/styles/material.css" rel="stylesheet" >
+	<link href="https://cdn.syncfusion.com/ej2/16.3.21/ej2-navigations/styles/material.css" rel="stylesheet" />
+</head>
+<body>
+    <div>
+		<div id="diagram" style="width:500px;height:550px;float:right;"></div>
+	</div>
+<script type="text/javascript">
+<!--
+ej.base.enableRipple(true);
+var diagram;
+    var data = [
+			{'Id': 'parent','Name': 'Imanuel Iman','Designation': '199906001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444'},
+	{'Id': 'EMP0002','Name': 'Andri Hambali','Designation': '200608001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0027'},
+	{'Id': 'EMP0003','Name': 'Syarifudin','Designation': '201102001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0027'},
+	{'Id': 'EMP0005','Name': 'Cahyadi','Designation': '201404001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0006','Name': 'Dea Arista Apriliyani','Designation': '201107001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0035'},
+	{'Id': 'EMP0008','Name': 'Fasya Andreas Manaman','Designation': '200802001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0009','Name': 'Nendi Gunawan','Designation': '201011001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0035'},
+	{'Id': 'EMP0010','Name': 'Asri Sinta Lestari','Designation': '200811001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0011','Name': 'Syabani Abdullah Amir','Designation': '201503001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0012','Name': 'Nasrullah','Designation': '200204001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0013','Name': 'Muslik Hadi Amtoni','Designation': '201211001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0017','Name': 'Anis Karomah Fahmi','Designation': '201602001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0018','Name': 'Hasiholan Simanjuntak','Designation': '201603001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0023','Name': 'Ulfa Maisarah ','Designation': '201705002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0035'},
+	{'Id': 'EMP0024','Name': 'Andri Bernadi ','Designation': '201703001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0027','Name': 'Pardi','Designation': '201707002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0029','Name': 'Masika Arinal','Designation': '201803001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0005'},
+	{'Id': 'EMP0031','Name': 'Erna Susanti','Designation': '201808001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0032','Name': 'Syamsudin','Designation': '201809001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0090','Name': 'Tri Amdani Kumbasari','Designation': '201906001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0011'},
+	{'Id': 'EMP0094','Name': 'Harbuwana Agus','Designation': '201907001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0032'},
+	{'Id': 'EMP0099','Name': 'Hikmat Aolia Robani','Designation': '201910001SSC ','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0032'},
+	{'Id': 'EMP0115','Name': 'Dhywa Darmawan','Designation': '201911001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0005'},
+	{'Id': 'EMP0121','Name': 'Lisdyanto','Designation': '201912001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0124','Name': 'Nabilatun Nazla Ramadhanty','Designation': '202002002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0138','Name': 'Cindy Wilasita ','Designation': '202101001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0139','Name': 'Laras Aningrum','Designation': '202104001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0158','Name': 'Intan Ginasti','Designation': '202111002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0161','Name': 'Achmadsyam Ramadhani','Designation': '202112001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0183','Name': 'Naura Agustina','Designation': '202207005SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0170','Name': 'Alpiani ','Designation': '202203001SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0172','Name': 'Cindy Temesvari Rahmatina','Designation': '202201004SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0173','Name': 'Lita Erika','Designation': '202204002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0175','Name': 'Saeful Arnindo','Designation': '202204003SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0176','Name': 'Kresna Nurfajri Setya Putra','Designation': '001052022SSC ','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	{'Id': 'EMP0179','Name': 'Triana Wulandari ','Designation': '202207002SSC','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'EMP0010'},
+	{'Id': 'EMP0182','Name': 'Muhammad Ridho ','Designation': '002','ImageUrl': 'https://www.its.ac.id/aktuaria/wp-content/uploads/sites/100/2018/03/user-300x300.png','IsExpand':true,'RatingColor': '#C34444','ReportingPerson': 'parent'},
+	]
+    function getNodeDefaults(obj) {
+        obj.height = 50;
+        obj.style = { fill: 'transparent', strokeWidth: 2 };
+        obj.expandIcon = { shape: 'Minus', height: 10, width: 10 };
+        obj.collapseIcon = { shape: 'Plus', height: 10, width: 10 };
+        return obj;
+    }
+    function getConnectorDefaults(connector) {
+        connector.targetDecorator.shape = 'None';
+        connector.type = 'Orthogonal';
+        connector.style.strokeColor = 'gray';
+        connector.cornerRadius = 20;
+        return connector;
+    }
+    //Triggers at each initialization of Node
+    function setNodeTemplate(obj) {
+      //create a stack panel
+        var content = new ej.diagrams.StackPanel();
+        content.id = obj.id + '_outerstack';
+        content.orientation = 'Horizontal';
+        content.style.strokeColor = 'gray';
+        content.padding = { left: 5, right: 10, top: 5, bottom: 5 };
+        //create a image element
+        var image = new ej.diagrams.ImageElement();
+        image.width = 50;
+        image.height = 50;
+        image.style.strokeColor = 'none';
+        image.source = obj.data.ImageUrl;
+        image.id = obj.id + '_pic';
+        //create a stack panel
+        var innerStack = new ej.diagrams.StackPanel();
+        innerStack.style.strokeColor = 'none';
+        innerStack.margin = { left: 5, right: 0, top: 0, bottom: 0 };
+        innerStack.id = obj.id + '_innerstack';
+        var text = new ej.diagrams.TextElement();
+        text.content = obj.data.Name;
+        text.style.color = 'black';
+        text.style.bold = true;
+        text.style.strokeColor = 'none';
+        text.horizontalAlignment = 'Left';
+        text.style.fill = 'none';
+        text.id = obj.id + '_text1';
+        //create a text element
+        var desigText = new ej.diagrams.TextElement();
+        desigText.margin = { left: 0, right: 0, top: 5, bottom: 0 };
+        desigText.content = obj.data.Designation;
+        desigText.style.color = 'black';
+        desigText.style.strokeColor = 'none';
+        desigText.style.fontSize = 12;
+        desigText.style.fill = 'none';
+        desigText.horizontalAlignment = 'Left';
+        desigText.style.textWrapping = 'Wrap';
+        desigText.id = obj.id + '_desig';
+        //append a text to the stack children property
+        innerStack.children = [text, desigText];
+        //append a image and innerstack to the stack children property
+        content.children = [image, innerStack];
+        return content;
+    }
+    diagram = new ej.diagrams.Diagram({
+        width: '1000px', height: '500px', snapSettings: { constraints: ej.diagrams.SnapConstraints.None },
+        //set an layout details
+        layout: {
+            type: 'OrganizationalChart', margin: { top: 20 },
+            getLayoutInfo: function (node, tree) {
+                if (!tree.hasSubTree) {
+                    tree.orientation = 'Horizontal';
+                    tree.type = 'Center';
+                }
+            }
+        },
+        dataSourceSettings: {
+          //set an JSON, id and parentId
+            id: 'Id', parentId: 'ReportingPerson', dataManager: new ej.data.DataManager(data)
+        },
+        getNodeDefaults: getNodeDefaults,
+        getConnectorDefaults: getConnectorDefaults,
+        setNodeTemplate: setNodeTemplate,
+        tool: ej.diagrams.DiagramTools.ZoomPan,
+    });
+    diagram.appendTo('#diagram');
+	
+//-->
+</script>
+
+</body>
+</html>

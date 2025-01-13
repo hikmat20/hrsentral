@@ -70,6 +70,22 @@ $this->load->view('include/side_menu');
 				?>				
 				</div>
 			</div>				
+
+			<!-- added by Hikmat 18-07-2021 -->
+			<div class='form-group row'>
+				<label class='label-control col-sm-2'><b>Employee <span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="fa fa-user"></i></span>
+						<?php
+						$data_employees[0]	= 'Select An Option';
+						echo form_dropdown('employee_id', $data_employees, $rows_data[0]->employee_id, array('id' => 'employee_id', 'class' => 'form-control input-sm'));
+						?>
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 		<div class='box-footer'>
 			<?php

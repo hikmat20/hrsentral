@@ -43,7 +43,11 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 #codeigniter 3
 application/logs/*
-application/config/development/*
+application/config/development
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+assets/documents
+data_absen
+assets/expense
+assets/img

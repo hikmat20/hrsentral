@@ -84,7 +84,7 @@ class Groups extends CI_Controller {
 	}
 	public function access_menu($id=''){
 		if($this->input->post()){
-			//echo"<pre>";print_r($this->input->post());exit;
+			// echo"<pre>";print_r($id);exit;
 			
 			$Group_id				= $this->input->post('id');
 			$Cek_Data				= $this->master_model->getCount('group_menus','group_id',$Group_id);
@@ -150,6 +150,8 @@ class Groups extends CI_Controller {
 				$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
 				redirect(site_url('group'));
 			}
+			
+			
 			
 			$get_Data			= $this->master_model->getDataArray('menus','flag_active','1');
 			$detail				= group_access($id);

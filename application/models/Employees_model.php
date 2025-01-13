@@ -2035,20 +2035,10 @@ class Employees_model extends CI_Model
 
 	public function getMasterSalary()
 	{
-		$this->db->select('a.*,b.id as salary_id, b.pokok, b.transport, b.makan,
-								d.name as division_name, e.name as title_name,
-								f.name as firstcontract,g.name as secondcontract,
-								h.name as thirdcontract,i.name as permanent, j.name as position_name');
-		$this->db->from('employees a');
-		$this->db->join('salary b', 'b.employee_id=a.id', 'left');
-		$this->db->join('divisions d', 'd.id=a.division_id', 'left');
-		$this->db->join('titles e', 'e.id=a.title_id', 'left');
-		$this->db->join('contracts f', 'f.id=a.firstcontract_id', 'left');
-		$this->db->join('contracts g', 'g.id=a.secondcontract_id', 'left');
-		$this->db->join('contracts h', 'h.id=a.thirdcontract_id', 'left');
-		$this->db->join('contracts i', 'i.id=a.permanent_id', 'left');
-		$this->db->join('positions j', 'j.id=a.position_id', 'left');
-		$this->db->where(array('a.flag_active' => 'Y'));
+		$this->db->select('a.*,b.name as nama, b.nik');
+		$this->db->from('salary a');
+		$this->db->join('employees b', 'b.id=a.employee_id', 'left');
+			$this->db->where(array('b.flag_active' => 'Y'));
 		$query = $this->db->get();
 		//echo "<pre>";print_r($query->result());
 		if ($query->num_rows() != 0) {
@@ -2070,6 +2060,19 @@ class Employees_model extends CI_Model
 			return false;
 		}
 	}
+	
+	public function getDataPotongan()
+	{
+		$this->db->select('a.*');
+		$this->db->from('ms_potongan a');
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 
 
 	public function getdataPolicy()
@@ -2080,5 +2083,18 @@ class Employees_model extends CI_Model
 		$query = $this->db->get();
 
 		return $query->result();
+	}
+	
+	public function getDataBpjs()
+	{
+		$this->db->select('a.*');
+		$this->db->from('ms_bpjs a');
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
 	}
 }

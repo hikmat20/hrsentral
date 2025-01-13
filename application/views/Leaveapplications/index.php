@@ -18,6 +18,7 @@ $ses_userId = $this->session->User['employee_id'];
                 <thead>
                     <tr class='bg-blue'>
                         <th class="text-center">No.</th>
+						<th class="text-center">Actions</th>
                         <!-- <th class="text-center">Employees Id</th> -->
                         <th class="text-center">Name Employees</th>
                         <th class="text-center">Leave Category</th>
@@ -27,7 +28,6 @@ $ses_userId = $this->session->User['employee_id'];
                         <th class="text-center">Descriptions</th>
                         <th class="text-center">Apv. by D.Head</th>
                         <th class="text-center">Apv. by HR</th>
-                        <th class="text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +36,7 @@ $ses_userId = $this->session->User['employee_id'];
                         'OPN' => '<span class="label font-light label-warning">Waiting Approval</span>',
                         'APV' => '<span class="label font-light label-success">Approved</span>',
                         'REJ' => '<span class="label font-light label-danger">Reject</span>',
-                        'CNL' => '<span class="label font-light label-default">Cancel</span>n>',
+                        'CNL' => '<span class="label font-light label-default">Cancel</span>',
                         'HIS' => '<span class="label font-light bg-purple">History</span>',
                         'REV' => '<span class="label font-light label-info">Revision</span>',
                         'N'   => '<span class="label font-light label-warning">Waiting Approval</span>',
@@ -47,16 +47,7 @@ $ses_userId = $this->session->User['employee_id'];
                         foreach ($row as $data) : $n++; ?>
                             <tr>
                                 <td><?= $n; ?></td>
-                                <!-- <td><?= $data->employee_id; ?></td> -->
-                                <td><?= $data->name; ?></td>
-                                <td><?= $data->category_name; ?></td>
-                                <td><?= $data->from_date; ?></td>
-                                <td><?= $data->until_date; ?></td>
-                                <td><?= $data->applied_leave; ?></td>
-                                <td><?= $data->descriptions; ?></td>
-                                <td><?= $status[$data->status]; ?></td>
-                                <td><?= $status[$data->approved_hr]; ?></td>
-                                <td>
+								<td>
                                     <?php if ($ses_userId == $data->approval_employee_id) : ?>
                                         <?php if ($access['approve'] == '1') : ?>
                                             <a href="<?= base_url('leavesapps/view_approval/' . $data->id); ?>" data-id="<?= $data->id; ?>" id="approve" data-action="approve" class='btn btn-sm btn-success' title='Approve Application' data-role='qtip'><i class='fa fa-check'></i></a>
@@ -73,7 +64,8 @@ $ses_userId = $this->session->User['employee_id'];
                                                 <a href="javascript:void(0)" class=' btn btn-sm btn-danger' id="cancel" data-id="<?= $data->id; ?>" title='Cancel Application' data-role='qtip'><i class='fa fa-stop'></i></a>
                                             <?php endif ?>
                                             <?php if ($access['create'] == '1') :
-                                                $text = "Dengan Hormat,%0aSaya yang bertanda tangan dibawah ini :%0a%0aNama : " . $data->name . "%0aDivisi : " . $data->divisions_name . "%0a%0aBermaksud untuk mengajukan izin cuti " . $data->category_name . "pada tanggal " . $data->from_date . " s/d " . $data->until_date . " selama " . $data->applied_leave . " hari.%0a%0aUntuk lebih detailnya bisa klik link dibawah ini:%0a" . base_url('leavesapps/view/' . $data->id) . "%0a%0aDemikian surat izin cuti ini saya sampaikan. Atas perhatiannya saya ucapkan terima kasih.%0a%0aHormat Saya,%0a" . $data->name;
+											$divisi = str_replace("&","%26",$data->divisions_name);
+                                                $text = "Dengan Hormat,%0aSaya yang bertanda tangan dibawah ini :%0a%0aNama : " . $data->name . "%0aDivisi : " . $divisi . "%0a%0aBermaksud untuk mengajukan izin cuti " . $data->category_name . "pada tanggal " . $data->from_date . " s/d " . $data->until_date . " selama " . $data->applied_leave . " hari.%0a%0aUntuk lebih detailnya bisa klik link dibawah ini:%0a" . base_url('leavesapps/view/' . $data->id) . "%0a%0aDemikian surat izin cuti ini saya sampaikan. Atas perhatiannya saya ucapkan terima kasih.%0a%0aHormat Saya,%0a" . $data->name;
                                             ?>
                                                 <a href="https://api.whatsapp.com/send/?phone=<?= $phone[$data->approval_employee_id]; ?>&text=<?= $text; ?>" class='btn btn-success btn-sm' id="wa" data-id="" target="_blank" title='Send Whatsapp' data-role='qtip'><i class='fa fa-whatsapp' style="font-size: 1.4em;"></i></a>
                                                 <!-- <a href="javascript:void(0)" class=' btn btn-sm btn-info' id="sendEmail" data-id="<?= $data->id; ?>" title='Send Email' data-role='qtip'><i class='fa fa-send'></i></a> -->
@@ -99,6 +91,15 @@ $ses_userId = $this->session->User['employee_id'];
 
                                     <?php endif ?>
                                 </td>
+                                <!-- <td><?= $data->employee_id; ?></td> -->
+                                <td><?= $data->name; ?></td>
+                                <td><?= $data->category_name; ?></td>
+                                <td><?= $data->from_date; ?></td>
+                                <td><?= $data->until_date; ?></td>
+                                <td><?= $data->applied_leave; ?></td>
+                                <td><?= $data->descriptions; ?></td>
+                                <td><?= $status[$data->status]; ?></td>
+                                <td><?= $status[$data->approved_hr]; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else : ?>
@@ -110,6 +111,7 @@ $ses_userId = $this->session->User['employee_id'];
                 <tfoot>
                     <tr class='bg-blue'>
                         <th class="text-center">No.</th>
+						 <th class="text-center">Actions</th>
                         <!-- <th class="text-center">Employees Id</th> -->
                         <th class="text-center">Name Employees</th>
                         <th class="text-center">Leave Category</th>
@@ -119,19 +121,13 @@ $ses_userId = $this->session->User['employee_id'];
                         <th class="text-center">Descriptions</th>
                         <th class="text-center">Apv. by D.Head</th>
                         <th class="text-center">Apv. by HR</th>
-                        <th class="text-center">Actions</th>
                     </tr>
                 </tfoot>
             </table>
         </div>
     </div>
 </div>
-<?php
-// echo '<pre>';
-// print_r($row);
-// echo '<pre>';
-// exit;
-?>
+
 <?php $this->load->view('include/footer'); ?>
 <script>
     $(document).ready(function() {

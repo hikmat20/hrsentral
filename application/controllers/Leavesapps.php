@@ -169,10 +169,55 @@ class Leavesapps extends CI_Controller
         $emp            = $this->db->get_where('leave_applications', ['id' => $data['id']])->row();
         $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
         $leave          = ($emp->get_year_leave) ? $emp->total_days : $emp->remaining_leave;
-        // echo '<pre>';
-        // print_r($leave);
+		$absen 			= $this->db->get_where('users', ['employee_id' => $emp->employee_id])->row();
+        
+		// echo '<pre>';
+        // print_r($absen);
         // echo '<pre>';
         // exit;
+		
+		$datePeriod = new DatePeriod(
+            new DateTime(date('Y-m-d', strtotime("0 day", strtotime($emp->from_date)))),
+            new DateInterval('P1D'),
+            new DateTime(date('Y-m-d', strtotime("+1 day", strtotime($emp->until_date))))
+        );
+
+        $getHoliday = $this->db->get('at_holidays')->result_array();
+        $holiday = [];
+        foreach ($getHoliday as $hday) {
+            $dates = date('Ymd', strtotime($hday['date']));
+            $holiday[$dates] = $hday['name'];
+        }
+		
+        $count_holidays = count($getHoliday);
+
+        // $holiday = json_decode(file_get_contents('https://raw.githubusercontent.com/guangrei/Json-Indonesia-holidays/master/calendar.json', true));
+
+        $days = 0;
+        $holiDay = [];
+        foreach ($datePeriod as $dperiod) {
+            $date = $dperiod->format('Ymd');
+            if (isset($holiday[$date])) {
+                $holiDay = [
+                    'holiday'   => date("Y-m-d", strtotime($date)),
+                    'deskripsi' => $holiday[$date]
+                ];
+                // jika ada hari libur
+            } elseif (date('D', strtotime($date)) === 'Sat') {
+                // jika ada hari sabtu
+            } elseif (date('D', strtotime($date)) === 'Sun') {
+                // jika ada hari minggu
+            } else {
+                $days++;
+				$dataAbsen[$days] = [
+					'employee_id' => $emp->employee_id,
+					'user_id' => $absen->username,
+					'flag_cuti' => 'C',
+					'waktu' => date('Y-m-d H:i:s', strtotime($date))
+				];
+            }
+        }
+			
         $dataEmpLeave   = [
             'id'            => $this->employees_model->code_otomatis('employees_leave', 'EL'),
             'date'          => date('Y-m-d'),
@@ -207,6 +252,10 @@ class Leavesapps extends CI_Controller
                     $this->db->insert('employees_leave', $dataEmpLeave);
                 }
             }
+			
+			if ($dataAbsen) {
+				$this->db->insert_batch('absensi_log', $dataAbsen);
+			}
 
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
@@ -492,8 +541,8 @@ class Leavesapps extends CI_Controller
         $config['upload_path']          = './assets/documents';
         $config['allowed_types']        = 'gif|jpg|png|pdf|jpeg';
         $config['max_size']             = 2000;
-        $config['max_width']            = 2024;
-        $config['max_height']           = 2224;
+        $config['max_width']            = 5024;
+        $config['max_height']           = 5224;
         $config['encrypt_name']         = TRUE;
 
         $this->upload->initialize($config);
@@ -564,10 +613,64 @@ class Leavesapps extends CI_Controller
                 }
                 $data['doc_sick_leave'] = $upload['file_name'];
             }
-        }
+        }else{
+			unset($data['doc_sick_leave']);
+		}
+
+        if ($_FILES['doc_sick_leave_2']['name']) {
+            if (!$this->upload->do_upload('doc_sick_leave_2')) {
+                $error = $this->upload->display_errors('', '');
+                $ArrCollback = [
+                    'msg' => $error,
+                    'status' => '0'
+                ];
+                echo json_encode($ArrCollback);
+                return false;
+            } else {
+                $upload = $this->upload->data();
+                $ArrCollback = [
+                    'msg' => 'Upload Berhasil',
+                    'status' => '1'
+                ];
+                $this->load->helper('file');
+                if ($data['doc_sick_old_2']) {
+                    unlink($upload['file_path'] . $data['doc_sick_old_2']);
+                }
+                $data['doc_sick_leave_2'] = $upload['file_name'];
+            }
+        }else{
+			unset($data['doc_sick_leave_2']);
+		}
+
+        if ($_FILES['doc_sick_leave_3']['name']) {
+            if (!$this->upload->do_upload('doc_sick_leave_3')) {
+                $error = $this->upload->display_errors('', '');
+                $ArrCollback = [
+                    'msg' => $error,
+                    'status' => '0'
+                ];
+                echo json_encode($ArrCollback);
+                return false;
+            } else {
+                $upload = $this->upload->data();
+                $ArrCollback = [
+                    'msg' => 'Upload Berhasil',
+                    'status' => '1'
+                ];
+                $this->load->helper('file');
+                if ($data['doc_sick_old_3']) {
+                    unlink($upload['file_path'] . $data['doc_sick_old_3']);
+                }
+                $data['doc_sick_leave_3'] = $upload['file_name'];
+            }
+        }else{
+			unset($data['doc_sick_leave_3']);
+		}
 
         unset($data['doc_notpay_old']);
         unset($data['doc_sick_old']);
+        unset($data['doc_sick_old_2']);
+        unset($data['doc_sick_old_3']);
         unset($data['doc_special_old']);
 
         $this->db->trans_begin();
@@ -639,17 +742,6 @@ class Leavesapps extends CI_Controller
             $msg_stat = 'Approval';
             $status = 'APV';
             $data['approved_at'] = date('Y-m-d H:i:s');
-            $dataAbsen = [
-                'employee_id' => $leave->employee_id,
-                'user_id' => $absen->username,
-                'flag_cuti' => 'C',
-                'waktu' => date('Y-m-d H:i:s', strtotime($leave->from_date))
-            ];
-
-            // if ($leave->get_year_leave) {
-            //     $data['flag_leave_type'] = 'CT';
-            // }
-            // $this->_updateSummary($id, $leave);
         } elseif ($act == 'reject') {
             $msg_stat = 'Reject';
             $status = 'REJ';
@@ -680,9 +772,6 @@ class Leavesapps extends CI_Controller
         $this->db->trans_begin();
         if ($data) {
             $this->db->update('leave_applications', $data, array('id' => $id));
-        }
-        if ($dataAbsen) {
-            $this->db->insert('absensi_log', $dataAbsen);
         }
 
         if ($this->db->trans_status() === FALSE) {
@@ -851,5 +940,77 @@ class Leavesapps extends CI_Controller
             }
             return $result;
         }
+    }
+
+    public function add_new()
+    {
+        $employee           = $this->session->userdata('Employee');
+        // $employees          = $this->leavesModel->getAllEmployees();
+        if (!$employee) {
+            $this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Login as Employee....</div>");
+            redirect(site_url($this->controller));
+        }
+        $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
+        $Arr_Akses          = getAcccesmenu($this->controller);
+        $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
+        // $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        // $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
+        $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
+        $leaveCategory      = $this->db->order_by('id', 'ASC')->get('at_leaves')->result();
+        $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
+        $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
+        // $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
+        // $msl                = ($massLeave->count) ? $massLeave->count : 0;
+
+        $data = array(
+            'title'         => 'Add Leave Applications',
+            'action'        => 'add',
+            'religi'        => '0',
+            // 'totalLeave'    => ($ly) - ($gly) - ($msl),
+            'totalLeave'    => ($ly),
+            'employee'      => $employee,
+            'divisionHead'  => $divisionHead,
+            'leaveCategory' => $leaveCategory,
+            'division'      => $division[0],
+            'access'        => $Arr_Akses,
+            'freq'          => $freq,
+        );
+        $this->load->view('Leaveapplications/add_new', $data);
+    }
+
+    public function update_new($id)
+    {
+        $leaveApp           = $this->leavesModel->getFind(['id' => $id]);
+        $employee           = $this->session->userdata('Employee');
+        $employees          = $this->leavesModel->getAllEmployees();
+        $Arr_Akses          = getAcccesmenu($this->controller);
+        $totalLeave         = $this->leavesModel->getSumWhere('leave', 'employees_leave', ['employee_id' => $employee['id']]);
+        // $getLeaveYear       = $this->leavesModel->getSumWhere('get_year_leave', 'leave_applications', ['employee_id' => $employee['id'], 'periode_year' => date('Y'), 'status' => 'APV']);
+        // $massLeave          = $this->leavesModel->getMassLeave('at_mass_leaves', $employee['hiredate']);
+        $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
+        $leaveCategory      = $this->db->get('at_leaves')->result();
+        $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
+        $freq               = $this->leavesModel->getFreqLeave($employee['id'], 'LV001', 'APV');
+        $ly                 = ($totalLeave->leave) ? $totalLeave->leave : 0;
+        // $gly                = ($getLeaveYear->get_year_leave) ? $getLeaveYear->get_year_leave : 0;
+        // $msl                = ($massLeave->count) ? $massLeave->count : 0;
+        $data = array(
+            'title'         => 'Add Leave Applications',
+            'action'        => 'add',
+            'religi'        => '0',
+            'leaveApp'      => $leaveApp[0],
+            // 'totalLeave'    => ($ly) - ($gly) - ($msl),
+            'totalLeave'    => ($ly),
+            'employee'      => $employee,
+            'employees'     => $employees,
+            'leaveCategory' => $leaveCategory,
+            'divisionHead'  => $divisionHead,
+            'division'      => $division[0],
+            'access'        => $Arr_Akses,
+            'freq'          => $freq,
+        );
+
+
+        $this->load->view('Leaveapplications/update_new', $data);
     }
 }

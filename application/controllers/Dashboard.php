@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller
 		parent::__construct();
 
 		$this->load->model('employees_model');
+		$this->load->model('master_model');
 		$this->load->database();
 
 		// Your own constructor code
@@ -15,8 +16,87 @@ class Dashboard extends CI_Controller
 			redirect('login');
 		}
 	}
-
 	public function index()
+	{
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		$data = array(
+			'title'				=> 'Personal Activity',
+			'akses_menu'		=> $Arr_Akses
+		);
+		$this->load->view('Dashboard/activity', $data);
+	}
+	public function action_plan()
+	{
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		$data = array(
+			'title'			=> 'Action Plan',
+			'akses_menu'	=> $Arr_Akses,
+		);
+		$this->load->view('Dashboard/action_plan', $data);
+	}
+	public function profile()
+	{
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		$data = array(
+			'title'				=> 'Profile',
+			'akses_menu'		=> $Arr_Akses
+		);
+		$this->load->view('Dashboard/profile', $data);
+	}
+	public function profile_save()
+	{
+		$Data_Session = $this->session->userdata;
+		$this->load->model('All_model');
+		$data = $this->input->post();
+        $config['upload_path']          = './assets/profile';
+        $config['allowed_types']        = 'gif|jpg|png|jpeg';
+        $config['max_size']             = 2000;
+        $config['max_width']            = 5024;
+        $config['max_height']           = 5224;
+        $config['encrypt_name']         = TRUE;
+        $this->upload->initialize($config);
+        if ($_FILES['file_foto']['name']) {
+            if (!$this->upload->do_upload('file_foto')) {
+				$pict=$data['pict'];
+            } else {
+                $upload = $this->upload->data();
+                $this->load->helper('file');
+                if ($data['pict']) {
+                    unlink($upload['file_path'] . $data['pict']);
+                }
+                $pict=$upload['file_name'];
+            }
+        }else{
+			$pict=$data['pict'];
+		}
+        if ($_FILES['file_ttd']['name']) {
+            if (!$this->upload->do_upload('file_ttd')) {
+				$ttd=$data['ttd'];
+            } else {
+                $upload = $this->upload->data();
+                $this->load->helper('file');
+                if ($data['ttd']) {
+                    unlink($upload['file_path'] . $data['ttd']);
+                }
+                $ttd=$upload['file_name'];
+            }
+        }else{
+			$ttd=$data['ttd'];
+		}
+
+		if($data['password']!=''){			
+			$datasaved['password']= cryptSHA1($data['password']);
+		}
+		$datasaved['pict']= $pict;
+		$datasaved['ttd']= $ttd;
+		$this->All_model->dataUpdate('users',$datasaved,array('id'=>$Data_Session['User']['id']));
+		redirect(site_url('dashboard'));
+	}
+
+	public function dashboard()
 	{
 
 		//$this->load->view('include/header', array('title'=>'Dashboard'));

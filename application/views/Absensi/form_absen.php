@@ -42,10 +42,15 @@ $this->load->view('include/side_menu');
 									$results=$query->result();
 									foreach($results AS $record){ 
 										if($record->id=='KERJA10'){
-											echo "<div>Kalibrasi  &nbsp; : <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label></div>
-											<div>Konsultan : ";
+											echo "<div>Lab Cikarang  &nbsp; : <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label>";
 										}else{
-											echo " <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label> ";
+											if($record->id=='KERJA20'){
+												echo " 
+												<label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label></div>
+												<div>Kantor Cawang :  <input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label>";
+											}else{
+												echo " <label><input id='standar_".$record->id."' name='standar' type='radio' value='".$record->id."' required> ".$record->name." </label> ";
+											}
 										}
 									}
 								}
@@ -104,9 +109,12 @@ $this->load->view('include/side_menu');
 					alert("Pilihan harus diisi.");
 					return false;
 				}
-				if ($('#cjam input:radio:checked').size() < 1) {
-					alert("Pilihan jam kerja harus diisi.");
-					return false;
+				var tipeabsen=$('input[name=tipe]:checked', '#form_proses').val();
+				if(tipeabsen== '1' || tipeabsen=='4') {
+					if ($('#cjam input:radio:checked').size() < 1) {
+						alert("Pilihan jam kerja harus diisi.");
+						return false;
+					}
 				}
 				$('#simpan').val('Proses .....');
 				$('#simpan').prop('disabled', true);

@@ -37,6 +37,8 @@ class Allowances extends CI_Controller {
 	
 	public function add($id=''){
 	
+	    // print_r($this->input->post());
+		// exit();
 		if($this->input->post()){
 			
 			$Arr_Kembali			= array();			
@@ -71,16 +73,16 @@ class Allowances extends CI_Controller {
 			$arr_Where			='';
 			$get_Data5			= $this->employees_model->getPositions($arr_Where);
 			$get_Data7			= $this->employees_model->getLeaves($arr_Where);
-			$get_Data			= $this->employees_model->getEmployees();
+			$get_Data			= $this->employees_model->getEmployees($arr_Where);
 			$Family_Type		= $this->master_model->getArray('family_category',array(),'kode','category');
 			$Education_Type		= $this->master_model->getArray('education_level',array(),'kode','category');
 			$detail				= $this->employees_model->getData('employees','id',$id); 
 			$detail_family		= $this->master_model->getArray('family',array('employee_id'=>$id));
 			$detail_education	= $this->master_model->getArray('educational',array('employee_id'=>$id));
 			$data = array(
-				'title'			=> 'Add Employee leave',
+				'title'			=> 'Add Employee Allowances',
 				'action'		=> 'add',
-				'data_Allowances'=> $get_Data,
+				'data_employees'=> $get_Data,
 				'data_position'  => $get_Data5,
 				'data_leaves'	=> $get_Data7,
 				'row'			=> $detail
@@ -171,5 +173,63 @@ class Allowances extends CI_Controller {
 	function getTitle($kode=''){
 		$Data_Array		= $this->employees_model->getArray('titles',array('department_id'=>$kode),'id','name');
 		echo json_encode($Data_Array);
+	}
+	
+	
+	public function load_detail()
+    {
+		
+		
+		// $kd_meeting	= $_POST['cari'];
+        // $session = $this->session->userdata('app_session');
+        // $divisi  = $session['id_div']; 
+        // $where   =array('kd_meeting'=> $kd_meeting, 'id_perusahaan'=>$prsh, 'id_cabang'=>$cbg );
+        $numb = 1;
+        $data = $this->employees_model->getData('ms_allowance'); 
+		
+		// print_r ($data);
+		// exit;
+        if($data != ''){
+		
+		echo "	<table id='example1' class='table table-bordered table-striped'>
+					<tr>
+						<td align='center' width='4%'><b>No</td>
+						<td align='left' width='25%'><b>Name</td>
+						<td align='left' width='25%'><b>Category</td>
+						
+					</tr>";	
+	    $n=0;
+		foreach ($data as $d){     
+		$n++;
+		
+        if ($d->kategori==1){
+        $kategori ='Harian';
+        }	
+		elseif ($d->kategori==2){
+        $kategori ='Bulanan';
+        }	
+      		
+		
+    	echo "<tr class='view$n'>
+				<td align='center'>$n</td>
+				<td align='left'>".$d->name."</td>
+				<td align='left'>".$kategori."</td>";
+				
+						
+		  echo "</td>
+				</tr>";
+		 
+		
+		 		   
+		}
+		
+		echo "</table>";
+		
+        }
+        else
+        {
+        echo"Belum Ada Data";
+        }
+		
 	}
 }

@@ -118,13 +118,15 @@ $this->load->view('include/side_menu');
     <div class="box-footer" style="border-radius: 1rem;">
         <div class="row">
             <div class="col-md-12 text-center">
-                <?php if ($employee->status !== 'APV') : ?>
+			
+                <?php if ($employee->status !== 'APV' && $employee->status !== 'REJ') : ?>
                     <button type="button" class="btn btn-success btn-lg" data-id="<?= $employee->id; ?>" id="approve_dh"><i class="fa fa-check"></i> Approve</button>
-                <?php endif; ?>
+					<button type="button" class="btn btn-warning btn-lg" data-id="<?= $employee->id; ?>" id="reject"><i class="fa fa-stop"></i> Reject</button>
+				<?php endif; ?>
                 <?php if ($this->session->Group['name'] == 'Admin' and $employee->status == 'APV' and $employee->approved_hr == 'N') : ?>
                     <button type="button" class="btn btn-success btn-lg" data-id="<?= $employee->id; ?>" id="approve_hr"><i class="fa fa-check"></i> Approve</button>
                 <?php endif; ?>
-                <a href="javascript:void(0)" onclick="history.go(-1)" class="btn btn-danger btn-lg"><i class="fa fa-reply"></i> Kembali</a>
+				<a href="javascript:void(0)" onclick="history.go(-1)" class="btn btn-danger btn-lg"><i class="fa fa-reply"></i> Kembali</a>
             </div>
         </div>
     </div>
@@ -255,6 +257,58 @@ $this->load->view('include/side_menu');
                         } else if (result.status == 0) {
                             swal({
                                 title: 'Kesalahan Upload',
+                                text: result.msg,
+                                type: 'warning',
+                            });
+                        }
+                        console.log(result + ", " + response);
+                    },
+                    error: function(result) {
+                        swal({
+                            title: 'Error!!',
+                            text: 'Internal Error',
+                            type: 'error'
+                        })
+                    }
+                })
+            }
+        });
+    })
+	
+	$(document).on('click', '#reject', function() {
+        let id = $(this).data('id');
+        swal({
+            title: 'Perhatian!',
+            text: 'Apakah Anda yakin?',
+            type: 'warning',
+            showConfirmButton: true,
+            confirmButtonText: "Ya, Reject",
+            showCancelButton: true,
+
+        }, function(value) {
+            if (value) {
+                $.ajax({
+                    url: base_url + active_controller + '/reject',
+                    data: {
+                        id
+                    },
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function(result) {
+                        if (result.status == 1) {
+                            swal({
+                                title: 'Succes',
+                                text: result.msg,
+                                type: 'success',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setTimeout(function() {
+                                location.reload()
+                            }, 1500)
+                        } else if (result.status == 0) {
+                            swal({
+                                title: 'Kesalahan',
                                 text: result.msg,
                                 type: 'warning',
                             });
