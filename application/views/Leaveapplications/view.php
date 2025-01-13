@@ -115,7 +115,16 @@ $flag_leave_type = [
                                 <td colspan="">
                                     <!-- <p><label for="">Nama Dokumen</label></p> -->
                                     <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? base_url("assets/documents/$employee->doc_sick_leave") : 'no-file'); ?>">
-                                        <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? base_url("assets/documents/$employee->doc_sick_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php
+                                        if (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_sick_leave");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                View File
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? base_url("assets/documents/$employee->doc_sick_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
+
                                     </a>
                                 </td>
                                 <td colspan="">
