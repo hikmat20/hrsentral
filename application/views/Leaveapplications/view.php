@@ -127,18 +127,49 @@ $flag_leave_type = [
                                     </a>
                                 </td>
                                 <td class="text-center">
+                                    <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_2") ? base_url("assets/documents/$employee->doc_sick_leave_2") : 'no-file'); ?>">
+                                        <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_2")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_sick_leave_2");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_2") ? base_url("assets/documents/$employee->doc_sick_leave_2") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_3") ? base_url("assets/documents/$employee->doc_sick_leave_3") : 'no-file'); ?>">
+                                        <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_3")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_sick_leave_3");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave_3") ? base_url("assets/documents/$employee->doc_sick_leave_3") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr class="tetx-center">
+                                <td class="text-center">Dok. Cuti Pemerintah</td>
+                                <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
+                                <td></td>
+                            </tr>
+                            <tr class="tetx-center">
+                                <td>
                                     <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>">
                                         <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave")) :
                                             $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_special_leave");
                                             if (preg_match("/^%PDF/", $filecontent)) { ?>
                                                 <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
                                             <?php } else {; ?>
-                                                <?php };
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
                                         endif; ?>
-                                        <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>" alt="" height="200px">
                                     </a>
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? base_url("assets/documents/$employee->doc_notpay_leave") : 'no-file'); ?>">
                                         <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave")) :
                                             $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_notpay_leave");
@@ -150,7 +181,7 @@ $flag_leave_type = [
                                         endif; ?>
                                     </a>
                                 </td>
-								<td></td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <th>Catatan</th>
