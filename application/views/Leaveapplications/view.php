@@ -133,9 +133,9 @@ $flag_leave_type = [
                                             if (preg_match("/^%PDF/", $filecontent)) { ?>
                                                 <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
                                             <?php } else {; ?>
-                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>" alt="" height="200px">
-                                        <?php };
+                                                <?php };
                                         endif; ?>
+                                        <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>" alt="" height="200px">
                                     </a>
                                 </td>
                                 <td class="text-center">
