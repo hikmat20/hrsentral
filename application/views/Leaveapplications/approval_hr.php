@@ -106,19 +106,42 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                                 <td class="text-center">Dok. Cuti Tdk. Dibayar</td>
                             </tr>
                             <tr height="100px">
-                                <td colspan="">
-                                    <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>">
-                                        <img src=" <?= base_url(); ?>assets/documents/<?= ($employee->doc_sick_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? $employee->doc_sick_leave : 'No file uploded') : '-'; ?>" alt="" height="200px">
+                                <td class="text-center">
+                                    <!-- <p><label for="">Nama Dokumen</label></p> -->
+                                    <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? base_url("assets/documents/$employee->doc_sick_leave") : 'no-file'); ?>">
+                                        <?php
+                                        if (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_sick_leave");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_sick_leave") ? base_url("assets/documents/$employee->doc_sick_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
                                     </a>
                                 </td>
-                                <td colspan="">
-                                    <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>">
-                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_special_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? $employee->doc_special_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
+                                <td class="text-center">
+                                    <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>">
+                                        <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_special_leave");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_special_leave") ? base_url("assets/documents/$employee->doc_special_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
                                     </a>
                                 </td>
-                                <td colspan="">
-                                    <a target="_blank" href="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? $employee->doc_notpay_leave : "No file uploded") : '-'; ?>">
-                                        <img src="<?= base_url(); ?>assets/documents/<?= ($employee->doc_notpay_leave) ? (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? $employee->doc_notpay_leave : "No file uploded") : '-'; ?>" alt="" height="200px">
+                                <td class="text-center">
+                                    <a target="_blank" href="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? base_url("assets/documents/$employee->doc_notpay_leave") : 'no-file'); ?>">
+                                        <?php if (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave")) :
+                                            $filecontent = file_get_contents(FCPATH . "assets/documents/$employee->doc_notpay_leave");
+                                            if (preg_match("/^%PDF/", $filecontent)) { ?>
+                                                <button type="button" class="btn btn-sm btn success"><i class="fa fa-file" aria-hidden="true"></i> View File</button>
+                                            <?php } else {; ?>
+                                                <img src="<?= (file_exists(FCPATH . "assets/documents/$employee->doc_notpay_leave") ? base_url("assets/documents/$employee->doc_notpay_leave") : 'no-file'); ?>" alt="" height="200px">
+                                        <?php };
+                                        endif; ?>
                                     </a>
                                 </td>
                             </tr>
