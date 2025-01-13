@@ -82,7 +82,8 @@ class Lembur extends CI_Controller
         $employee           = $this->session->userdata('Employee');
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
-        $data = array(
+       
+		$data = array(
             'title'         => 'Add Lembur',
             'action'        => 'add',
             'employee'      => $employee,

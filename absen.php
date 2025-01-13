@@ -6,10 +6,8 @@ include 'application/config/development/database.php';
 $con = mysqli_connect($db['default']['hostname'], $db['default']['username'], $db['default']['password'], $db['default']['database']);
 if (mysqli_connect_errno()) die('Error Connection');
 ?>
-
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,8 +16,13 @@ if (mysqli_connect_errno()) die('Error Connection');
 	<link rel="stylesheet" href="adminlte/bootstrap/css/bootstrap.min.css" />
 	<script src="adminlte/plugins/jQuery/jquery-2.2.3.min.js"></script>
 	<script src="assets/js/webcam.min.js"></script>
+	<script>
+	var isIos = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+	if (isIos) {
+	  window.location.replace("absen_ios.php");
+	}
+	</script>
 </head>
-
 <body style="background:#d2d6de; margin: 20px auto 0 auto;">
 	<div id="blackout" style="background: rgba(219, 219, 219, .5); width:100%; height:100%; position: absolute; left:0; top:0; z-index:10; display:none;"></div>
 	<div class="container">
@@ -50,14 +53,17 @@ if (mysqli_connect_errno()) die('Error Connection');
 							</div>
 							<div class="form-group" style="padding-top:10px;" id="ctipe">
 								<?php
-								$sql = "select kode_1,kode_2 from ms_generate where tipe='tipe_absen' and kode_1<>'9' order by kode_1";
+								$sql = "select kode_1,kode_2 from ms_generate where tipe='tipe_absen' and kode_1<>'9' order by kode_3";
 								if ($result = mysqli_query($con, $sql)) {
 									while ($row = mysqli_fetch_row($result)) {
-										echo " <label><input id='tipe_$row[0]' name='tipe' type='radio' value='$row[0]' required> $row[1] </label> ";
+										echo " <label><input id='tipe_$row[0]' name='tipe' type='radio' value='$row[0]' required onclick='showtext($row[0])'> $row[1] </label> ";
 									}
 									mysqli_free_result($result);
 								}
 								?>
+							</div>
+							<div id="divlokasi" class="hidden"><label class="control-label">Nama Perusahaan</label>
+								<input type="text" name="lokasi" id="lokasi" class="form-control" placeholder="Nama Perusahaan" autocomplete="off">
 							</div>
 							<div class="form-group text-left" style="padding-top:10px;" id="cjam">
 								<?php
@@ -65,10 +71,16 @@ if (mysqli_connect_errno()) die('Error Connection');
 								if ($result = mysqli_query($con, $sql)) {
 									while ($row = mysqli_fetch_row($result)) {
 										if($row[0]=='KERJA10'){
-											echo "<div>Lab Cikarang  &nbsp; : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label></div>
-											<div>Kantor Cawang : ";
+											echo "<div>Lab Cikarang  &nbsp; : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label>
+											";
 										}else{
-											echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
+											if($row[0]=='KERJA20'){
+												echo "
+												<label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label></div>
+												<div>Kantor Cawang : <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label>";
+											}else{
+												echo " <label><input id='standar_$row[0]' name='standar' type='radio' value='$row[0]' required> $row[1] </label> ";
+											}
 										}
 									}
 									mysqli_free_result($result);
@@ -88,6 +100,16 @@ if (mysqli_connect_errno()) die('Error Connection');
 	</div>
 	<!-- Configure a few settings and attach camera -->
 	<script language="JavaScript">
+		function showtext(id){
+			if (id=='2' || id=='3') {
+				$("#divlokasi").removeClass("hidden");
+				$("input").prop('required',true);
+			}else{
+				$("#divlokasi").addClass("hidden");
+				$("#lokasi").val("");
+				$("input").prop('required',false);
+			}
+		}
 		Webcam.set({
 			width: 300,
 			height: 300,
@@ -95,7 +117,6 @@ if (mysqli_connect_errno()) die('Error Connection');
 			jpeg_quality: 50
 		});
 		Webcam.attach('#my_camera');
-
 		function take_snapshot() {
 			showPosition();
 			Webcam.snap(function(data_uri) {
@@ -103,7 +124,6 @@ if (mysqli_connect_errno()) die('Error Connection');
 				document.getElementById('results').innerHTML = '<img src="' + data_uri + '" height="300" class="img-responsive" />';
 			});
 		}
-
 		function showPosition() {
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(function(position) {
@@ -137,6 +157,13 @@ if (mysqli_connect_errno()) die('Error Connection');
 					alert("Pilihan harus diisi.");
 					return false;
 				}
+				var ctipe=$('input[name="tipe"]:checked').val();
+				if(ctipe=='2' || ctipe=='3'){
+					if ($("#lokasi").val()=='') {
+						alert("Nama perusahaan harus diisi");
+						return false;
+					}
+				}
 				var tipeabsen=$('input[name=tipe]:checked', '#form_proses').val();
 				if(tipeabsen== '1' || tipeabsen=='4') {
 					if ($('#cjam input:radio:checked').size() < 1) {
@@ -163,18 +190,18 @@ if (mysqli_connect_errno()) die('Error Connection');
 							alert('Absen Berhasil');
 							location.reload();
 							/*						
-														$.ajax({
-															url			: 'login/index',
-															type		: "POST",
-															data		: formData,
-															cache		: false,
-															dataType	: 'json',
-															processData	: false, 
-															contentType	: false,				
-															success		: function(data){
-																window.location.href = 'absensi';
-															}
-														});
+							$.ajax({
+								url			: 'login/index',
+								type		: "POST",
+								data		: formData,
+								cache		: false,
+								dataType	: 'json',
+								processData	: false, 
+								contentType	: false,				
+								success		: function(data){
+									window.location.href = 'absensi';
+								}
+							});
 							*/
 						} else {
 							document.getElementById('blackout').style.display = 'none';
@@ -196,5 +223,4 @@ if (mysqli_connect_errno()) die('Error Connection');
 		});
 	</script>
 </body>
-
 </html>

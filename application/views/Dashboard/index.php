@@ -50,13 +50,12 @@ $this->load->view('include/side_menu');
                             <a href="<?= base_url('absensi/form_absen') ?>" class="btn btn-primary"><i class="fa fa-user"></i> Form Absen</a>
                         </div>
                     </h3>
-                    <div>
+                    <div class="table-responsive col-md-12">
                         <table id="list-absensi" class="table table-bordered table-hover">
                             <thead class="bg-info">
                                 <tr>
                                     <th width="10">No</th>
-                                    <th width="220">Tgl</th>
-                                    <th width="20" class="text-center">Absen</th>
+                                    <th width="250">Tgl</th>
                                     <th class="text-center">Waktu</th>
                                 </tr>
                             </thead>
@@ -64,10 +63,11 @@ $this->load->view('include/side_menu');
                                 <?php $no = 0;
                                 $type = [
                                     '1' => '<label class="label font-light label-success">Masuk</label>',
-                                    '2' => '<label class="label font-light label-info">Keluar Istirahat</label>',
-                                    '3' => '<label class="label font-light label-warning">Masuk Istirahat</label>',
+                                    '2' => '<label class="label font-light label-info">Masuk Onsite</label>',
+                                    '3' => '<label class="label font-light label-warning">Keluar Onsite</label>',
                                     '4' => '<label class="label font-light label-danger">Pulang</label>',
-                                    '5' => '<label class="label font-light bg-maroon">Lembur</label>',
+                                    '5' => '<label class="label font-light bg-maroon">Masuk Lembur</label>',
+                                    '6' => '<label class="label font-light bg-purple">Pulang Lembur</label>',
                                     ''  => '<label class="label font-light label-default">Tidak diketahui</label>',
                                 ];
                                 if ($absensi) :
@@ -75,8 +75,7 @@ $this->load->view('include/side_menu');
                                 ?>
                                         <tr>
                                             <td><?= $no; ?></td>
-                                            <td><?= date('D, d-m-Y', strtotime($absen->waktu)); ?></td>
-                                            <td class="text-center"><?= $type[$absen->tipe]; ?></td>
+                                            <td><?= date('D, d-m-Y', strtotime($absen->waktu)); ?><br /><?= $type[$absen->tipe]; ?></td>
                                             <td class="text-center"><?= date('H:i', strtotime($absen->waktu)); ?></td>
                                         </tr>
                                 <?php endforeach;
@@ -740,22 +739,9 @@ $this->load->view('include/side_menu');
                             </div><!-- ./box-body -->
                             <!--End Monthly Recap Report And Latest Order  -->
 
-
                             <!-- / Monthly Recap Report And Latest Order and Total Revenue,Cost,Profit,Tax -->
-
                         </div>
-
                     </div>
-
-
-
-
-
-
-
-
-
-
                     <!--/ Baris Kedua-->
 
 

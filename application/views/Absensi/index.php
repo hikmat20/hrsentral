@@ -1,6 +1,8 @@
 <?php
 $action='';
-$this->load->view('include/side_menu');
+//if($uid==""){
+	$this->load->view('include/side_menu');
+//}
 ?>
 <div id="alert_edit" class="alert alert-success alert-dismissable" style="padding: 15px; display: none;"></div>
 <div class="box">
@@ -36,7 +38,7 @@ $this->load->view('include/side_menu');
       <div class="modal-body" id="MyModalBody">
           <div class="box">
             <div class="box-body text-center text-black">
-              <img id="idfoto" width="300" class="img-responsive img-thumbnail" src="<?=base_url("assets/img/karyawan/noimage.jpg")?>" alt="User Picture"><br />
+              <img id="idfoto" width="300" class="img-responsive img-thumbnail" src="<?=base_url("assets/img/blank.png")?>" alt="User Picture"><br />
               <h1 id="idnm_lengkap"></h1>
               <p id="idnik"></p>
               <p id="idwaktu"></p>
@@ -58,11 +60,18 @@ $this->load->view('include/side_menu');
     </div>
   </div>
 </div>
-<!-- page script -->
-<?php $this->load->view('include/footer'); ?>
+<?php
+$data="";
+$this->load->view('include/footer');
+if($uid!="") {
+	$data='d.user_id="'.$uid.'";
+	d.tgl_awal="'.$taw.'";
+	d.tgl_akhir="'.$tak.'";';
+}
+?>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyChx6yzXk2oKz95Qdon_jZzVJKmqBdlVDA"></script>
 <script type="text/javascript">
-	var siteurl			= '<?php echo base_url(); ?>';
+	var siteurl				= '<?php echo base_url(); ?>';
 	var active_controller	= 'absensi/';
      $(document).ready(function(){
         $('#mytabledata').DataTable({
@@ -70,7 +79,10 @@ $this->load->view('include/side_menu');
           'serverSide': true,
           'serverMethod': 'post',
           'ajax': {
-             'url': siteurl + active_controller + 'getDataJSON',
+            "url": siteurl + active_controller + "getDataJSON",
+			"data": function ( d ) {
+				<?=$data?>
+			}			 
           },
           'columns': [
              { data: 'id' },

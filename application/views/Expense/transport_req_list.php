@@ -37,12 +37,13 @@ $this->load->view('include/side_menu');
 			<td><?= $record->nmuser ?></td>
 			<td><?= $status[$record->status] ?></td>
 			<td>
+			<a class="btn btn-default btn-sm print" href="<?=base_url('expense/transport_req_print/'.$record->id)?>" target="transport_req_print" title="Print"><i class="fa fa-print"></i> </a>
 			<?php if($akses_menu['read'] == '1') : ?>
-				<a class="btn btn-warning btn-sm view" href="<?=base_url('expense/transport_req_view/'.$record->id)?>" title="View" onclick="data_view('<?=$record->id?>')"><i class="fa fa-eye"></i></a>
+				<a class="btn btn-warning btn-sm view" href="<?=base_url('expense/transport_req_view/'.$record->id)?>" title="View"><i class="fa fa-eye"></i></a>
 			<?php endif;
 			if($akses_menu['update'] == '1') :
 				if ($record->status==0) {?>
-				<a class="btn btn-success btn-sm edit" href="<?=base_url('expense/transport_req_edit/'.$record->id)?>" title="Edit" onclick="data_edit('<?=$record->id?>')"><i class="fa fa-edit"></i></a>
+				<a class="btn btn-success btn-sm edit" href="<?=base_url('expense/transport_req_edit/'.$record->id)?>" title="Edit" ><i class="fa fa-edit"></i></a>
 				<?php }
 				endif;
 			if($akses_menu['delete'] == '1') :
@@ -64,7 +65,7 @@ $this->load->view('include/side_menu');
 <div id="form-data"></div>
 <?php $this->load->view('include/footer'); ?>
 <script type="text/javascript">
-	var url_view = siteurl+'expense/transport_req_view/';
+	var url_delete = siteurl+'expense/transport_req_delete/';
 	//Delete
 	function data_delete(id){
 		swal({

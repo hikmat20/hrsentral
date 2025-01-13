@@ -31,6 +31,7 @@ if(isset($_POST["username"])) {
 	$userid = $_POST['username'];
 	$userpass = $_POST['password'];
 	$tipe = $_POST['tipe'];
+	$lokasi = $_POST['lokasi'];
 	$standar = $_POST['standar'];
 	if($userid=='' || $img=='') {
 		$Arr_Return = array(
@@ -95,7 +96,7 @@ if(isset($_POST["username"])) {
 	if($tipe=='1') $jam_standar=$clock_in;
 	if($tipe=='4') $jam_standar=$clock_out;
 	if($tipe=='5') $jam_standar=$clock_out;
-	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe,jam_standar) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$longitude."','".$tipe."','".$jam_standar."')";
+	$sql = "insert into absensi_log (employee_id,user_id,foto,waktu,latitude,longitude,tipe,jam_standar,lokasi) values ('".$name."','".$userid."','".$fileName."','".date("Y-m-d H:i:s")."','".$latitude."','".$longitude."','".$tipe."','".$jam_standar."','".$lokasi."')";
 	mysqli_query($con, $sql);
 	mysqli_close($con);
 	$Arr_Return		= array(

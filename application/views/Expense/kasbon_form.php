@@ -4,11 +4,11 @@ $this->load->view('include/side_menu');
 ?>
 <?=form_open($this->uri->uri_string(),array('id'=>'frm_data','name'=>'frm_data','role'=>'form','class'=>'form-horizontal','enctype'=>'multipart/form-data'));?>
 <?php
-$dept='';
+$dept='';$bank_id='';$accnumber='';$accname='';
 if(!isset($data->departement)){
 	$datauser = $this->db->get_where('users', ['username' => $this->session->userdata['User']['username']])->row();
 	$datadept = $this->db->get_where('employees', ['id' => $datauser->employee_id])->row();
-	$dept=$datadept->department_id;
+	$dept=$datadept->department_id;$bank_id=$datadept->bank_id;$accnumber=$datadept->accnumber;$accname=$datadept->accname;
 }
 
 ?>
@@ -19,6 +19,9 @@ if(!isset($data->departement)){
 <div class="tab-content">
 	<div class="tab-pane active">
 		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title"><?= $title; ?></h3>
+			</div>
 			<div class="box-body">
 				<div class="form-group ">
 					<label class="col-sm-2 control-label">No Dokumen</label>
@@ -41,7 +44,7 @@ if(!isset($data->departement)){
 					</div>
 				</div>
 				<div class="form-group ">
-					<label class="col-sm-2 control-label">Dokumen</label>
+					<label class="col-sm-2 control-label">Dokumen 1</label>
 					<div class="col-sm-4">
 						<input type="hidden" name="filename" id="filename" value="<?=(isset($data->doc_file)?$data->doc_file:'');?>">
 						<input type="file" name="doc_file" id="doc_file">
@@ -52,7 +55,34 @@ if(!isset($data->departement)){
 						?>
 						</span>
 					</div>
+					<label class="col-sm-2 control-label">Dokumen 2</label>
+					<div class="col-sm-4">
+						<input type="hidden" name="filename2" id="filename2" value="<?=(isset($data->doc_file_2)?$data->doc_file_2:'');?>">
+						<input type="file" name="doc_file_2" id="doc_file_2">
+						<span class="pull-right"><?php
+						if(isset($data->doc_file_2)){
+							echo ($data->doc_file_2!=''?'<a href="'.base_url('assets/expense/'.$data->doc_file_2).'" download target="_blank"><i class="fa fa-download"></i></a>':'');
+						}
+						?>
+						</span>
+					</div>
 				</div>
+				<h4>Transfer ke</h4>
+				<div class="form-group ">
+					<label class="col-md-1 control-label">Bank</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="bank_id" name="bank_id" value="<?php echo (isset($data->bank_id) ? $data->bank_id: $bank_id); ?>" placeholder="Bank">
+					</div>
+					<label class="col-md-2 control-label">Nomor Rekening</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="accnumber" name="accnumber" value="<?php echo (isset($data->accnumber) ? $data->accnumber: $accnumber); ?>" placeholder="Nomor Rekening">
+					</div>
+					<label class="col-md-2 control-label">Nama Rekening</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="accname" name="accname" value="<?php echo (isset($data->accname) ? $data->accname: $accname); ?>" placeholder="Nama Pemilik Rekening">
+					</div>
+				</div>
+
 			</div>
 			<div class="box-footer">
 				<div class="form-group">
@@ -71,6 +101,32 @@ if(!isset($data->departement)){
 						<a class="btn btn-warning btn-sm" onclick="window.location=siteurl+'expense/kasbon<?=$mod?>';return false;"><i class="fa fa-reply"></i> Batal</a>
 					</div>
 				</div>
+			<?php
+			if(isset($data)){
+				if($data->doc_file!=''){
+					 if(strpos($data->doc_file,'pdf',0)>1){
+						 echo '<div class="col-md-12">
+						<iframe src="'.base_url('assets/expense/'.$data->doc_file).'#toolbar=0&navpanes=0" title="PDF" style="width:600px; height:500px;" frameborder="0">
+								 <a href="'.base_url('assets/expense/'.$data->doc_file).'">Download PDF</a>
+						</iframe>
+						<br />'.$data->no_doc.'</div>';
+					 }else{
+						echo '<div class="col-md-12"><a href="'.base_url('assets/expense/'.$data->doc_file).'" target="_blank"><img src="'.base_url('assets/expense/'.$data->doc_file).'" class="img-responsive"></a><br />'.$data->no_doc.'</div>';
+					 }
+				}
+				if($data->doc_file_2!=''){
+					 if(strpos($data->doc_file_2,'pdf',0)>1){
+						 echo '<div class="col-md-12">
+						<iframe src="'.base_url('assets/expense/'.$data->doc_file_2).'#toolbar=0&navpanes=0" title="PDF" style="width:600px; height:500px;" frameborder="0">
+								 <a href="'.base_url('assets/expense/'.$data->doc_file_2).'">Download PDF</a>
+						</iframe>
+						<br />'.$data->no_doc.'</div>';
+					 }else{
+						echo '<div class="col-md-12"><a href="'.base_url('assets/expense/'.$data->doc_file_2).'" target="_blank"><img src="'.base_url('assets/expense/'.$data->doc_file_2).'" class="img-responsive"></a><br />'.$data->no_doc.'</div>';
+					 }
+				}
+			}
+			?>
 			</div>
 		</div>
 	</div>
@@ -158,10 +214,7 @@ if(!isset($data->departement)){
 	}?>
 	$(function () {
 		$(".tanggal").datepicker({
-			todayHighlight: true,
-			format : "yyyy-mm-dd",
-			showInputs: true,
-			autoclose:true
+			dateFormat : "yy-mm-dd",
 		});
 	});
 

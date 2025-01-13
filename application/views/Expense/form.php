@@ -2,10 +2,12 @@
 $action='';
 $this->load->view('include/side_menu');
 
-$dept='';$app='';
+$gambar='';
+$dept='';$app='';$bank_id='';$accnumber='';$accname='';
 if(!isset($data->departement)){
 		$data_user = $this->db->get_where('users', ['username' => $this->session->userdata['User']['username']])->row();
 		$data_employee = $this->db->get_where('employees', ['id' => $data_user->employee_id])->row();
+		$dept=$data_employee->department_id;$bank_id=$data_employee->bank_id;$accnumber=$data_employee->accnumber;$accname=$data_employee->accname;
 		$data_head = $this->db->get_where('divisions_head', ['id' => $data_employee->division_head])->row();
 		$app=$data_head->employee_id;
 }
@@ -15,45 +17,96 @@ if(!isset($data->departement)){
 <input type="hidden" id="departement" name="departement" value="<?php echo (isset($data->departement) ? $data->departement: $dept); ?>">
 <input type="hidden" id="nama" name="nama" value="<?php echo (isset($data->nama) ? $data->nama: $this->session->userdata['User']['username'] ); ?>">
 <input type="hidden" id="approval" name="approval" value="<?php echo (isset($data->approval) ? $data->approval: $app ); ?>">
+<style>
+@media screen and (max-width: 520px) {
+	table {
+		width: 100%;
+	}
+	thead th.column-primary {
+		width: 100%;
+	}
 
+	thead th:not(.column-primary) {
+		display:none;
+	}
+	
+	th[scope="row"] {
+		vertical-align: top;
+	}
+	
+	td {
+		display: block;
+		width: auto;
+		text-align: right;
+	}
+	thead th::before {
+		text-transform: uppercase;
+		font-weight: bold;
+		content: attr(data-header);
+	}
+	thead th:first-child span {
+		display: none;
+	}
+	td::before {
+		float: left;
+		text-transform: uppercase;
+		font-weight: bold;
+		content: attr(data-header);
+	}
+}
+
+</style>
 <div class="tab-content">
 	<div class="tab-pane active">
 		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title"><?= $title; ?></h3>
+			</div>
 			<div class="box-body">
 				<div class="form-group ">
-					<label class="col-sm-2 control-label">No Dokumen</label>
-					<div class="col-sm-4">
+					<label class="col-sm-2 col-md-2 control-label">No Dokumen</label>
+					<div class="col-sm-2">
 						<input type="text" class="form-control" id="no_doc" name="no_doc" value="<?php echo (isset($data->no_doc) ? $data->no_doc: ""); ?>" placeholder="Automatic" readonly>
 					</div>
-					<label class="col-sm-2 control-label">Tanggal <b class="text-red">*</b></label>
-					<div class="col-sm-4">
+					<label class="col-sm-2 col-md-1 control-label">Tanggal<b class="text-red">*</b></label>
+					<div class="col-sm-2">
 						<input type="text" class="form-control tanggal" id="tgl_doc" name="tgl_doc" value="<?php echo (isset($data->tgl_doc) ? $data->tgl_doc: date("Y-m-d")); ?>" placeholder="Tanggal Dokumen" required>
 					</div>
+					<label class="col-sm-2 col-md-1 control-label">Keterangan</label>
+					<div class="col-sm-2 col-md-4">
+						<input type="text" class="form-control" id="informasi" name="informasi" value="<?php echo (isset($data->informasi) ? $data->informasi: ""); ?>" placeholder="informasi">
+					</div>
 				</div>
+				<h4>Transfer ke</h4>
 				<div class="form-group ">
-					<label for="coa" class="col-sm-2 control-label">Expense Report<b class="text-red">*</b></label>
-					<div class="col-sm-4">
-						<?php
-						echo form_dropdown('coa',$data_budget,  (isset($data->coa)?$data->coa:''),array('id'=>'coa','required'=>'required','class'=>'form-control select2','onblur'=>'cekbudget()'));
-						?>
+					<label class="col-md-1 control-label">Bank</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="bank_id" name="bank_id" value="<?php echo (isset($data->bank_id) ? $data->bank_id: $bank_id); ?>" placeholder="Bank">
+					</div>
+					<label class="col-md-2 control-label">Nomor Rekening</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="accnumber" name="accnumber" value="<?php echo (isset($data->accnumber) ? $data->accnumber: $accnumber); ?>" placeholder="Nomor Rekening">
+					</div>
+					<label class="col-md-2 control-label">Nama Rekening</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="accname" name="accname" value="<?php echo (isset($data->accname) ? $data->accname: $accname); ?>" placeholder="Nama Pemilik Rekening">
 					</div>
 				</div>
 			</div>
 			<div class="table-responsive">
-			<table class="table table-bordered table-striped">
+			<table class="table table-bordered table-striped" width="100%">
 				<thead>
 					<tr>
-					<th width="5">#</th>
-					<th>Tanggal</th>
-					<th>Keterangan</th>
-					<th>Qty</th>
-					<th>Harga Satuan</th>
-					<th>Expense</th>
-					<th>Kasbon</th>
-					<th>Keterangan</th>
-					<th width="50">Bon Bukti</th>
-					<th><div class="pull-right">
-						<a class="btn btn-info btn-xs stsview" href="javascript:void(0)" title="Kasbon" onclick="add_kasbon()" id="add-kasbon"><i class="fa fa-user"></i> Cek Kasbon</a>
+					<th width="5" scope="col" class="column-primary">#</th>
+					<th scope="col" width="250">Jenis dan<br /> Tanggal</th>
+					<th scope="col" width="250">Barang / Jasa dan<br />Keterangan</th>
+					<th scope="col" width=150 nowrap>Jumlah</th>
+					<th scope="col" width=200 nowrap>Harga Satuan</th>
+					<th scope="col" width="200">E x p e n s e</th>
+					<th scope="col" width="200">K a s b o n</th>
+					<th scope="col" width="50">Bon Bukti</th>
+					<th scope="col" class="column-primary"><div class="pull-right">
+						<a class="btn btn-info btn-xs stsview" href="javascript:void(0)" title="Kasbon" onclick="add_kasbon()" id="add-kasbon"><i class="fa fa-user"></i> Kasbon</a><br />
 						<a class="btn btn-success btn-xs stsview" href="javascript:void(0)" title="Tambah" onclick="add_detail()" id="add-material"><i class="fa fa-plus"></i> Tambah</a></div></th>
 					</tr>
 				</thead>
@@ -64,38 +117,59 @@ if(!isset($data->departement)){
 					$tekskasbon="";
 					if($record->id_kasbon!='') $tekskasbon=' readonly';?>
 					<tr id='tr1_<?=$idd?>' class='delAll <?=($record->id_kasbon!=''?'kasbonrow':'')?>'>
-						<td>
+						<td data-header="#">
 						<input type='hidden' name='id_kasbon[]' id=id_kasbon_<?=$idd?>' value='<?=$record->id_kasbon;?>'>
 						<input type="hidden" name="filename[]" id="filename_<?=$idd?>" value="<?=$record->doc_file;?>">
 						<input type="hidden" name="detail_id[]" id="raw_id_<?=$idd?>" value="<?=$idd;?>"><?=$idd;?></td>
-						<td><input type="text" class="form-control tanggal" name="tanggal[]" id="tanggal<?=$idd;?>" value="<?=$record->tanggal;?>" <?=$tekskasbon?> ></td>
-						<td><input type="text" class="form-control" name="deskripsi[]" id="deskripsi_<?=$idd;?>" value="<?=$record->deskripsi;?>" <?=$tekskasbon?> ></td>
-						<td><input type="text" class="form-control divide" name="qty[]" id="qty_<?=$idd;?>" value="<?=$record->qty;?>" onblur="cektotal(<?=$idd;?>)" <?=$tekskasbon?> ></td>
-						<td><input type="text" class="form-control divide" name="harga[]" id="harga_<?=$idd;?>" value="<?=$record->harga;?>" onblur="cektotal(<?=$idd;?>)" <?=$tekskasbon?> ></td>
-						<td><input type="text" class="form-control divide subtotal" name="expense[]" id="expense_<?=$idd;?>" value="<?=($record->expense);?>" tabindex="-1" readonly></td>
-						<td><input type="text" class="form-control divide subkasbon" name="kasbon[]" id="kasbon_<?=$idd;?>" value="<?=($record->kasbon);?>" tabindex="-1" readonly></td>
-						<td><input type="text" class="form-control" name="keterangan[]" id="keterangan_<?=$idd;?>" value="<?=$record->keterangan;?>"></td>
-						<td><input type="file" name="doc_file_<?=$idd?>" id="doc_file<?=$idd?>"  <?=($tekskasbon!=''?'class="hidden"':'')?> >
+						<td data-header="Jenis & Tanggal">
+						<?php
+						if($tekskasbon=='') {
+							echo form_dropdown('coa[]',$data_budget, (isset($record->coa)?$record->coa:''),array('id'=>'coa'.$idd,'required'=>'required','class'=>'form-control select2','style'=>'width:300px'));
+						} else {
+							echo '<input type="hidden" name="coa[]" id="coa'.$idd.'" value="'.$record->coa.'">';
+						}
+						?>
+						<input type="text" class="form-control tanggal input-sm" name="tanggal[]" id="tanggal<?=$idd;?>" value="<?=$record->tanggal;?>" <?=$tekskasbon?> ></td>
+						<td data-header="Barang / Jasa & Keterangan"><input type="text" class="form-control input-sm" name="deskripsi[]" id="deskripsi_<?=$idd;?>" value="<?=$record->deskripsi;?>" <?=$tekskasbon?> >
+						<input type="text" class="form-control input-sm" name="keterangan[]" id="keterangan_<?=$idd;?>" value="<?=$record->keterangan;?>"></td>
+						<td data-header="Qty"><input type="text" class="form-control divide input-sm" name="qty[]" id="qty_<?=$idd;?>" value="<?=$record->qty;?>" onblur="cektotal(<?=$idd;?>)" <?=$tekskasbon?> size="15"></td>
+						<td data-header="Harga Satuan"><input type="text" class="form-control divide input-sm" name="harga[]" id="harga_<?=$idd;?>" value="<?=$record->harga;?>" onblur="cektotal(<?=$idd;?>)" <?=$tekskasbon?> ></td>
+						<td data-header="Expense"><input type="text" class="form-control divide subtotal input-sm" name="expense[]" id="expense_<?=$idd;?>" value="<?=($record->expense);?>" tabindex="-1" readonly></td>
+						<td data-header="Kasbon"><input type="text" class="form-control divide subkasbon input-sm" name="kasbon[]" id="kasbon_<?=$idd;?>" value="<?=($record->kasbon);?>" tabindex="-1" readonly></td>
+						<td data-header="Bon Bukti" width="50">
+							<div class="upload-btn-wrapper">
+							  <!--<label for="doc_file<?=$idd?>" <?=($tekskasbon!=''?'class="hidden"':'')?> >Upload file</label>-->
+							  <input type="file" name="doc_file_<?=$idd?>" id="doc_file<?=$idd?>" />
+							</div>
 						<span class="pull-right"><?=($record->doc_file!=''?'<a href="'.base_url('assets/expense/'.$record->doc_file).'" download target="_blank"><i class="fa fa-download"></i></a>':'')?></span>
 						</td>
-						<td align='center'><button type='button' class='btn btn-danger btn-xs stsview' data-toggle='tooltip' onClick='delDetail(<?=$idd?>)' title='Hapus data'><i class='fa fa-close'></i> Hapus</button></td>
+						<th scope="row" align='center'><button type='button' class='btn btn-danger btn-xs stsview' data-toggle='tooltip' onClick='delDetail(<?=$idd?>)' title='Hapus data'><i class='fa fa-close'></i> Hapus</button></th>
 					</tr>
 					<?php 
+						if($record->doc_file!=''){
+							 if(strpos($record->doc_file,'pdf',0)>1){
+								$gambar.='<div class="col-md-12">
+								<iframe src="'.base_url('assets/expense/'.$record->doc_file).'#toolbar=0&navpanes=0" title="PDF" style="width:600px; height:500px;" frameborder="0">
+										 <a href="'.base_url('assets/expense/'.$record->doc_file).'">Download PDF</a>
+								</iframe>
+								<br />'.$record->no_doc.'</div>';
+							 }else{
+								$gambar.='<div class="col-md-4"><a href="'.base_url('assets/expense/'.$record->doc_file).'" target="_blank"><img src="'.base_url('assets/expense/'.$record->doc_file).'" class="img-responsive"></a><br />'.$record->no_doc.'</div>';
+							 }
+						}
 						$total_expense=($total_expense+($record->expense));
 						$total_kasbon=($total_kasbon+($record->kasbon));
 						$idd++;
 					}
-					$grand_total=($grand_total+($total_expense+$total_kasbon));
+					$grand_total=($grand_total+($total_expense-$total_kasbon));
 				}?>
 				</tbody>
 				<tfoot>
 					<tr>
 						<td colspan="5" align=right>TOTAL</td>
-						<td><input type="text" class="form-control divide" id="total_expense" name="total_expense" value="<?=$total_expense?>" placeholder="Total Expense" tabindex="-1" readonly></td>
-						<td><input type="text" class="form-control divide" id="total_kasbon" name="total_kasbon" value="<?=$total_kasbon?>" placeholder="Total Ksbon" tabindex="-1" readonly></td>
-						<td align=right>Saldo</td>
-						<td><input type="text" class="form-control divide" id="grand_total" name="grand_total" value="<?=$grand_total?>" placeholder="Grand Total" tabindex="-1" readonly></td>
-						<td></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_expense" name="total_expense" value="<?=$total_expense?>" placeholder="Total Expense" tabindex="-1" readonly></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_kasbon" name="total_kasbon" value="<?=$total_kasbon?>" placeholder="Total Kasbon" tabindex="-1" readonly></td>
+						<td align=right colspan=2><div class="row"><div class="col-md-2">Saldo</div><div class="col-md-10"><input type="text" class="form-control divide input-sm" id="grand_total" name="grand_total" value="<?=$grand_total?>" placeholder="Grand Total" tabindex="-1" readonly></div></div></td>
 					</tr>
 				</tfoot>
 			</table>
@@ -104,23 +178,34 @@ if(!isset($data->departement)){
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<?php
+						$urlback='';
 						if(isset($data)){
 							if($data->status==0){
-								if($data->approval==$this->auth->user_id()){
-								echo '<button type="button" name="Approve" class="btn btn-primary btn-sm stsview" id="approve" onclick="data_approve()"><i class="fa fa-save">&nbsp;</i>Approve</button>';
+								if($stsview=='approval'){
+									$urlback='list_expense_approval';
+									echo '<a class="btn btn-warning btn-sm" onclick="data_approve()"><i class="fa fa-save">&nbsp;</i>Approve</a>';
 								}
 							}
 						}
 						?>
 						<button type="submit" name="save" class="btn btn-success btn-sm stsview" id="submit"><i class="fa fa-save">&nbsp;</i>Simpan</button>
-						<a class="btn btn-warning btn-sm" onclick="location.reload();return false;"><i class="fa fa-reply">&nbsp;</i>Batal</a>
+						<a class="btn btn-default btn-sm" onclick="window.location=siteurl+'expense/<?=$urlback?>';return false;"><i class="fa fa-reply">&nbsp;</i>Batal</a>
 					</div>
+				</div>
+				<div class="row">
+				<?=$gambar?>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <?= form_close() ?>
+<?php
+$datacombocoa="";
+foreach($data_budget as $keys=>$val){
+	$datacombocoa.="<option value='".$keys."'>".$val."</option>";
+}
+?>
 <?php $this->load->view('include/footer'); ?>
 <script src="<?= base_url('assets/js/number-divider.min.js')?>"></script>
 <script type="text/javascript">
@@ -128,11 +213,11 @@ if(!isset($data->departement)){
 	var url_approve = siteurl+'expense/approve/';
 	var nomor=<?=$idd?>;
 	$('.divide').divide();
-	$('.select2').select2();
+//	$('.select2').select2();
     $('#frm_data').on('submit', function(e){
         e.preventDefault();
 		var errors="";
-		if($("#coa").val()=="0") errors="COA tidak boleh kosong";
+		if($("#coa").val()=="0") errors="Jenis Expense tidak boleh kosong";
 		if($("#tgl_doc").val()=="") errors="Tanggal Transaksi tidak boleh kosong";
 		if(errors==""){
 
@@ -165,8 +250,7 @@ if(!isset($data->departement)){
 							timer: 1500,
 							showConfirmButton: false
 						});
-						cancel();
-						window.location.reload();
+						window.location=siteurl+'expense/<?=$urlback?>';
 					} else {
 						swal({
 							title: "Gagal!",
@@ -205,13 +289,16 @@ if(!isset($data->departement)){
 			$("#frm_data :input").prop("disabled", true);
 			<?
 		}
+		if($stsview=='approval'){
+			?>
+			$(".stsview").addClass("hidden");
+			$("#frm_data :input").prop("disabled", true);
+			<?
+		}
 	}?>
 	$(function () {
 		$(".tanggal").datepicker({
-			todayHighlight: true,
-			format : "yyyy-mm-dd",
-			showInputs: true,
-			autoclose:true
+			dateFormat : "yy-mm-dd",
 		});
 	});
 
@@ -230,14 +317,13 @@ if(!isset($data->departement)){
 			sumkasbon += Number($(this).val());
 		});
 		$("#total_kasbon").val(sumkasbon);
-		$("#grand_total").val(Number(sum)+Number(sumkasbon));
+		$("#grand_total").val(Number(sum)-Number(sumkasbon));
 	}
 	function add_kasbon(){
-		$('.kasbonrow').remove();		
+		$('.kasbonrow').remove();
 		var nama = $("#nama").val();
-		var departement = $("#departement").val();
-		$.ajax({
-			url: siteurl +'expense/get_kasbon/'+nama+'/'+departement,
+		var departement = $("#departement").val();		$.ajax({
+			url: siteurl +'expense/get_kasbon/'+nama+'/'+departement+'/<?= (isset($data->no_doc) ? $data->no_doc: ""); ?>',
 			cache: false,
 			type: "POST",
 			dataType: "json",
@@ -245,40 +331,39 @@ if(!isset($data->departement)){
 				var i;
 				for(i=0; i<data.length; i++){
 					var Rows	 = 	"<tr id='tr1_"+nomor+"' class='delAll kasbonrow'>";
-						Rows	+= 		"<td><input type='hidden' name='id_kasbon[]' id='id_kasbon_"+nomor+"' value='"+data[i].no_doc+"'>";
+						Rows	+= 		"<td data-header='#'><input type='hidden' name='id_kasbon[]' id='id_kasbon_"+nomor+"' value='"+data[i].no_doc+"'>";
 						Rows	+=			"<input type='hidden' name='detail_id[]' id='raw_id_"+nomor+"' value='"+nomor+"'>";
 						Rows	+= 		"<input type='hidden' name='filename[]' id='filename_"+nomor+"' value='"+data[i].doc_file+"'></td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control tanggal' name='tanggal[]' id='tanggal_"+nomor+"' tabindex='-1' readonly value='"+data[i].tgl_doc+"' />";
+						Rows	+= 		"<td data-header='Tanggal'>";
+						Rows	+=			"<input type='text' class='form-control tanggal input-sm' name='tanggal[]' id='tanggal_"+nomor+"' tabindex='-1' readonly value='"+data[i].tgl_doc+"' />";
+						Rows	+= 		"<input type='hidden' name='coa[]' id='coa_"+nomor+"' value='"+data[i].coa+"' />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control' name='deskripsi[]' id='deskripsi_"+nomor+"' value='"+data[i].keperluan+"' tabindex='-1' readonly />";
+						Rows	+= 		"<td data-header='Barang / Jasa & Keteranga'>";
+						Rows	+=			"<input type='text' class='form-control input-sm' name='deskripsi[]' id='deskripsi_"+nomor+"' value='"+data[i].keperluan+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control input-sm' name='keterangan[]' id='keterangan_"+nomor+"' />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide' name='qty[]' value='0' id='qty_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+= 		"<td data-header='Qty'>";
+						Rows	+=			"<input type='text' class='form-control divide input-sm' name='qty[]' value='0' id='qty_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide' name='harga[]' value='0' id='harga_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+= 		"<td data-header='Harga Satuan'>";
+						Rows	+=			"<input type='text' class='form-control divide input-sm' name='harga[]' value='0' id='harga_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide subtotal' name='expense[]' value='0' id='expense_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+= 		"<td data-header='Expense'>";
+						Rows	+=			"<input type='text' class='form-control divide input-sm subtotal hidden' name='expense[]' value='0' id='expense_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide subkasbon' name='kasbon[]' value='"+data[i].jumlah_kasbon+"' id='kasbon_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+= 		"<td data-header='Kasbon'>";
+						Rows	+=			"<input type='text' class='form-control divide input-sm subkasbon' name='kasbon[]' value='"+data[i].jumlah_kasbon+"' id='kasbon_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control' name='keterangan[]' id='keterangan_"+nomor+"' />";
-						Rows	+= 		"</td>";
-						Rows	+= 		"<td>";
+						Rows	+= 		"<td data-header='Bon Bukti'>";
 						Rows	+=			"<input type='file'  name='doc_file_"+nomor+"' id='doc_file_"+nomor+"' class='hidden' />";
 						Rows	+=		"<span class='pull-right'>";
 						if(data[i].doc_file!=''){
 							Rows	+=		"<a href='<?=base_url('assets/expense/')?>"+data[i].doc_file+"' download target='_blank'><i class='fa fa-download'></i></a></span>";
 						}
 						Rows	+= 		"</td>";
-						Rows	+= 		"<td align='center'>";
+						Rows	+= 		"< th scope='row' align='center'>";
 						Rows 	+=			"<button type='button' class='btn btn-danger btn-xs' data-toggle='tooltip' onClick='delDetail("+nomor+")' title='Hapus data'><i class='fa fa-close'></i> Hapus</button>";
-						Rows	+= 		"</td>";
+						Rows	+= 		"</th>";
 						Rows	+= 	"</tr>";
 						nomor++;
 					$('#detail_body').append(Rows);
@@ -301,44 +386,41 @@ if(!isset($data->departement)){
 	}
 	function add_detail(){
 		var Rows	 = 	"<tr id='tr1_"+nomor+"' class='delAll'>";
-			Rows	+= 		"<td><input type='hidden' name='id_kasbon[]' id='id_kasbon_"+nomor+"' value=''>";
+			Rows	+= 		"<td data-header='#'><input type='hidden' name='id_kasbon[]' id='id_kasbon_"+nomor+"' value=''>";
 			Rows	+=			"<input type='hidden' name='detail_id[]' id='raw_id_"+nomor+"' value='"+nomor+"'>";
 			Rows	+= 		"<input type='hidden' name='filename[]' id='filename_"+nomor+"' value=''></td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control tanggal' name='tanggal[]' id='tanggal_"+nomor+"' />";
+			Rows	+= 		"<td data-header='Jenis & Tanggal'>";			
+			Rows	+= 		"<select name='coa[]' id='coa_"+nomor+"' required='required' class='form-control select2' style='width:300px'><?=$datacombocoa?></select>";
+			Rows	+=			"<input type='text' class='form-control tanggal input-sm' name='tanggal[]' id='tanggal_"+nomor+"' />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control' name='deskripsi[]' id='deskripsi_"+nomor+"' />";
+			Rows	+= 		"<td data-header='Barang / Jasa & Keterangan'>";
+			Rows	+=			"<input type='text' class='form-control input-sm' name='deskripsi[]' id='deskripsi_"+nomor+"' />";
+			Rows	+=			"<input type='text' class='form-control input-sm' name='keterangan[]' id='keterangan_"+nomor+"' />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control divide' name='qty[]' value='0' id='qty_"+nomor+"' onblur='cektotal("+nomor+")' />";
+			Rows	+= 		"<td data-header='Qty'>";
+			Rows	+=			"<input type='text' class='form-control divide input-sm' name='qty[]' value='0' id='qty_"+nomor+"' onblur='cektotal("+nomor+")' />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control divide' name='harga[]' value='0' id='harga_"+nomor+"' onblur='cektotal("+nomor+")' />";
+			Rows	+= 		"<td data-header='Harga Satuan'>";
+			Rows	+=			"<input type='text' class='form-control divide input-sm' name='harga[]' value='0' id='harga_"+nomor+"' onblur='cektotal("+nomor+")' />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control divide subtotal' name='expense[]' value='0' id='expense_"+nomor+"' tabindex='-1' readonly />";
+			Rows	+= 		"<td data-header='Expense'>";
+			Rows	+=			"<input type='text' class='form-control divide input-sm subtotal' name='expense[]' value='0' id='expense_"+nomor+"' tabindex='-1' readonly />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control divide subkasbon' name='kasbon[]' value='0' id='kasbon_"+nomor+"' tabindex='-1' readonly />";
+			Rows	+= 		"<td data-header='Kasbon'>";
+			Rows	+=			"<input type='text' class='form-control divide input-sm subkasbon hidden' name='kasbon[]' value='0' id='kasbon_"+nomor+"' tabindex='-1' readonly />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
-			Rows	+=			"<input type='text' class='form-control' name='keterangan[]' id='keterangan_"+nomor+"' />";
-			Rows	+= 		"</td>";
-			Rows	+= 		"<td>";
+			Rows	+= 		"<td data-header='Bon Bukti'>";
 			Rows	+=			"<input type='file'  name='doc_file_"+nomor+"' id='doc_file_"+nomor+"' />";
 			Rows	+= 		"</td>";
-			Rows	+= 		"<td align='center'>";
+			Rows	+= 		"<th align='center' th scope='row'>";
 			Rows 	+=			"<button type='button' class='btn btn-danger btn-xs' data-toggle='tooltip' onClick='delDetail("+nomor+")' title='Hapus data'><i class='fa fa-close'></i> Hapus</button>";
-			Rows	+= 		"</td>";
+			Rows	+= 		"</th>";
 			Rows	+= 	"</tr>";
+			$("#tanggal_"+nomor).focus();
 			nomor++;
 		$('#detail_body').append(Rows);
 		$(".tanggal").datepicker({
-			todayHighlight: true,
-			format : "yyyy-mm-dd",
-			showInputs: true,
-			autoclose:true
+			dateFormat : "yy-mm-dd",
 		});
 		$(".divide").divide();
 	}
@@ -375,7 +457,7 @@ if(!isset($data->departement)){
 							timer: 1500,
 							showConfirmButton: false
 						});
-						window.location.reload();
+						window.location=siteurl+'expense/<?=$urlback?>';
 					} else {
 						swal({
 							title: "Gagal!",

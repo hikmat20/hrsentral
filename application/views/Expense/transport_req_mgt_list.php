@@ -27,6 +27,7 @@ $this->load->view('include/side_menu');
 			<td><?= $record->nmuser ?></td>
 			<td><?= $status[$record->status] ?></td>
 			<td>
+			<a class="btn btn-default btn-sm print" href="<?=base_url('expense/transport_req_print/'.$record->id)?>" target="transport_req_print" title="Print"><i class="fa fa-print"></i> </a>
 			<?php if($akses_menu['read'] == '1') : ?>
 				<a class="btn btn-warning btn-sm view" href="<?=base_url('expense/transport_req_view/'.$record->id.'/_mgt')?>" title="View"><i class="fa fa-eye"></i></a>
 			<?php endif;

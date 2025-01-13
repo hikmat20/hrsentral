@@ -75,9 +75,9 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '103.228.117.98',
+	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => 'Annabell2018',
+	'password' => 'sentral2022**',
 	'database' => 'hr_sentral',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

@@ -89,7 +89,6 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
                             <textarea name="reason" id="reason" class="form-control" rows="3" required="required" placeholder="Alasan"></textarea>
                         </div>
                     </div>
-
                     <div class="form-group hidden">
                         <label for="approval_by" class="col-md-3 control-label"> By <span class="text-red">*</span></label>
                         <div class="col-md-9">

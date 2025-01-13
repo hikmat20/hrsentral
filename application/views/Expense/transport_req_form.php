@@ -4,11 +4,11 @@ $this->load->view('include/side_menu');
 ?>
 <?=form_open($this->uri->uri_string(),array('id'=>'frm_data','name'=>'frm_data','role'=>'form','class'=>'form-horizontal','enctype'=>'multipart/form-data'));?>
 <?php
-$dept='';
+$dept='';$bank_id='';$accnumber='';$accname='';
 if(!isset($data->departement)){
 	$datauser = $this->db->get_where('users', ['username' => $this->session->userdata['User']['username']])->row();
 	$datadept = $this->db->get_where('employees', ['id' => $datauser->employee_id])->row();
-	$dept=$datadept->department_id;
+	$dept=$datadept->department_id;$bank_id=$datadept->bank_id;$accnumber=$datadept->accnumber;$accname=$datadept->accname;
 }
 ?>
 <input type="hidden" id="id" name="id" value="<?php echo set_value('id', isset($data->id) ? $data->id : ''); ?>">
@@ -17,6 +17,9 @@ if(!isset($data->departement)){
 <div class="tab-content">
 	<div class="tab-pane active">
 		<div class="box box-primary">
+			<div class="box-header">
+				<h3 class="box-title"><?= $title; ?></h3>
+			</div>		
 			<div class="box-body">
 				<div class="form-group ">
 					<label class="col-sm-2 control-label">No Dokumen</label>
@@ -28,6 +31,7 @@ if(!isset($data->departement)){
 						<input type="text" class="form-control tanggal" id="tgl_doc" name="tgl_doc" value="<?php echo (isset($data->tgl_doc) ? $data->tgl_doc: date("Y-m-d")); ?>" placeholder="Tanggal Dokumen" required>
 					</div>
 				</div>
+
 				<div class="form-group ">
 					<label class="col-sm-2 control-label">Periode 1 <b class="text-red">*</b></label>
 					<div class="col-sm-4">
@@ -38,7 +42,21 @@ if(!isset($data->departement)){
 						<input type="text" class="form-control tanggal" id="date2" name="date2" value="<?php echo (isset($data->date2) ? $data->date2: date("Y-m-d")); ?>" placeholder="Tanggal Akhir" required>
 					</div>
 				</div>
-
+				<h4>Transfer ke</h4>
+				<div class="form-group ">
+					<label class="col-md-1 control-label">Bank</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="bank_id" name="bank_id" value="<?php echo (isset($data->bank_id) ? $data->bank_id: $bank_id); ?>" placeholder="Bank">
+					</div>
+					<label class="col-md-2 control-label">Nomor Rekening</label>
+					<div class="col-md-2">
+						<input type="text" class="form-control" id="accnumber" name="accnumber" value="<?php echo (isset($data->accnumber) ? $data->accnumber: $accnumber); ?>" placeholder="Nomor Rekening">
+					</div>
+					<label class="col-md-2 control-label">Nama Rekening</label>
+					<div class="col-md-3">
+						<input type="text" class="form-control" id="accname" name="accname" value="<?php echo (isset($data->accname) ? $data->accname: $accname); ?>" placeholder="Nama Pemilik Rekening">
+					</div>
+				</div>
 			<div class="table-responsive">
 			<table class="table table-bordered table-striped">
 				<caption><div class="pull-right">
@@ -51,59 +69,86 @@ if(!isset($data->departement)){
 					<th width="100">Keperluan</th>
 					<th width="100">Rute</th>
 					<th>Bensin</th>
-					<th>Tol</th>
+					<th>T o l</th>
 					<th>Parkir</th>
+					<th>Lain Lain</th>
 					<th>KM Awal</th>
 					<th>KM Akhir</th>
 					<th>Total KM</th>
 					<th width="50">Bukti</th>
+					<th></th>
 					</tr>
 				</thead>
 				<tbody id="detail_body">
-				<?php $total_bensin=0; $total_tol=0;$total_parkir=0;$total_kasbon=0; $idd=1; $total_km=0; $grand_total=0;
+				<?php $total_bensin=0; $total_tol=0;$total_parkir=0;$total_kasbon=0; $idd=1; $total_km=0; $grand_total=0; $total_lainnya=0;
+				$gambar='';
 				if(!empty($data_detail)){
 					foreach($data_detail AS $record){
 						?>
 					<tr id='tr1_<?=$idd?>' class='delAll'>
 						<td>
-						<input type="hidden" name="id_transport[]" id="id_transport_<?=$idd?>" value="<?=$record->id;?>"><?=$idd;?></td>
+						<input type="hidden" name="id_transport[]" id="id_transport_<?=$idd?>" value="<?=$record->id;?>"><?=$record->no_doc;?></td>
 						<td><?=$record->tgl_doc;?></td>
 						<td><?=$record->keperluan;?></td>
 						<td><?=$record->rute;?></td>
 						<td class="divide"><?=$record->bensin;?></td>
 						<td class="divide"><?=$record->tol;?></td>
 						<td class="divide"><?=$record->parkir;?></td>
+						<td class="divide"><?=$record->lainnya;?></td>
 						<td class="divide"><?=$record->km_awal;?></td>
 						<td class="divide"><?=$record->km_akhir;?></td>
 						<td class="divide"><?=($record->km_akhir-$record->km_awal);?></td>
 						<td><span class="pull-right"><?=($record->doc_file!=''?'<a href="'.base_url('assets/expense/'.$record->doc_file).'" download target="_blank"><i class="fa fa-download"></i></a>':'')?></span>
 						</td>
+						<td><button type='button' class='btn btn-danger btn-xs' data-toggle='tooltip' onClick='delDetail(<?=$idd?>)' title='Hapus data'><i class='fa fa-close'></i> Hapus</button>
+						<input type='hidden' class='fben' name='bensin[]' value='<?=$record->bensin;?>' id='bensin_<?=$idd?>' />
+						<input type='hidden' class='ftol' name='tol[]' value='<?=$record->tol;?>' id='tol_<?=$idd?>' />
+						<input type='hidden' class='fpark' name='parkir[]' value='<?=$record->parkir;?>' id='parkir_<?=$idd?>' />
+						<input type='hidden' class='flainnya' name='lainnya[]' value='<?=$record->lainnya;?>' id='lainnya_<?=$idd?>' />
+						<input type='hidden' class='input-sm' name='km_awal[]' value='<?=$record->km_awal;?>' id='km_awal_<?=$idd?>' />
+						<input type='hidden' class='input-sm' name='km_akhir[]' value='<?=$record->km_akhir;?>' id='km_akhir_<?=$idd?>' />
+						<input type='hidden' class='fkm' name='total_km[]' value='<?=($record->km_akhir-$record->km_awal);?>' id='total_km_<?=$idd?>' />
+						</td>
 					</tr>
 					<?php 
+						if($record->doc_file!=''){
+							 if(strpos($record->doc_file,'pdf',0)>1){
+								$gambar.='<div class="col-md-3">
+								<iframe src="'.base_url('assets/expense/'.$record->doc_file).'#toolbar=0&navpanes=0" title="PDF" style="width:600px; height:500px;" frameborder="0">
+										 <a href="'.base_url('assets/expense/'.$record->doc_file).'">Download PDF</a>
+								</iframe>
+								<br />'.$record->no_doc.'</div>';
+							 }else{
+								$gambar.='<div class="col-md-3"><a href="'.base_url('assets/expense/'.$record->doc_file).'" target="_blank"><img src="'.base_url('assets/expense/'.$record->doc_file).'" class="img-responsive"></a><br />'.$record->no_doc.'</div>';
+							 }
+						}
+
 						$total_bensin=($total_bensin+($record->bensin));
 						$total_tol=($total_tol+($record->tol));
 						$total_parkir=($total_parkir+($record->parkir));
 						$total_km=($total_km+($record->km_akhir-$record->km_awal));
+						$total_lainnya=($total_lainnya+$record->lainnya);
 						$idd++;
 					}
 				}
-				$grand_total=($total_bensin+$total_tol+$total_parkir);
+				$grand_total=($total_bensin+$total_tol+$total_parkir+$total_lainnya);
 				?>
 				</tbody>
 				<tfoot>
 					<tr class="info">
 						<td colspan="4" align=right>SUB TOTAL</td>
-						<td><input type="text" class="form-control divide" id="total_bensin" name="total_bensin" value="<?=$total_bensin?>" placeholder="Total Bensin" tabindex="-1" readonly></td>
-						<td><input type="text" class="form-control divide" id="total_tol" name="total_tol" value="<?=$total_tol?>" placeholder="Total Tol" tabindex="-1" readonly></td>
-						<td><input type="text" class="form-control divide" id="total_parkir" name="total_parkir" value="<?=$total_parkir?>" placeholder="Total Parkir" tabindex="-1" readonly></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_bensin" name="total_bensin" value="<?=$total_bensin?>" placeholder="Total Bensin" tabindex="-1" readonly></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_tol" name="total_tol" value="<?=$total_tol?>" placeholder="Total Tol" tabindex="-1" readonly></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_parkir" name="total_parkir" value="<?=$total_parkir?>" placeholder="Total Parkir" tabindex="-1" readonly></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_lainnya" name="total_lainnya" value="<?=$total_lainnya?>" placeholder="Total Lainnya" tabindex="-1" readonly></td>
 						<td colspan=2></td>
-						<td><input type="text" class="form-control divide" id="total_km" name="total_km" value="<?=$total_km?>" placeholder="Total KM" tabindex="-1" readonly></td>
-						<td></td>
+						<td><input type="text" class="form-control divide input-sm" id="total_km" name="total_km" value="<?=$total_km?>" placeholder="Total KM" tabindex="-1" readonly></td>
+						<td colspan=2></td>
 					</tr>
 					<tr class="warning">
 						<td colspan="4" align=right>TOTAL</td>
-						<td colspan="3"><input type="text" class="form-control divide" id="jumlah_expense" name="jumlah_expense" value="<?=$grand_total?>" placeholder="Total" tabindex="-1" readonly></td>
-						<td colspan=4></td>
+						<td colspan="4"><input type="text" class="form-control divide input-sm" id="jumlah_expense" name="jumlah_expense" value="<?=$grand_total?>" placeholder="Total" tabindex="-1" readonly></td>
+						<td colspan=6></td>
 					</tr>
 				</tfoot>
 			</table>
@@ -124,6 +169,9 @@ if(!isset($data->departement)){
 						<button type="submit" name="save" class="btn btn-success btn-sm stsview" id="submit"><i class="fa fa-save">&nbsp;</i>Simpan</button>
 						<a class="btn btn-warning btn-sm" onclick="window.location=siteurl+'expense/transport_req<?=$mod?>';return false;"><i class="fa fa-reply"></i> Batal</a>
 					</div>
+				</div>
+				<div class="row">
+				<?=$gambar?>
 				</div>
 			</div>
 		</div>
@@ -240,7 +288,12 @@ if(!isset($data->departement)){
 			sum3 += Number($(this).val());
 		});
 		$("#total_km").val(sum3);
-		$("#jumlah_expense").val(sum+sum1+sum2);
+		var sum4 = 0;
+		$('.flainnya').each(function() {
+			sum4 += Number($(this).val());
+		});		
+		$("#total_lainnya").val(sum4);
+		$("#jumlah_expense").val(sum+sum1+sum2+sum4);
 	}
 	function add_detail(){
 		$('.kasbonrow').remove();
@@ -258,34 +311,41 @@ if(!isset($data->departement)){
 				for(i=0; i<data.length; i++){
 					var Rows	 = 	"<tr id='tr1_"+nomor+"' class='delAll kasbonrow'>";
 						Rows	+= 		"<td><input type='hidden' name='id_transport[]' id='id_transport_"+nomor+"' value='"+data[i].id+"'>";
-						Rows	+= 		"</td>";
+						Rows	+= 		data[i].no_doc+"</td>";
 						Rows	+= 		"<td>"+data[i].tgl_doc+"</td>";
 						Rows	+= 		"<td>"+data[i].keperluan+"</td>";
 						Rows	+= 		"<td>"+data[i].rute+"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide fben' name='bensin[]' value='"+data[i].bensin+"' id='bensin_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide fben input-sm' name='bensin[]' value='"+data[i].bensin+"' id='bensin_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide ftol' name='bensin[]' value='"+data[i].tol+"' id='tol_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide ftol input-sm' name='tol[]' value='"+data[i].tol+"' id='tol_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide fpark' name='parkir[]' value='"+data[i].parkir+"' id='parkir_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide fpark input-sm' name='parkir[]' value='"+data[i].parkir+"' id='parkir_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide' name='km_awal[]' value='"+data[i].km_awal+"' id='km_awal_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide flainnya input-sm' name='lainnya[]' value='"+data[i].lainnya+"' id='lainnya_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide' name='km_akhir[]' value='"+data[i].km_akhir+"' id='km_akhir_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide input-sm' name='km_awal[]' value='"+data[i].km_awal+"' id='km_awal_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
-						Rows	+=			"<input type='text' class='form-control divide fkm' name='total_km[]' value='"+(data[i].km_akhir-data[i].km_awal)+"' id='total_km_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+=			"<input type='text' class='form-control divide input-sm' name='km_akhir[]' value='"+data[i].km_akhir+"' id='km_akhir_"+nomor+"' tabindex='-1' readonly />";
+						Rows	+= 		"</td>";
+						Rows	+= 		"<td>";
+						Rows	+=			"<input type='text' class='form-control divide fkm input-sm' name='total_km[]' value='"+(data[i].km_akhir-data[i].km_awal)+"' id='total_km_"+nomor+"' tabindex='-1' readonly />";
 						Rows	+= 		"</td>";
 						Rows	+= 		"<td>";
 						Rows	+=		"<span class='pull-right'>";
 						if(data[i].doc_file!=''){
-							Rows	+=		"<a href='<?=base_url('assets/expense/')?>"+data[i].doc_file+"' download target='_blank'><i class='fa fa-download'></i></a></span>";
+							Rows	+=		"<a href='<?=base_url('assets/expense/')?>"+data[i].doc_file+"' download target='_blank'><i class='fa fa-download'></i></a>";
 						}
+						Rows	+= 		"</span></td>";
+						Rows	+= 		"<td align='center'>";
+						Rows 	+=		"<button type='button' class='btn btn-danger btn-xs' data-toggle='tooltip' onClick='delDetail("+nomor+")' title='Hapus data'><i class='fa fa-close'></i> Hapus</button>";
 						Rows	+= 		"</td>";
+
 						Rows	+= 	"</tr>";
 						nomor++;
 					$('#detail_body').append(Rows);

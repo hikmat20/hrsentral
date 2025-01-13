@@ -182,7 +182,7 @@ class Users extends CI_Controller
 
 			$data_Group			= $this->master_model->getArray('groups', array(), 'id', 'name');
 			$rows_data			= $this->master_model->getData('users', 'id', $id);
-			$data_employees		= $this->employees_model->getEmployees();
+			$data_employees		= $this->employees_model->getEmployees(['flag_active'=>'Y']);
 			$data = array(
 				'title'			=> 'Edit Users',
 				'action'		=> 'edit_user',

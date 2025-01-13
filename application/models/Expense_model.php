@@ -59,7 +59,7 @@ class Expense_model extends CI_Model
 	// list data kasbon
 	public function GetListDataKasbon($where=''){
 		$this->db->select('a.*, c.name as nmuser');
-		$this->db->from('tr_kasbon a');
+		$this->db->from(DBERP.'.tr_kasbon a');
 		$this->db->join('users b','a.nama=b.username','left');
 		$this->db->join('employees c','b.employee_id=c.id');
 		if($where!='') $this->db->where($where);
@@ -75,7 +75,7 @@ class Expense_model extends CI_Model
 	// get data kasbon
 	public function GetDataKasbon($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_kasbon a');
+		$this->db->from(DBERP.'.tr_kasbon a');
 		$this->db->where('a.id',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -104,7 +104,7 @@ class Expense_model extends CI_Model
 	// get data transport req
 	public function GetDataTransportReq($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_transport_req a');
+		$this->db->from(DBERP.'.tr_transport_req a');
 		$this->db->where('a.id',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -117,7 +117,7 @@ class Expense_model extends CI_Model
 	// get data transport req detail
 	public function GetDataTransportInReq($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_transport a');
+		$this->db->from(DBERP.'.tr_transport a');
 		$this->db->where('a.no_req',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -146,7 +146,7 @@ class Expense_model extends CI_Model
 	// get data transport
 	public function GetDataTransport($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_transport a');
+		$this->db->from(DBERP.'.tr_transport a');
 		$this->db->where('a.id',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -157,11 +157,12 @@ class Expense_model extends CI_Model
 	}
 
 	// list data
-	public function GetListData(){
+	public function GetListData($where=''){
 		$this->db->select('a.*, b.username as nmuser, c.username as nmapproval');
-		$this->db->from($this->table_name.' a');
+		$this->db->from(DBERP.'.'.$this->table_name.' a');
 		$this->db->join('users b','a.nama=b.username','left');
 		$this->db->join('users c','a.approval=c.username','left');
+		if($where!='') $this->db->where($where);
 		$this->db->order_by('a.id', 'desc');
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -174,7 +175,7 @@ class Expense_model extends CI_Model
 	// get data
 	public function GetDataHeader($id){
 		$this->db->select('a.*');
-		$this->db->from($this->table_name.' a');
+		$this->db->from(DBERP.'.'.$this->table_name.' a');
 		$this->db->where('a.id',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -186,7 +187,7 @@ class Expense_model extends CI_Model
 
 	public function GetDataDetail($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_expense_detail a');
+		$this->db->from(DBERP.'.tr_expense_detail a');
 		$this->db->where('a.no_doc',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -198,7 +199,7 @@ class Expense_model extends CI_Model
 
 	public function GetDetailPurchaseRequest($id){
 		$this->db->select('a.*');
-		$this->db->from('tr_expense_detail a');
+		$this->db->from(DBERP.'.tr_expense_detail a');
 		$this->db->where('a.id',$id);
 		$query = $this->db->get();
 		if($query->num_rows() != 0) {
@@ -210,7 +211,7 @@ class Expense_model extends CI_Model
 
 	public function GetBudget($coa,$tahun){
 		$this->db->select('a.*');
-		$this->db->from('ms_budget a');
+		$this->db->from(DBERP.'.ms_budget a');
 		$this->db->where('a.coa',$coa);
 		$this->db->where('a.tahun',$tahun);
 		$query = $this->db->get();
@@ -223,7 +224,7 @@ class Expense_model extends CI_Model
 
 	public function GetBudgetDivisi($type,$divisi,$tahun){
 		$this->db->select('a.*');
-		$this->db->from('ms_coa_budget a');
+		$this->db->from(DBERP.'.ms_coa_budget a');
 		$this->db->where('a.coa',$type);
 		$this->db->where('a.divisi',$divisi);
 		$this->db->where('a.tahun',$tahun);
@@ -240,7 +241,7 @@ class Expense_model extends CI_Model
 		$tahun=date("Y",strtotime($tgl));
 
 		$this->db->select('a.*');
-		$this->db->from('ms_coa_budget a');
+		$this->db->from(DBERP.'.ms_coa_budget a');
 		$this->db->where('a.coa', $coa);
 		$this->db->where('a.tahun', $tahun);
 		$this->db->where('a.divisi', $divisi);
@@ -254,7 +255,7 @@ class Expense_model extends CI_Model
 			$upd_terpakai_bulan=($terpakai_bulan+$nilai-$nilai_pr);
 			$upd_terpakai=($terpakai+$nilai-$nilai_pr);
 			$upd_sisa=($sisa-$nilai+$nilai_pr);
-			$this->db->query("update ms_coa_budget set terpakai_bulan_".$bulan."=".$upd_terpakai_bulan.", terpakai=".$upd_terpakai.", sisa=".$upd_sisa." where id=".$idbudget." and coa='".$coa."' and tahun='".$tahun."'");
+			$this->db->query("update ".DBERP.".ms_coa_budget set terpakai_bulan_".$bulan."=".$upd_terpakai_bulan.", terpakai=".$upd_terpakai.", sisa=".$upd_sisa." where id=".$idbudget." and coa='".$coa."' and tahun='".$tahun."'");
 			return true;
 		} else {
 			return false;

@@ -22,7 +22,7 @@ $this->load->view('include/side_menu');
 			<th>No Dokumen</th>
 			<th>Tanggal</th>
 			<th>Nama</th>
-			<th>Approval</th>
+			<th>Keterangan</th>
 			<th>Status</th>
 			<th width="120">Action</th>
 		</tr>
@@ -36,9 +36,10 @@ $this->load->view('include/side_menu');
 			<td><?= $record->no_doc ?></td>
 			<td><?= $record->tgl_doc ?></td>
 			<td><?= $record->nmuser ?></td>
-			<td><?= $record->nmapproval?></td>
+			<td><?= $record->informasi ?></td>
 			<td><?= $status[$record->status] ?></td>
 			<td>
+			<a class="btn btn-default btn-sm print" href="<?=base_url('expense/expense_print/'.$record->id)?>" target="expense_print" title="Print"><i class="fa fa-print"></i> </a>
 			<?php if ($akses_menu['read'] == '1') : ?>
 				<a class="btn btn-warning btn-sm view" href="<?=base_url('expense/view/'.$record->id)?>" title="View"><i class="fa fa-eye"></i> </a>
 			<?php endif;

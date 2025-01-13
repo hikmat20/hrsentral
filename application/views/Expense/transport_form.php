@@ -70,26 +70,44 @@ $this->load->view('include/side_menu');
 					<div class="col-sm-4">
 						<input type="text" class="form-control divide" id="parkir" name="parkir" value="<?php echo (isset($data->parkir) ? $data->parkir: '0'); ?>" placeholder="Parkir">
 					</div>
-					<label class="col-sm-2 control-label">Dokumen</label>
+					<label class="col-sm-2 control-label">Transport / Lain-Lain</label>
 					<div class="col-sm-4">
-						<input type="hidden" name="filename" id="filename" value="<?=(isset($data->doc_file)?$data->doc_file:'');?>">
-						<input type="file" name="doc_file" id="doc_file">
-						<span class="pull-right"><?php
-						if(isset($data->doc_file)){
-							echo ($data->doc_file!=''?'<a href="'.base_url('assets/expense/'.$data->doc_file).'" download target="_blank"><i class="fa fa-download"></i></a>':'');
-						}
-						?>
-						</span>
+						<input type="text" class="form-control divide" id="lainnya" name="lainnya" value="<?php echo (isset($data->lainnya) ? $data->lainnya: '0'); ?>" placeholder="Lain-Lain">
 					</div>
 				</div>
-
 				<div class="form-group ">
 					<label class="col-sm-2 control-label">KM. Akhir</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control divide" id="km_akhir" name="km_akhir" value="<?php echo (isset($data->km_akhir) ? $data->km_akhir: '0'); ?>" placeholder="KM Akhir">
 					</div>
+					<label class="col-sm-2 control-label">Dokumen</label>
+					<div class="col-sm-4">
+						<input type="hidden" name="filename" id="filename" value="<?=(isset($data->doc_file)?$data->doc_file:'');?>">
+						<input type="file" name="doc_file" id="doc_file">
+						<span class="pull-right"><?php
+						$gambar='';
+						if(isset($data->doc_file)){
+							echo ($data->doc_file!=''?'<a href="'.base_url('assets/expense/'.$data->doc_file).'" download target="_blank"><i class="fa fa-download"></i></a>':'');
+							 if(strpos($data->doc_file,'pdf',0)>1){
+								$gambar.='<div class="col-md-12">
+								<iframe src="'.base_url('assets/expense/'.$data->doc_file).'#toolbar=0&navpanes=0" title="PDF" style="width:600px; height:500px;" frameborder="0">
+										 <a href="'.base_url('assets/expense/'.$data->doc_file).'">Download PDF</a>
+								</iframe>
+								<br />'.$data->no_doc.'</div>';
+							 }else{
+								$gambar.='<div class="col-md-12"><a href="'.base_url('assets/expense/'.$data->doc_file).'" target="_blank"><img src="'.base_url('assets/expense/'.$data->doc_file).'" class="img-responsive"></a><br />'.$data->no_doc.'</div>';
+							 }
+						}
+						?>
+						</span>
+					</div>
 				</div>
-</div>
+				<div class="form-group ">
+					<label class="col-sm-2 control-label">Keterangan</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="keterangan" name="keterangan" value="<?php echo (isset($data->keterangan) ? $data->keterangan: ''); ?>" placeholder="Keterangan">
+					</div>
+				</div>
 			</div>
 			<div class="box-footer">
 				<div class="form-group">
@@ -104,6 +122,9 @@ $this->load->view('include/side_menu');
 						<button type="submit" name="save" class="btn btn-success btn-sm stsview" id="submit"><i class="fa fa-save">&nbsp;</i>Simpan</button>
 						<a class="btn btn-warning btn-sm" onclick="window.location=siteurl+'expense/transport';return false;"><i class="fa fa-reply">&nbsp;</i>Batal</a>
 					</div>
+				</div>
+				<div class="row">
+				<?=$gambar?>
 				</div>
 			</div>
 		</div>

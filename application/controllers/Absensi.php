@@ -25,9 +25,15 @@ class Absensi extends CI_Controller
 			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
 			redirect(site_url('dashboard'));
 		}
+		$user_id=$this->input->post("user_id");
+		$tgl_awal=$this->input->post("tgl_awal");
+		$tgl_akhir=$this->input->post("tgl_akhir");
 		$data = array(
 			'title'			=> 'Absensi',
 			'action'		=> 'index',
+			'uid'			=> $user_id,
+			'taw'			=> $tgl_awal,
+			'tak'			=> $tgl_akhir,
 			'akses_menu'	=> $Arr_Akses
 		);
 		$this->load->view('Absensi/index',$data);
@@ -35,14 +41,21 @@ class Absensi extends CI_Controller
 
 	// load ajax
 	public function getDataJSON(){
-	 $controller = ucfirst(strtolower($this->uri->segment(1)));
-	 $Arr_Akses = getAcccesmenu($controller);
-     $postData = $this->input->post();
-	 $userlist=$this->session->userdata['User']['username'];
-	 if($Arr_Akses['update']=='1') $userlist='';
-		 $data = $this->Absensi_model->GetListAbsensiJSON($postData,$userlist);
-		 echo json_encode($data);
-	 }
+		$controller = ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses = getAcccesmenu($controller);
+		$postData = $this->input->post();
+		$userlist=$this->session->userdata['User']['username'];
+		if($Arr_Akses['update']=='1') $userlist='';
+		$user_id=$this->input->post("user_id");
+		$tgl_awal=$this->input->post("tgl_awal");
+		$tgl_akhir=$this->input->post("tgl_akhir");
+		$addsql="";
+		if($user_id!=''){
+			$addsql=" a.employee_id='".$user_id."' and DATE_FORMAT(a.waktu, '%Y-%m-%d')>='".$tgl_awal."' and DATE_FORMAT(a.waktu, '%Y-%m-%d')<='".$tgl_akhir."' ";
+		}
+		$data = $this->Absensi_model->GetListAbsensiJSON($postData,$userlist,$addsql);
+		echo json_encode($data);
+	}
 	 
 	function report(){
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));
@@ -87,7 +100,29 @@ class Absensi extends CI_Controller
 			redirect('absensi/report');
 		}
 	}
-	
+	function preview_detail(){
+		$controller			= ucfirst(strtolower($this->uri->segment(1)));
+		$Arr_Akses			= getAcccesmenu($controller);
+		if ($Arr_Akses['read'] != '1') {
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-warning\" id=\"flash-message\">You Don't Have Right To Access This Page, Please Contact Your Administrator....</div>");
+			redirect(site_url('dashboard'));
+		}
+		$postData	= $this->input->post();
+		if($postData){
+			$results	= $this->Absensi_model->GetReportAbsensi($postData);
+			$data = array(
+				'title'		=> 'Report Absensi',
+				'action'	=> 'index',
+				'akses_menu'=> $Arr_Akses,
+				'tgl_awal'	=> $postData['tgl_awal'],
+				'tgl_akhir'	=> $postData['tgl_akhir'],
+				'results'  	=> $results,
+			);
+			$this->load->view('Absensi/report_detail',$data);
+		}else{
+			redirect('absensi/report');
+		}
+	}
 	function form_absen(){
 		$controller			= ucfirst(strtolower($this->uri->segment(1)));
 		$Arr_Akses			= getAcccesmenu($controller);
@@ -98,12 +133,11 @@ class Absensi extends CI_Controller
 		$userlist=$this->session->userdata();
 		$userlist=$this->session->userdata['User'];
 		$data = array(
-			'title'		=> 'Form Absens',
-			'action'	=> 'index',
+			'title'		=> 'Form Absensi',
+			'action'	=> 'form_absen',
 			'akses_menu'=> $Arr_Akses,
 			'userlist'	=>$userlist
 		);
-		$this->load->view('Absensi/form_absen',$data);
-	}
-	 
+		$this->load->view('Absensi/form_absen_new',$data);
+	}	 
 }
