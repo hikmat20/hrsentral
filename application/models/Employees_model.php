@@ -395,6 +395,84 @@ class Employees_model extends CI_Model
 			return false;
 		}
 	}
+	
+	public function getDataEmplaboratory()
+	{
+		$this->db->select('a.*,b.name as company_name,c.name as department_name,
+								d.name as division_name, e.name as title_name,
+								f.name as firstcontract,g.name as secondcontract,
+								h.name as thirdcontract,i.name as permanent, j.name as position_name');
+		$this->db->from('employees a');
+		$this->db->join('companies b', 'b.id=a.company_id', 'left');
+		$this->db->join('departments c', 'c.id=a.department_id', 'left');
+		$this->db->join('divisions d', 'd.id=a.division_id', 'left');
+		$this->db->join('titles e', 'e.id=a.title_id', 'left');
+		$this->db->join('contracts f', 'f.id=a.firstcontract_id', 'left');
+		$this->db->join('contracts g', 'g.id=a.secondcontract_id', 'left');
+		$this->db->join('contracts h', 'h.id=a.thirdcontract_id', 'left');
+		$this->db->join('contracts i', 'i.id=a.permanent_id', 'left');
+		$this->db->join('positions j', 'j.id=a.position_id', 'left');
+		$this->db->where(array('a.flag_active' => 'Y', 'a.company_id' => 'COM005'));
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+	
+	public function getDataEmpsustainability()
+	{
+		$this->db->select('a.*,b.name as company_name,c.name as department_name,
+								d.name as division_name, e.name as title_name,
+								f.name as firstcontract,g.name as secondcontract,
+								h.name as thirdcontract,i.name as permanent, j.name as position_name');
+		$this->db->from('employees a');
+		$this->db->join('companies b', 'b.id=a.company_id', 'left');
+		$this->db->join('departments c', 'c.id=a.department_id', 'left');
+		$this->db->join('divisions d', 'd.id=a.division_id', 'left');
+		$this->db->join('titles e', 'e.id=a.title_id', 'left');
+		$this->db->join('contracts f', 'f.id=a.firstcontract_id', 'left');
+		$this->db->join('contracts g', 'g.id=a.secondcontract_id', 'left');
+		$this->db->join('contracts h', 'h.id=a.thirdcontract_id', 'left');
+		$this->db->join('contracts i', 'i.id=a.permanent_id', 'left');
+		$this->db->join('positions j', 'j.id=a.position_id', 'left');
+		$this->db->where(array('a.flag_active' => 'Y', 'a.company_id' => 'COM006'));
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
+	
+	public function getDataEmpvucastrategi()
+	{
+		$this->db->select('a.*,b.name as company_name,c.name as department_name,
+								d.name as division_name, e.name as title_name,
+								f.name as firstcontract,g.name as secondcontract,
+								h.name as thirdcontract,i.name as permanent, j.name as position_name');
+		$this->db->from('employees a');
+		$this->db->join('companies b', 'b.id=a.company_id', 'left');
+		$this->db->join('departments c', 'c.id=a.department_id', 'left');
+		$this->db->join('divisions d', 'd.id=a.division_id', 'left');
+		$this->db->join('titles e', 'e.id=a.title_id', 'left');
+		$this->db->join('contracts f', 'f.id=a.firstcontract_id', 'left');
+		$this->db->join('contracts g', 'g.id=a.secondcontract_id', 'left');
+		$this->db->join('contracts h', 'h.id=a.thirdcontract_id', 'left');
+		$this->db->join('contracts i', 'i.id=a.permanent_id', 'left');
+		$this->db->join('positions j', 'j.id=a.position_id', 'left');
+		$this->db->where(array('a.flag_active' => 'Y', 'a.company_id' => 'COM012'));
+		$query = $this->db->get();
+		//echo "<pre>";print_r($query->result());
+		if ($query->num_rows() != 0) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 
 	function code_otomatis($table, $pre)
 	{
