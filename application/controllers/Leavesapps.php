@@ -708,13 +708,6 @@ class Leavesapps extends CI_Controller
         echo json_encode($ArrCollback);
     }
 
-    public function test_wa()
-    {
-        $res = wa_send('6281213346322', 'Test dari lokal');
-        var_dump($res);
-        exit;
-    }
-
     public function cancel()
     {
         $id = $this->input->post('id');
