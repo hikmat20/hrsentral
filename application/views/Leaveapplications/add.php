@@ -189,66 +189,66 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             </div>
             <hr>
             <div class="row">
-                    <div class="form-group text-center doc-sick" style="display: none;">
-                        <!-- <label for="sick_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
-                        <div class="col-md-4">
-                            <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Surat Sakit</button>
-                            <input type="file" class="hidden" name="doc_sick_leave" id="doc_sick_leave">
-                            <input type="text" class="hidden" name="doc_sick_old">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
-                                </a>
-                            </div>
-						</div>
-						<div class="col-md-4">
-							<button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave_2').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Kwitansi / Perincian Biaya Berobat</button>
-                            <input type="file" class="hidden" id="doc_sick_leave_2" name="doc_sick_leave_2">
-                            <input type="text" class="hidden" name="doc_sick_old_2">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick_2" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
-                                </a>
-                            </div>
-						</div>
-						<div class="col-md-4">
-							<button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave_3').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Copy Resep</button>
-                            <input type="file" class="hidden" id="doc_sick_leave_3" name="doc_sick_leave_3">
-                            <input type="text" class="hidden" name="doc_sick_old_3">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick_3" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
-                                </a>
-                            </div>						
+                <div class="form-group text-center doc-sick" style="display: none;">
+                    <!-- <label for="sick_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
+                    <div class="col-md-4">
+                        <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Surat Sakit</button>
+                        <input type="file" class="hidden" name="doc_sick_leave" id="doc_sick_leave">
+                        <input type="text" class="hidden" name="doc_sick_old">
+                        <div class="">
+                            <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                            </a>
                         </div>
                     </div>
-                    <div class="form-group text-center doc-special" style="display: none;">
-                        <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
-                        <div class="col-md-4">
-                            <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Pemerintah</button>
-                            <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
-                            <input type="text" class="hidden" name="doc_special_old">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
-                                </a>
-                            </div>
+                    <div class="col-md-4">
+                        <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave_2').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Kwitansi / Perincian Biaya Berobat</button>
+                        <input type="file" class="hidden" id="doc_sick_leave_2" name="doc_sick_leave_2">
+                        <input type="text" class="hidden" name="doc_sick_old_2">
+                        <div class="">
+                            <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick_2" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                            </a>
                         </div>
                     </div>
-                    <div class="form-group text-center doc-notpay" style="display: none;">
-                        <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
-                        <div class="col-md-4" style="margin-bottom: 8px;">
-                            <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
-                            <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
-                            <input type="text" class="hidden" name="doc_notpay_old">
-                            <div class="">
-                                <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
-                                    <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
-                                </a>
-                            </div>
+                    <div class="col-md-4">
+                        <button type="button" id="btn-doc-sick" onclick="$('#doc_sick_leave_3').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Copy Resep</button>
+                        <input type="file" class="hidden" id="doc_sick_leave_3" name="doc_sick_leave_3">
+                        <input type="text" class="hidden" name="doc_sick_old_3">
+                        <div class="">
+                            <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_sick_3" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                            </a>
                         </div>
                     </div>
-                
+                </div>
+                <div class="form-group text-center doc-special" style="display: none;">
+                    <!-- <label for="special_leave_category" class="col-md-3 col-md-offset-3 text-left">Dok. Pendukung<span class="text-red"></span></label> -->
+                    <div class="col-md-4">
+                        <button type="button" disabled id="btn-doc-special" onclick="$('#doc_special_leave').click()" class="btn btn-warning" style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Pemerintah</button>
+                        <input type="file" class="hidden" name="doc_special_leave" id="doc_special_leave">
+                        <input type="text" class="hidden" name="doc_special_old">
+                        <div class="">
+                            <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_special" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group text-center doc-notpay" style="display: none;">
+                    <!-- <label for="doc_notpay_leave" class="col-md-3 control-label">Dok. Pendukung<span class="text-red"></span></label> -->
+                    <div class="col-md-4" style="margin-bottom: 8px;">
+                        <button type="button" id="btn-doc-notpay" onclick="$('#doc_notpay_leave').click()" class="btn btn-warning" disabled style="margin-bottom:10px"><i class="fa fa-upload"></i> Upload Dok. Pendukung Cuti Tdk. Dibayar</button>
+                        <input type="file" class="hidden" name="doc_notpay_leave" id="doc_notpay_leave">
+                        <input type="text" class="hidden" name="doc_notpay_old">
+                        <div class="">
+                            <a href="<?= base_url('assets/documents/document.png'); ?>" target="_blank">
+                                <img src="<?= base_url(); ?>assets/documents/document.png" alt="" id="prev_img_notpay" class="img-responsive img-thumbnail" style="height: 150px;min-width:150px">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </form>
     </div>
@@ -626,47 +626,57 @@ $namaBulan = ["Januari", "Februaru", "Maret", "April", "Mei", "Juni", "Juli", "A
             })
             return false;
         } else if (doc_special === 0) {
-            textMsg = 'Pengajuan Cuti Pemerintah tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
             swal({
-                    title: 'Peringatan!',
-                    type: 'warning',
-                    text: textMsg,
-                    showCancelButton: true
-                },
-                function(value) {
-                    if (value == true) {
-                        save_application()
-                    }
-                })
+                title: 'Peringatan!',
+                text: 'Pengajuan Cuti Pemerintah tidak disertai dokumen pendukung. Lanjutkan?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, lanjut',
+                cancelButtonText: 'Batal'
+            }, function(isConfirm) {
+                if (isConfirm) save_application();
+            });
+            return false;
+
         } else if (doc_notpay === 0) {
-            textMsg = 'Pengajuan Cuti Tdk. Dibayar tidak disertain dokumen pendukung. Klik OK untuk melanjutkan.'
             swal({
-                    title: 'Peringatan!',
-                    type: 'warning',
-                    text: textMsg,
-                    showCancelButton: true
-                },
-                function(value) {
-                    if (value == true) {
-                        save_application()
-                    }
-                })
+                title: 'Peringatan!',
+                text: 'Pengajuan Cuti Tdk. Dibayar tidak disertai dokumen pendukung. Lanjutkan?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, lanjut',
+                cancelButtonText: 'Batal'
+            }, function(isConfirm) {
+                if (isConfirm) save_application();
+            });
+            return false;
+
         } else if (doc_sick === 0) {
-            textMsg = 'Pengajuan Sakit tidak disertain dokumen pendukung/surat dokter. Klik OK untuk melanjutkan.'
             swal({
-                    title: 'Peringatan!',
-                    type: 'warning',
-                    text: textMsg,
-                    showCancelButton: true
-                },
-                function(value) {
-                    if (value == true) {
-                        save_application()
-                    }
-                })
+                title: 'Peringatan!',
+                text: 'Pengajuan Sakit tidak disertai dokumen/surat dokter. Lanjutkan?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, lanjut',
+                cancelButtonText: 'Batal'
+            }, function(isConfirm) {
+                if (isConfirm) save_application();
+            });
+            return false;
+
         } else {
-            // alert(doc_special + ", " + doc_notpay + ", " + doc_sick)
-            save_application()
+            // Semua valid & dokumen ada → konfirmasi umum
+            swal({
+                title: 'Konfirmasi',
+                text: 'Apakah Anda yakin ingin mengajukan cuti ini?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, ajukan',
+                cancelButtonText: 'Batal'
+            }, function(isConfirm) {
+                if (isConfirm) save_application();
+            });
+            return false;
         }
     })
 

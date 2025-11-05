@@ -82,8 +82,8 @@ class Lembur extends CI_Controller
         $employee           = $this->session->userdata('Employee');
         $division           = $this->employees_model->getData('divisions', 'id', $employee['division_id']);
         $divisionHead       = $this->db->get_where('divisions_head', ['id' => $employee['division_head']])->row();
-       
-		$data = array(
+
+        $data = array(
             'title'         => 'Add Lembur',
             'action'        => 'add',
             'employee'      => $employee,
@@ -183,6 +183,8 @@ class Lembur extends CI_Controller
                 'status'        => 1,
                 'msg'           => 'Data Lembur berhasil disimpan.'
             );
+            $overtime_id_for_notify = ($id) ? $id : $data['id'];
+            wa_notify_overtime($overtime_id_for_notify);
             history('Save Lembur Applications' . $data['employee_id']);
         }
         echo json_encode($ArrCollback);

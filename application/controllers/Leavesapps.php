@@ -169,14 +169,14 @@ class Leavesapps extends CI_Controller
         $emp            = $this->db->get_where('leave_applications', ['id' => $data['id']])->row();
         $axis_data      = $this->db->get_where('employees_leave', ['employee_id' => $emp->employee_id])->row();
         $leave          = ($emp->get_year_leave) ? $emp->total_days : $emp->remaining_leave;
-		$absen 			= $this->db->get_where('users', ['employee_id' => $emp->employee_id])->row();
-        
-		// echo '<pre>';
+        $absen             = $this->db->get_where('users', ['employee_id' => $emp->employee_id])->row();
+
+        // echo '<pre>';
         // print_r($absen);
         // echo '<pre>';
         // exit;
-		
-		$datePeriod = new DatePeriod(
+
+        $datePeriod = new DatePeriod(
             new DateTime(date('Y-m-d', strtotime("0 day", strtotime($emp->from_date)))),
             new DateInterval('P1D'),
             new DateTime(date('Y-m-d', strtotime("+1 day", strtotime($emp->until_date))))
@@ -188,7 +188,7 @@ class Leavesapps extends CI_Controller
             $dates = date('Ymd', strtotime($hday['date']));
             $holiday[$dates] = $hday['name'];
         }
-		
+
         $count_holidays = count($getHoliday);
 
         // $holiday = json_decode(file_get_contents('https://raw.githubusercontent.com/guangrei/Json-Indonesia-holidays/master/calendar.json', true));
@@ -209,15 +209,15 @@ class Leavesapps extends CI_Controller
                 // jika ada hari minggu
             } else {
                 $days++;
-				$dataAbsen[$days] = [
-					'employee_id' => $emp->employee_id,
-					'user_id' => $absen->username,
-					'flag_cuti' => 'C',
-					'waktu' => date('Y-m-d H:i:s', strtotime($date))
-				];
+                $dataAbsen[$days] = [
+                    'employee_id' => $emp->employee_id,
+                    'user_id' => $absen->username,
+                    'flag_cuti' => 'C',
+                    'waktu' => date('Y-m-d H:i:s', strtotime($date))
+                ];
             }
         }
-			
+
         $dataEmpLeave   = [
             'id'            => $this->employees_model->code_otomatis('employees_leave', 'EL'),
             'date'          => date('Y-m-d'),
@@ -252,10 +252,10 @@ class Leavesapps extends CI_Controller
                     $this->db->insert('employees_leave', $dataEmpLeave);
                 }
             }
-			
-			if ($dataAbsen) {
-				$this->db->insert_batch('absensi_log', $dataAbsen);
-			}
+
+            if ($dataAbsen) {
+                $this->db->insert_batch('absensi_log', $dataAbsen);
+            }
 
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
@@ -613,9 +613,9 @@ class Leavesapps extends CI_Controller
                 }
                 $data['doc_sick_leave'] = $upload['file_name'];
             }
-        }else{
-			unset($data['doc_sick_leave']);
-		}
+        } else {
+            unset($data['doc_sick_leave']);
+        }
 
         if ($_FILES['doc_sick_leave_2']['name']) {
             if (!$this->upload->do_upload('doc_sick_leave_2')) {
@@ -638,9 +638,9 @@ class Leavesapps extends CI_Controller
                 }
                 $data['doc_sick_leave_2'] = $upload['file_name'];
             }
-        }else{
-			unset($data['doc_sick_leave_2']);
-		}
+        } else {
+            unset($data['doc_sick_leave_2']);
+        }
 
         if ($_FILES['doc_sick_leave_3']['name']) {
             if (!$this->upload->do_upload('doc_sick_leave_3')) {
@@ -663,9 +663,9 @@ class Leavesapps extends CI_Controller
                 }
                 $data['doc_sick_leave_3'] = $upload['file_name'];
             }
-        }else{
-			unset($data['doc_sick_leave_3']);
-		}
+        } else {
+            unset($data['doc_sick_leave_3']);
+        }
 
         unset($data['doc_notpay_old']);
         unset($data['doc_sick_old']);
@@ -700,10 +700,19 @@ class Leavesapps extends CI_Controller
                 'status'        => 1,
                 'msg'           => 'Data Pengajuan Cuti berhasil disimpan.'
             );
+            $leave_id_for_notify = ($leaveApp_id && $flag_revision == 'N') ? $leaveApp_id : $data['id'];
+            wa_notify_leaves($leave_id_for_notify);
             history('Save Leave Applications' . $data['employee_id']);
         }
 
         echo json_encode($ArrCollback);
+    }
+
+    public function test_wa()
+    {
+        $res = wa_send('6281213346322', 'Test dari lokal');
+        var_dump($res);
+        exit;
     }
 
     public function cancel()

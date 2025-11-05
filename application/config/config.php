@@ -230,6 +230,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
+
 $config['log_threshold'] = 1;
 
 /*
@@ -528,3 +529,16 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Whacenter API
+|--------------------------------------------------------------------------
+|
+*/
+
+$config['whacenter'] = [
+    'device_id' => 'd07ce41e480ee115ee2b831adfcbc528',
+    'endpoint'  => 'https://app.whacenter.com/api/send',
+    'timeout'   => 10
+];
