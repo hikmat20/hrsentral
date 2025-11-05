@@ -190,6 +190,8 @@ class Wfh extends CI_Controller
                 'status'        => 1,
                 'msg'           => 'Data WFH berhasil disimpan.'
             );
+            $wfh_id_for_notify = ($id) ? $id : $data['id'];
+            wa_notify_wfh($wfh_id_for_notify);
             history('Save WFH Applications' . $data['employee_id']);
         }
         echo json_encode($ArrCollback);

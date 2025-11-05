@@ -349,6 +349,8 @@ class Pengganti extends CI_Controller
                 'status'        => 1,
                 'msg'           => 'Data Pengajuan Cuti Pengganti berhasil disimpan.'
             );
+            $leave_id_for_notify = ($id) ? $id : $data['id'];
+            wa_notify_leaves($leave_id_for_notify);
             history('Save Cuti Pengganti' . $data['employee_id']);
         }
 
