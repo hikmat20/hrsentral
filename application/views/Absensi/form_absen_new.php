@@ -22,7 +22,7 @@ $this->load->view('include/side_menu');
 		<input type="hidden" id="longitude" name="longitude">
 		<div id="tab_tipe">
 			<div class="panel-heading">
-				<div class="row nopadding">
+				<div class="row">
 
 					<?php
 					$sqlquery = "select kode_1,kode_2 from ms_generate where tipe='tipe_absen' and kode_1<>'9' order by kode_3";
